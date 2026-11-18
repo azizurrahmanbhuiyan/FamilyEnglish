@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Topic videos{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end gap-3">
+  <div>
+    <p class="eyebrow">Learn</p>
+    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">🎬 Topic videos</h1>
+    <p class="mt-1 max-w-2xl text-sm text-stone-500">One short video for every topic, with a voice, pictures and captions. Watch it together, say the words aloud, then do the practice.
+      <span class="font-bn">প্রতিটি বিষয়ের জন্য ছোট ভিডিও।</span></p>
+  </div>
+  <span class="ml-auto rounded-full bg-white px-3 py-1 text-sm font-extrabold text-stone-600 ring-1 ring-stone-200">{{ count }} video{{ count|pluralize }}</span>
+</div>
+
+<div class="mt-5 space-y-2">
+  <div class="chip-row" aria-label="Filter by level">
+    <a href="?{% if skill %}skill={{ skill }}{% endif %}" class="chip {% if not level %}is-on{% endif %}">All levels</a>
+    {% for lv in levels %}
+    <a href="?level={{ lv.number }}{% if skill %}&skill={{ skill }}{% endif %}" class="chip {% if level == lv.number|stringformat:'d' %}is-on{% endif %}">
+      <span class="h-2.5 w-2.5 rounded-full" style="background: {{ lv.colour }}"></span>Level {{ lv.number }}</a>
+    {% endfor %}
+  </div>
+  <div class="chip-row" aria-label="Filter by skill">
+    <a href="?{% if level %}level={{ level }}{% endif %}" class="chip {% if not skill %}is-on{% endif %}">All skills</a>
+    {% for value, label, emoji in skills %}
+    <a href="?skill={{ value }}{% if level %}&level={{ level }}{% endif %}" class="chip {% if skill == value %}is-on{% endif %}">{{ emoji }} {{ label }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="mt-6 space-y-10">
+  {% for g in groups %}
+  <section>
+    <div class="flex items-center gap-3">
+      <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl font-display text-lg font-bold text-white" style="background: {{ g.level.colour }}">{{ g.level.number }}</span>
+      <div>
+        <h2 class="text-lg font-extrabold text-stone-900">{{ g.level.name }} <span class="font-bn text-sm font-normal text-stone-500">· {{ g.level.name_bn }}</span></h2>
+        <p class="text-xs font-semibold text-stone-500">{{ g.level.matches }} · {{ g.cards|length }} video{{ g.cards|length|pluralize }}</p>
+      </div>
+    </div>
+    <div class="mt-4 grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {% for c in g.cards %}{% include "learning/_vcard.html" %}{% endfor %}
+    </div>
+  </section>
+  {% empty %}
+  <div class="card p-10 text-center">
+    <p class="text-4xl">🔍</p>
+    <p class="mt-2 font-bold">No videos match these filters.</p>
+    <a href="{% url 'learning:videos' %}" class="mt-3 inline-block text-sm font-bold text-brand-600">Show all videos</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -14,6 +14,8 @@ urlpatterns = [
     path("plan/new/", views.plan_new, name="plan_new"),
     path("plan/day/<int:pk>/done/", views.day_done, name="day_done"),
     path("library/", views.library, name="library"),
+    path("videos/", views.videos, name="videos"),
+    path("progress/", views.progress, name="progress"),
     path("lesson/<int:pk>/", views.lesson_detail, name="lesson"),
     path("lesson/<int:pk>/complete/", views.lesson_complete, name="lesson_complete"),
 ]

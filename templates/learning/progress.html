@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load fe %}
+{% block title %}My progress{% endblock %}
+{% block content %}
+<p class="eyebrow">Progress</p>
+<h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">📈 {{ current_learner.name }}'s progress</h1>
+
+<div class="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
+  <div class="stat"><p class="text-xl">⚡</p><p class="stat-num">{{ xp }}</p><p class="stat-label">Total XP</p></div>
+  <div class="stat"><p class="text-xl">📅</p><p class="stat-num">{{ week_xp }}</p><p class="stat-label">XP this week</p></div>
+  <div class="stat"><p class="text-xl">🔥</p><p class="stat-num">{{ streak }}</p><p class="stat-label">Day streak</p></div>
+  <div class="stat"><p class="text-xl">⭐</p><p class="stat-num">{{ stars }}</p><p class="stat-label">Stars</p></div>
+  <div class="stat col-span-2 lg:col-span-1"><p class="text-xl">📚</p><p class="stat-num">{{ done_count }}</p><p class="stat-label">Lessons done</p></div>
+</div>
+<p class="mt-2 text-xs text-stone-500">Each finished lesson gives {{ xp_rule.0 }} XP, plus {{ xp_rule.1 }} XP for every star.</p>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <section class="card p-5">
+    <h2 class="font-extrabold text-stone-900">Skills</h2>
+    <div class="mt-4 space-y-4">
+      {% for s in skills %}
+      <div>
+        <div class="flex items-center gap-2 text-sm font-extrabold"><span class="text-lg">{{ s.emoji }}</span>{{ s.label }}
+          <span class="ml-auto text-xs font-bold text-stone-500">{{ s.done }} of {{ s.total }} · {{ s.percent }}%</span></div>
+        <div class="bar mt-1.5"><span style="width: {{ s.percent }}%"></span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="card p-5">
+    <div class="flex items-center justify-between">
+      <h2 class="font-extrabold text-stone-900">Last 4 weeks</h2>
+      <span class="flex items-center gap-1 text-xs text-stone-500">less
+        <span class="inline-block h-3 w-3 rounded bg-[#f0edf6]"></span><span class="inline-block h-3 w-3 rounded bg-[#ddd6fe]"></span><span class="inline-block h-3 w-3 rounded bg-[#a78bfa]"></span><span class="inline-block h-3 w-3 rounded bg-[#7c3aed]"></span> more</span>
+    </div>
+    <div class="heat mt-4">
+      {% for d in activity %}<span class="s{{ d.shade }}" title="{{ d.date|date:'D j M' }}: {{ d.n }} lesson{{ d.n|pluralize }}"></span>{% endfor %}
+    </div>
+    {% if placement %}
+    <div class="mt-5 border-t border-stone-100 pt-4">
+      <p class="text-sm font-extrabold">Placement levels <span class="font-normal text-stone-500">· {{ placement.taken_at|date:"j M Y" }}</span></p>
+      <div class="mt-2 grid grid-cols-4 gap-2 text-center">
+        <div class="rounded-xl bg-stone-50 p-2"><p class="font-display text-xl font-bold">{{ placement.listening }}</p><p class="text-[11px] font-bold text-stone-500">Listening</p></div>
+        <div class="rounded-xl bg-stone-50 p-2"><p class="font-display text-xl font-bold">{{ placement.speaking }}</p><p class="text-[11px] font-bold text-stone-500">Speaking</p></div>
+        <div class="rounded-xl bg-stone-50 p-2"><p class="font-display text-xl font-bold">{{ placement.reading }}</p><p class="text-[11px] font-bold text-stone-500">Reading</p></div>
+        <div class="rounded-xl bg-stone-50 p-2"><p class="font-display text-xl font-bold">{{ placement.writing }}</p><p class="text-[11px] font-bold text-stone-500">Writing</p></div>
+      </div>
+      <a href="{% url 'learning:placement_result' placement.pk %}" class="mt-3 inline-block text-sm font-bold text-brand-600">Full report →</a>
+    </div>
+    {% endif %}
+  </section>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
+  <section id="leaderboard" class="card scroll-mt-24 p-5">
+    <h2 class="font-extrabold text-stone-900">🏆 Family leaderboard</h2>
+    <p class="text-xs text-stone-500">Ranked by XP earned in the last 7 days.</p>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="text-left text-xs uppercase tracking-wider text-stone-400">
+          <th class="pb-2 pr-2">#</th><th class="pb-2">Learner</th><th class="pb-2 text-right">This week</th><th class="pb-2 text-right">Total</th><th class="pb-2 text-right">Streak</th></tr></thead>
+        <tbody class="divide-y divide-stone-100">
+          {% for r in board %}
+          <tr class="{% if r.learner.id == current_learner.id %}bg-brand-50{% endif %}">
+            <td class="py-2.5 pr-2 font-extrabold">{{ r.medal }}</td>
+            <td class="py-2.5"><span class="mr-1 text-lg">{{ r.learner.avatar }}</span><span class="font-bold">{{ r.learner.name }}</span>
+              <span class="text-xs text-stone-400">{{ r.learner.get_role_display|truncatewords:1 }}</span></td>
+            <td class="py-2.5 text-right font-extrabold tabular-nums text-brand-700">{{ r.week_xp }} XP</td>
+            <td class="py-2.5 text-right tabular-nums">{{ r.xp }}</td>
+            <td class="py-2.5 text-right tabular-nums">🔥 {{ r.streak }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card p-5">
+    <h2 class="font-extrabold text-stone-900">Recently finished</h2>
+    <ul class="mt-3 space-y-1">
+      {% for p in recent %}
+      <li><a href="{% url 'learning:lesson' p.lesson.pk %}" class="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-stone-50">
+        <span class="h-2.5 w-2.5 shrink-0 rounded-full" style="background: {{ p.lesson.module.level.colour }}"></span>
+        <span class="truncate font-semibold">{{ p.lesson.title }}</span>
+        <span class="ml-auto shrink-0">{{ p.stars|stars }}</span></a></li>
+      {% empty %}
+      <li class="py-2 text-sm text-stone-500">No lessons finished yet. <a href="{% url 'learning:videos' %}" class="font-bold text-brand-600">Watch a topic video →</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

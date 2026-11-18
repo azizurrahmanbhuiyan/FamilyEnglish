@@ -3,6 +3,7 @@ import random
 from datetime import date
 
 from django.contrib import messages
+from django.db.models import Prefetch
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -10,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from core.utils import learner_required
 
-from . import planner
+from . import planner, stats, video
 from .forms import PlanForm
 from .models import (Lesson, Level, PlacementQuestion, PlanDay, Progress, Skill)
 from .placement import (READER_MAX, READER_MIN, SPEAKING_CAN_DO, save_placement,
@@ -32,6 +33,17 @@ def _can_open(family, lesson):
 
 # ---------- Today ----------
 
+def _video_card(lesson, done_ids=(), watch_ids=()):
+    """Everything a video thumbnail needs."""
+    secs = video.duration_seconds(lesson)
+    return {"lesson": lesson, "thumb": video.thumb_for(lesson), "duration": video.duration_label(secs),
+            "done": lesson.id in done_ids, "emoji": video.SKILL_EMOJI.get(lesson.skill, "🎬")}
+
+
+def _lessons_qs():
+    return Lesson.objects.select_related("module__level").prefetch_related("items")
+
+
 @learner_required
 def today(request):
     learner = request.learner
@@ -40,15 +52,71 @@ def today(request):
     week = []
     if plan:
         t = timezone.localdate()
-        week = plan.days.filter(date__gte=t).select_related("lesson")[:8]
+        week = plan.days.filter(date__gte=t).select_related("lesson")[:6]
+    done_ids = set(Progress.objects.filter(learner=learner).values_list("lesson_id", flat=True))
+
+    # "Up next" videos: the next unfinished lessons in the plan, else in the learner's level.
+    if mission:
+        up_ids = list(plan.days.filter(status=PlanDay.Status.TODO, lesson__isnull=False)
+                      .order_by("date").values_list("lesson_id", flat=True)[:4])
+    else:
+        start = placement.overall if placement else 0
+        up_ids = list(Lesson.objects.filter(module__level__number__gte=start).exclude(id__in=done_ids)
+                      .values_list("id", flat=True)[:4])
+    by_id = {l.id: l for l in _lessons_qs().filter(id__in=up_ids)}
+    up_next = [_video_card(by_id[i], done_ids) for i in up_ids if i in by_id]
+    featured = up_next.pop(0) if up_next else None
+
     return render(request, "learning/today.html", {
         "placement": placement,
         "plan": plan,
         "mission": mission,
         "week": week,
-        "streak": planner.streak(learner),
-        "stars": sum(Progress.objects.filter(learner=learner).values_list("stars", flat=True)),
-        "done_count": Progress.objects.filter(learner=learner).count(),
+        "featured": featured,
+        "up_next": up_next[:3],
+        "skills": stats.skill_progress(learner),
+        "board": stats.leaderboard(request.family)[:5],
+        **stats.learner_stats(learner),
+    })
+
+
+@learner_required
+def videos(request):
+    """Topic videos: one short video for every lesson, filterable by level and skill."""
+    level = request.GET.get("level", "")
+    skill = request.GET.get("skill", "")
+    qs = _lessons_qs()
+    if level.isdigit():
+        qs = qs.filter(module__level__number=int(level))
+    if skill in Skill.values:
+        qs = qs.filter(skill=skill)
+    done_ids = set(Progress.objects.filter(learner=request.learner).values_list("lesson_id", flat=True))
+    groups, current = [], None
+    for lesson in qs:
+        lv = lesson.module.level
+        if current is None or current["level"].id != lv.id:
+            current = {"level": lv, "cards": []}
+            groups.append(current)
+        current["cards"].append(_video_card(lesson, done_ids))
+    return render(request, "learning/videos.html", {
+        "groups": groups, "levels": Level.objects.all(), "level": level, "skill": skill,
+        "skills": [(v, l, video.SKILL_EMOJI.get(v, "")) for v, l in Skill.choices],
+        "count": sum(len(g["cards"]) for g in groups),
+    })
+
+
+@learner_required
+def progress(request):
+    learner = request.learner
+    recent = (Progress.objects.filter(learner=learner).select_related("lesson__module__level")[:8])
+    return render(request, "learning/progress.html", {
+        "skills": stats.skill_progress(learner),
+        "board": stats.leaderboard(request.family),
+        "activity": stats.activity(learner),
+        "recent": recent,
+        "placement": learner.placements.first(),
+        "xp_rule": (stats.XP_PER_LESSON, stats.XP_PER_STAR),
+        **stats.learner_stats(learner),
     })
 
 
@@ -158,9 +226,24 @@ def plan_calendar(request):
 
 @learner_required
 def library(request):
-    levels = Level.objects.prefetch_related("modules__lessons")
+    skill = request.GET.get("skill", "")
+    activity = request.GET.get("activity", "")
+    lessons = Lesson.objects.all()
+    title = "All lessons"
+    if skill in Skill.values:
+        lessons = lessons.filter(skill=skill)
+        title = f"{Skill(skill).label} lessons"
+    if activity in Lesson.Activity.values:
+        lessons = lessons.filter(activity=activity)
+        title = "Word dictation" if activity == Lesson.Activity.DICTATION else Lesson.Activity(activity).label
+    levels = Level.objects.prefetch_related(
+        Prefetch("modules__lessons", queryset=lessons, to_attr="shown"))
+    levels = [lv for lv in levels if any(m.shown for m in lv.modules.all())]
     done_ids = set(Progress.objects.filter(learner=request.learner).values_list("lesson_id", flat=True))
-    return render(request, "learning/library.html", {"levels": levels, "done_ids": done_ids})
+    return render(request, "learning/library.html", {
+        "levels": levels, "done_ids": done_ids, "title": title, "skill": skill, "activity": activity,
+        "filtered": bool(skill or activity),
+    })
 
 
 @learner_required
@@ -176,9 +259,12 @@ def lesson_detail(request, pk):
         "module__order", "order").values_list("id", flat=True))
     idx = ordered.index(lesson.id)
     nxt = ordered[idx + 1] if idx + 1 < len(ordered) else None
+    scenes = video.build_scenes(lesson)
     return render(request, "learning/lesson.html", {
         "lesson": lesson, "view": view, "progress": progress,
         "items": lesson.items.all(), "videos": lesson.videos.all(), "next_id": nxt,
+        "scenes": scenes, "duration": video.duration_label(round(sum(x["ms"] for x in scenes) / 1000)),
+        "thumb": video.thumb_for(lesson),
     })
 
 

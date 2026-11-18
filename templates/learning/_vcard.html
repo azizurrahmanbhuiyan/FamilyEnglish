@@ -1,0 +1,12 @@
+{# A topic-video thumbnail card. Needs `c` = {lesson, thumb, duration, done, emoji}. #}
+<a href="{% url 'learning:lesson' c.lesson.pk %}#watch" class="vcard group block">
+  <span class="vthumb" style="--c: {{ c.lesson.module.level.colour }}">
+    <span class="vthumb-big{% if c.thumb|length > 5 %} is-long{% endif %}">{{ c.thumb }}</span>
+    <span class="vthumb-tag">{{ c.emoji }} {{ c.lesson.get_skill_display }}</span>
+    {% if c.done %}<span class="vthumb-done">✓ Done</span>{% endif %}
+    <span class="vthumb-play" aria-hidden="true">▶</span>
+    <span class="vthumb-time">{{ c.duration }}</span>
+  </span>
+  <p class="vcard-title">{{ c.lesson.title }}</p>
+  <p class="vcard-meta">Level {{ c.lesson.module.level.number }} · {{ c.lesson.module.title }}</p>
+</a>

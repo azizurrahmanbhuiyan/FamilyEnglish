@@ -1,79 +1,162 @@
 {% extends "base.html" %}
-{% block title %}Today{% endblock %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
-<div class="flex flex-wrap items-center gap-4">
-  <span class="text-6xl">{{ current_learner.avatar }}</span>
+<!-- Greeting -->
+<div class="flex flex-wrap items-end gap-3">
   <div>
-    <p class="text-sm font-bold uppercase tracking-wide text-stone-400">Hello</p>
-    <h1 class="font-display text-4xl font-bold">{{ current_learner.name }}</h1>
+    <p class="eyebrow">{% now "l, j F" %}</p>
+    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">Hello, {{ current_learner.name }} {{ current_learner.avatar }}</h1>
+    <p class="text-sm text-stone-500">One short video, a little practice, and a home task. That's today.</p>
   </div>
-  <div class="ml-auto grid grid-cols-3 gap-3 text-center">
-    <div class="card px-4 py-3"><p class="text-2xl">🔥</p><p class="font-display text-2xl font-bold">{{ streak }}</p><p class="text-xs text-stone-500">day streak</p></div>
-    <div class="card px-4 py-3"><p class="text-2xl">⭐</p><p class="font-display text-2xl font-bold">{{ stars }}</p><p class="text-xs text-stone-500">stars</p></div>
-    <div class="card px-4 py-3"><p class="text-2xl">📚</p><p class="font-display text-2xl font-bold">{{ done_count }}</p><p class="text-xs text-stone-500">lessons</p></div>
-  </div>
+  <a href="{% url 'learning:progress' %}" class="ml-auto inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-extrabold text-amber-800">🔥 {{ streak }} day{{ streak|pluralize }} streak</a>
 </div>
 
-{% if not placement %}
-<div class="mt-8 card p-8 text-center">
-  <div class="text-5xl">🧩</div>
-  <h2 class="mt-2 font-display text-2xl font-bold">First, a short placement test</h2>
-  <p class="mt-1 text-stone-600">It finds the right level so lessons are not too easy or too hard.</p>
-  <a href="{% url 'learning:placement_start' %}" class="btn-primary mt-5">Start the test</a>
-</div>
-{% elif not plan %}
-<div class="mt-8 card p-8 text-center">
-  <div class="text-5xl">🗓️</div>
-  <h2 class="mt-2 font-display text-2xl font-bold">Make your study plan</h2>
-  <p class="mt-1 text-stone-600">Your level: {{ placement.overall }}. Choose a finish level and how many months you have.</p>
-  <a href="{% url 'learning:plan_new' %}" class="btn-primary mt-5">Make my plan</a>
-</div>
-{% else %}
-<div class="mt-8 grid gap-6 lg:grid-cols-[3fr_2fr]">
-  <div class="card overflow-hidden">
-    <div class="bg-gradient-to-r from-brand-600 to-orange-500 p-6 text-white">
-      <p class="text-sm font-bold uppercase tracking-wide opacity-80">🎯 Today's mission</p>
-      {% if mission %}
-        <h2 class="mt-1 font-display text-3xl font-bold">{{ mission.lesson.title }}</h2>
-        <p class="opacity-90">Level {{ mission.lesson.module.level.number }} · {{ mission.lesson.module.title }} · {{ mission.lesson.minutes }} min</p>
-      {% else %}
-        <h2 class="mt-1 font-display text-3xl font-bold">All plan lessons done! 🎉</h2>
-        <p class="opacity-90">Make a new plan for the next level.</p>
-      {% endif %}
+<!-- Hero -->
+<section class="hero mt-5 p-5 sm:p-7">
+  {% if not placement %}
+    <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">Step 1 of 2</p>
+    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">🧩 First, a short placement test</h2>
+    <p class="mt-1 max-w-xl text-sm text-violet-100">It finds the right level so lessons are not too easy or too hard. It takes about 10 minutes.</p>
+    <div class="mt-4 flex flex-wrap gap-2"><a href="{% url 'learning:placement_start' %}" class="btn-white">Start the test →</a>
+      <a href="{% url 'learning:videos' %}" class="btn-glass">🎬 Browse topic videos</a></div>
+  {% elif not plan %}
+    <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">Step 2 of 2</p>
+    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">🗓️ Make your study plan</h2>
+    <p class="mt-1 max-w-xl text-sm text-violet-100">Your level: {{ placement.overall }}. Choose a finish level and how many months you have.</p>
+    <div class="mt-4 flex flex-wrap gap-2"><a href="{% url 'learning:plan_new' %}" class="btn-white">Make my plan →</a>
+      <a href="{% url 'learning:videos' %}" class="btn-glass">🎬 Browse topic videos</a></div>
+  {% elif mission %}
+    <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
+      <div class="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/15 font-display text-3xl font-bold">{{ featured.thumb|default:"🎯" }}</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">🎯 Today's mission · {{ mission.date|date:"D j M" }}</p>
+        <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">{{ mission.lesson.title }}</h2>
+        <p class="text-sm text-violet-100">Level {{ mission.lesson.module.level.number }} · {{ mission.lesson.module.title }} · {{ mission.lesson.minutes }} min</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="{% url 'learning:lesson' mission.lesson.pk %}#watch" class="btn-white">▶ Watch the video</a>
+        <a href="{% url 'learning:lesson' mission.lesson.pk %}" class="btn-glass">Open lesson</a>
+      </div>
     </div>
-    <div class="flex flex-wrap items-center gap-3 p-6">
-      {% if mission %}
-        <a href="{% url 'learning:lesson' mission.lesson.pk %}" class="btn-primary text-lg">▶ Start lesson</a>
-        <span class="text-sm text-stone-500">Planned for {{ mission.date|date:"l j M" }}</span>
-      {% else %}
-        <a href="{% url 'learning:plan_new' %}" class="btn-primary">New plan</a>
-      {% endif %}
-    </div>
+  {% else %}
+    <h2 class="font-display text-2xl font-bold sm:text-3xl">All plan lessons done! 🎉</h2>
+    <p class="mt-1 text-sm text-violet-100">Make a new plan for the next level.</p>
+    <div class="mt-4"><a href="{% url 'learning:plan_new' %}" class="btn-white">New plan →</a></div>
+  {% endif %}
+</section>
+
+<!-- Stats -->
+<div class="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+  <div class="stat"><p class="text-xl">⚡</p><p class="stat-num">{{ xp }}</p><p class="stat-label">Total XP</p></div>
+  <div class="stat"><p class="text-xl">📅</p><p class="stat-num">{{ week_xp }}</p><p class="stat-label">XP this week</p></div>
+  <div class="stat"><p class="text-xl">⭐</p><p class="stat-num">{{ stars }}</p><p class="stat-label">Stars</p></div>
+  <div class="stat"><p class="text-xl">📚</p><p class="stat-num">{{ done_count }}</p><p class="stat-label">Lessons done</p></div>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
+  <div class="space-y-6">
+    <!-- Featured video -->
+    {% if featured %}
+    <section class="card overflow-hidden">
+      <div class="grid gap-4 p-4 sm:grid-cols-[220px_1fr] sm:p-5">
+        <a href="{% url 'learning:lesson' featured.lesson.pk %}#watch" class="vthumb" style="--c: {{ featured.lesson.module.level.colour }}">
+          <span class="vthumb-big{% if featured.thumb|length > 5 %} is-long{% endif %}">{{ featured.thumb }}</span>
+          <span class="vthumb-play" aria-hidden="true">▶</span>
+          <span class="vthumb-time">{{ featured.duration }}</span>
+        </a>
+        <div class="flex flex-col justify-center">
+          <span class="inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-brand-700">🎬 Up next · topic video</span>
+          <h3 class="mt-2 text-lg font-extrabold text-stone-900">{{ featured.lesson.title }}</h3>
+          <p class="text-sm text-stone-500">A {{ featured.duration }} video with voice, pictures and captions. Watch together, then say the words aloud.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a href="{% url 'learning:lesson' featured.lesson.pk %}#watch" class="btn-primary !rounded-xl !py-2 text-sm">▶ Play video</a>
+            <a href="{% url 'learning:videos' %}" class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-bold text-brand-700 hover:bg-brand-50">All videos →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if up_next %}
+    <section>
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-stone-900">Keep watching</h3>
+        <a href="{% url 'learning:videos' %}" class="text-sm font-bold text-brand-600">See all →</a>
+      </div>
+      <div class="mt-3 grid gap-4 sm:grid-cols-3">
+        {% for c in up_next %}{% include "learning/_vcard.html" %}{% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Skills -->
+    <section class="card p-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-stone-900">Your skills</h3>
+        <a href="{% url 'learning:progress' %}" class="text-sm font-bold text-brand-600">Details →</a>
+      </div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {% for s in skills %}
+        <a href="{% url 'learning:library' %}?skill={{ s.skill }}" class="rounded-xl border border-stone-100 p-3 hover:border-brand-200 hover:bg-brand-50/40">
+          <div class="flex items-center gap-2 text-sm font-extrabold"><span class="text-lg">{{ s.emoji }}</span>{{ s.label }}<span class="ml-auto text-xs font-bold text-stone-500">{{ s.done }}/{{ s.total }}</span></div>
+          <div class="bar mt-2"><span style="width: {{ s.percent }}%"></span></div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
   </div>
 
-  <div class="card p-6">
-    <div class="flex items-center justify-between">
-      <h3 class="font-bold">Coming up</h3>
-      <a href="{% url 'learning:plan' %}" class="text-sm font-semibold text-brand-600">Calendar →</a>
-    </div>
-    <ul class="mt-3 divide-y divide-stone-100">
-      {% for d in week %}
-      <li class="flex items-center gap-3 py-2 text-sm">
-        <span class="w-20 shrink-0 text-stone-500">{{ d.date|date:"D j M" }}</span>
-        {% if d.kind == "lesson" %}<span class="truncate">{{ d.lesson.title }}</span>
-        {% elif d.kind == "review" %}<span>🔁 Review day</span>
-        {% else %}<span>🏠 Family English day</span>{% endif %}
-        {% if d.status == "done" %}<span class="ml-auto">✅</span>{% endif %}
-      </li>
-      {% empty %}<li class="py-2 text-sm text-stone-500">Nothing planned.</li>{% endfor %}
-    </ul>
-  </div>
-</div>
-{% endif %}
+  <aside class="space-y-6">
+    {% if plan %}
+    <section class="card p-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-stone-900">Coming up</h3>
+        <a href="{% url 'learning:plan' %}" class="text-sm font-bold text-brand-600">Calendar →</a>
+      </div>
+      <ul class="mt-3 space-y-1">
+        {% for d in week %}
+        <li>
+          {% if d.kind == "lesson" %}
+          <a href="{% url 'learning:lesson' d.lesson.pk %}" class="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-stone-50">
+            <span class="w-16 shrink-0 text-xs font-bold text-stone-500">{{ d.date|date:"D j M" }}</span>
+            <span class="truncate font-semibold">{{ d.lesson.title }}</span>
+            <span class="ml-auto shrink-0">{% if d.status == "done" %}✅{% else %}▶{% endif %}</span>
+          </a>
+          {% else %}
+          <div class="flex items-center gap-3 px-2 py-2 text-sm">
+            <span class="w-16 shrink-0 text-xs font-bold text-stone-500">{{ d.date|date:"D j M" }}</span>
+            <span>{% if d.kind == "review" %}🔁 Review day{% else %}🏠 Family English day{% endif %}</span>
+            {% if d.status == "done" %}<span class="ml-auto">✅</span>{% endif %}
+          </div>
+          {% endif %}
+        </li>
+        {% empty %}<li class="py-2 text-sm text-stone-500">Nothing planned.</li>{% endfor %}
+      </ul>
+    </section>
+    {% endif %}
 
-<div class="mt-8 grid gap-4 sm:grid-cols-3">
-  <a href="{% url 'learning:library' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">📚</p><p class="mt-1 font-bold">All lessons</p><p class="text-sm text-stone-500">Browse every level</p></a>
-  <a href="{% url 'learning:placement_start' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">🧩</p><p class="mt-1 font-bold">Re-take the test</p><p class="text-sm text-stone-500">Every 4 weeks is a good rhythm</p></a>
-  <a href="{% url 'learning:plan_new' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">🗓️</p><p class="mt-1 font-bold">Change the plan</p><p class="text-sm text-stone-500">Finished lessons are kept</p></a>
+    <section class="card p-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-stone-900">🏆 Family this week</h3>
+        <a href="{% url 'learning:progress' %}#leaderboard" class="text-sm font-bold text-brand-600">All →</a>
+      </div>
+      <ol class="mt-3 space-y-2">
+        {% for r in board %}
+        <li class="flex items-center gap-3 rounded-xl px-2 py-1.5 {% if r.learner.id == current_learner.id %}bg-brand-50{% endif %}">
+          <span class="w-6 text-center text-sm font-extrabold">{{ r.medal }}</span>
+          <span class="text-xl">{{ r.learner.avatar }}</span>
+          <span class="truncate text-sm font-bold">{{ r.learner.name }}</span>
+          <span class="ml-auto text-sm font-extrabold tabular-nums text-brand-700">{{ r.week_xp }} XP</span>
+        </li>
+        {% endfor %}
+      </ol>
+      <p class="mt-3 text-xs text-stone-500">Learn together: parents' lessons count too!</p>
+    </section>
+
+    <section class="grid gap-3">
+      <a href="{% url 'learning:placement_start' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="text-2xl">🧩</span><span><span class="block text-sm font-extrabold">Re-take the test</span><span class="text-xs text-stone-500">Every 4 weeks is a good rhythm</span></span></a>
+      <a href="{% url 'learning:plan_new' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="text-2xl">🗓️</span><span><span class="block text-sm font-extrabold">Change the plan</span><span class="text-xs text-stone-500">Finished lessons are kept</span></span></a>
+    </section>
+  </aside>
 </div>
 {% endblock %}

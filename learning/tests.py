@@ -191,3 +191,59 @@ class FlowTests(SeededTestCase):
         self.family.refresh_from_db()
         self.assertTrue(self.family.is_paid_active)
         self.assertEqual(self.family.plan, Plan.YEAR)
+
+
+class TopicVideoTests(SeededTestCase):
+    def test_every_lesson_has_a_short_video(self):
+        from . import video
+        for lesson in Lesson.objects.select_related("module__level").prefetch_related("items"):
+            scenes = video.build_scenes(lesson)
+            self.assertGreaterEqual(len(scenes), 3, lesson.title)
+            self.assertEqual(scenes[0]["kind"], "title")
+            self.assertEqual(scenes[-1]["kind"], "outro")
+            secs = video.duration_seconds(lesson)
+            self.assertTrue(15 <= secs <= 180, f"{lesson.title}: {secs}s")
+            for s in scenes:
+                self.assertNotIn("/", s.get("say", ""), "phonics slashes must not be read aloud")
+
+    def test_quiz_video_reveals_the_answer(self):
+        from . import video
+        lesson = Lesson.objects.filter(activity="quiz").exclude(items=None).first()
+        scenes = video.build_scenes(lesson)
+        answers = [s for s in scenes if s["kind"] == "answer"]
+        self.assertEqual(len(answers), lesson.items.count())
+        self.assertIn(lesson.items.first().answer, answers[0]["text"])
+
+
+class DashboardTests(SeededTestCase):
+    def setUp(self):
+        self.client.force_login(self.user)
+        self.client.get(reverse("core:choose", args=[self.child.pk]))
+
+    def test_dashboard_pages(self):
+        for name in ["learning:today", "learning:videos", "learning:progress", "learning:library"]:
+            r = self.client.get(reverse(name))
+            self.assertEqual(r.status_code, 200, name)
+            self.assertContains(r, "dash-sidebar")
+
+    def test_video_filters(self):
+        r = self.client.get(reverse("learning:videos"), {"level": "0"})
+        self.assertEqual(r.context["count"], 42)
+        r = self.client.get(reverse("learning:videos"), {"skill": "speaking"})
+        self.assertTrue(all(c["lesson"].skill == "speaking" for g in r.context["groups"] for c in g["cards"]))
+        r = self.client.get(reverse("learning:library"), {"activity": "dictation"})
+        self.assertContains(r, "Word dictation")
+
+    def test_lesson_page_has_topic_video(self):
+        lesson = Lesson.objects.first()
+        r = self.client.get(reverse("learning:lesson", args=[lesson.pk]))
+        self.assertContains(r, 'id="tv-scenes"')
+        self.assertContains(r, "data-topic-video")
+
+    def test_xp_and_leaderboard(self):
+        from . import stats
+        parent = Learner.objects.create(family=self.family, name="Ammu", role="adult")
+        planner.mark_lesson_done(parent, Lesson.objects.first(), 100)
+        board = stats.leaderboard(self.family)
+        self.assertEqual(board[0]["learner"], parent)
+        self.assertEqual(board[0]["week_xp"], stats.XP_PER_LESSON + 3 * stats.XP_PER_STAR)

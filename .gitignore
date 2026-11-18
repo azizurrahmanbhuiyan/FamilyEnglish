@@ -5,3 +5,5 @@ db.sqlite3
 staticfiles/
 node_modules/
 .env
+*.zip
+*.log

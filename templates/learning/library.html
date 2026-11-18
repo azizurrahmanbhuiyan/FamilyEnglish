@@ -1,32 +1,39 @@
 {% extends "base.html" %}
-{% block title %}All lessons{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 {% block content %}
-<h1 class="font-display text-4xl font-bold">All lessons</h1>
-<p class="mt-1 text-stone-600">Every level, module and lesson. Your plan picks them for you, but you can open any of them.</p>
-<div class="mt-8 space-y-6">
+<p class="eyebrow">{% if filtered %}Practise{% else %}Learn{% endif %}</p>
+<div class="mt-1 flex flex-wrap items-end gap-3">
+  <h1 class="font-display text-3xl font-bold text-stone-900 sm:text-4xl">{{ title }}</h1>
+  <a href="{% url 'learning:videos' %}{% if skill %}?skill={{ skill }}{% endif %}" class="ml-auto inline-flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-sm font-bold text-brand-700 hover:bg-brand-100">🎬 Watch as videos</a>
+</div>
+<p class="mt-1 text-sm text-stone-500">{% if filtered %}Only lessons of this type are shown. <a href="{% url 'learning:library' %}" class="font-bold text-brand-600">Show all lessons</a>{% else %}Every level, module and lesson. Your plan picks them for you, but you can open any of them.{% endif %}</p>
+
+<div class="mt-6 space-y-4">
   {% for lv in levels %}
-  <details class="card overflow-hidden" {% if forloop.first %}open{% endif %}>
-    <summary class="flex cursor-pointer items-center gap-4 p-5">
-      <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl font-display text-xl font-bold text-white" style="background: {{ lv.colour }}">{{ lv.number }}</span>
-      <div><p class="text-lg font-bold">{{ lv.name }} <span class="font-bn font-normal text-stone-500">· {{ lv.name_bn }}</span></p>
-        <p class="text-sm text-stone-500">{{ lv.matches }} · {{ lv.typical_learner }}</p></div>
+  <details class="card overflow-hidden" {% if forloop.first or filtered %}open{% endif %}>
+    <summary class="flex cursor-pointer items-center gap-4 p-4 sm:p-5">
+      <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl font-display text-xl font-bold text-white" style="background: {{ lv.colour }}">{{ lv.number }}</span>
+      <div><p class="font-extrabold text-stone-900">{{ lv.name }} <span class="font-bn font-normal text-stone-500">· {{ lv.name_bn }}</span></p>
+        <p class="text-xs font-semibold text-stone-500">{{ lv.matches }} · {{ lv.typical_learner }}</p></div>
     </summary>
-    <div class="space-y-4 border-t border-stone-100 p-5">
-      {% for m in lv.modules.all %}
+    <div class="space-y-4 border-t border-stone-100 p-4 sm:p-5">
+      {% for m in lv.modules.all %}{% if m.shown %}
       <div>
-        <p class="font-bold">{{ m.title }} {% if m.title_bn and m.title_bn != m.title %}<span class="font-bn font-normal text-stone-500">· {{ m.title_bn }}</span>{% endif %}</p>
+        <p class="text-sm font-extrabold">{{ m.title }} {% if m.title_bn and m.title_bn != m.title %}<span class="font-bn font-normal text-stone-500">· {{ m.title_bn }}</span>{% endif %}</p>
         <div class="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {% for l in m.lessons.all %}
-          <a href="{% url 'learning:lesson' l.pk %}" class="flex items-center gap-2 rounded-xl border border-stone-100 bg-stone-50 px-3 py-2 text-sm hover:border-brand-500">
-            <span>{% if l.id in done_ids %}✅{% else %}▶{% endif %}</span><span class="truncate">{{ l.title }}</span>
+          {% for l in m.shown %}
+          <a href="{% url 'learning:lesson' l.pk %}" class="flex items-center gap-2 rounded-xl border border-stone-100 bg-stone-50 px-3 py-2 text-sm hover:border-brand-500 hover:bg-white">
+            <span>{% if l.id in done_ids %}✅{% else %}▶{% endif %}</span><span class="truncate font-semibold">{{ l.title }}</span>
             <span class="ml-auto shrink-0 text-xs text-stone-400">{{ l.minutes }}m</span>
           </a>
           {% endfor %}
         </div>
       </div>
-      {% endfor %}
+      {% endif %}{% endfor %}
     </div>
   </details>
+  {% empty %}
+  <div class="card p-10 text-center text-stone-500">No lessons of this type yet.</div>
   {% endfor %}
 </div>
 {% endblock %}

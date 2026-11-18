@@ -16,6 +16,14 @@ It follows the loop **placement test → study plan → daily lesson → practic
 - **Lessons.** Four steps: watch a free video, read the note (Kid view in English, Parent view in Bangla),
   practise, then a home task. Practice types are tap-the-picture, dictation (hear and type) and quiz.
   Stars, streaks and a parent dashboard track progress.
+- **Topic videos.** Every lesson has its own short narrated video (about 30 seconds), built from the
+  lesson's own content: title, sound and action, example words with pictures, quiz questions and answers.
+  The browser reads it aloud with captions, a slow-voice mode and full screen. Nothing autoplays.
+  There are no files to host and no tracking. Edit a lesson in /admin and its video updates. The code is
+  in `learning/video.py` (scenes) and `static/js/topic-video.js` (player). Official-channel videos are
+  listed under "More videos".
+- **Dashboard.** A sidebar app shell with XP, streak, stars, skill progress bars, a 4-week activity grid
+  and a weekly family leaderboard (`learning/stats.py`). Each lesson gives 20 XP plus 10 XP per star.
 - **Curriculum.** 9 levels. Level 0 has all 42 sounds in 7 groups (Jolly Phonics teaching order) with
   Alphablocks videos. Levels 1–8 have starter modules using Alphablocks, British Council LearnEnglish Kids,
   Oxford Owl and BBC Learning English.
@@ -170,6 +178,8 @@ If the site shows an error page, check `~/familyenglish/stderr.log`, or the erro
 core/       family accounts, learner profiles, co-managers, payments, parent dashboard
 learning/   levels, lessons, videos, practice, placement, planner, progress
   planner.py      rules-based study planner
+  video.py        builds each lesson's short topic video
+  stats.py        XP, skill progress, leaderboard
   placement.py    placement scoring
   seed/           curriculum data (levels, 42 sounds, Levels 1–8, placement questions)
 templates/  pages (Tailwind classes)

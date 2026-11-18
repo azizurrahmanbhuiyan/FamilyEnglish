@@ -16,6 +16,8 @@
     synth.onvoiceschanged = pickVoice;
   }
 
+  window.feVoice = function () { return voice; };
+
   window.feSay = function (text, rate) {
     if (!synth || !text) return false;
     synth.cancel();
