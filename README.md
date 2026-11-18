@@ -85,10 +85,10 @@ environment variables override it. Never upload your local `.env` or `db.sqlite3
 | `DJANGO_ALLOWED_HOSTS` | `familyenglish.global,www.familyenglish.global` |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://familyenglish.global,https://www.familyenglish.global` |
 | `DJANGO_SSL_REDIRECT` | `1` (set it to `0` only until the SSL certificate is active) |
-| `DB_NAME`, `DB_USER`, `DB_PASSWORD` | The PostgreSQL database, user and password from cPanel |
-| `DB_HOST`, `DB_PORT` | `localhost` and `5432` (the defaults) |
+| `FE_DB_NAME`, `FE_DB_USER`, `FE_DB_PASSWORD` | The PostgreSQL database, user and password from cPanel |
+| `FE_DB_HOST`, `FE_DB_PORT` | `localhost` and `5432` (the defaults) |
 
-When `DB_NAME` is set, the site uses PostgreSQL. When it is not set (for example on your own computer),
+When `FE_DB_NAME` is set, the site uses PostgreSQL. When it is not set (for example on your own computer),
 it uses SQLite (`db.sqlite3`).
 
 ### First deployment

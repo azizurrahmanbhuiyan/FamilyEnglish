@@ -92,16 +92,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "familyenglish.wsgi.application"
 
-# PostgreSQL when DB_NAME is set (production); SQLite otherwise (local development).
-if os.environ.get("DB_NAME"):
+# PostgreSQL when FE_DB_NAME is set (production); SQLite otherwise (local development).
+# The FE_ prefix keeps other projects' DB_* variables on the same machine from being picked up.
+if os.environ.get("FE_DB_NAME"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ["DB_NAME"],
-            "USER": os.environ.get("DB_USER", ""),
-            "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-            "HOST": os.environ.get("DB_HOST", "localhost"),
-            "PORT": os.environ.get("DB_PORT", "5432"),
+            "NAME": os.environ["FE_DB_NAME"],
+            "USER": os.environ.get("FE_DB_USER", ""),
+            "PASSWORD": os.environ.get("FE_DB_PASSWORD", ""),
+            "HOST": os.environ.get("FE_DB_HOST", "localhost"),
+            "PORT": os.environ.get("FE_DB_PORT", "5432"),
             "CONN_MAX_AGE": 60,
             "CONN_HEALTH_CHECKS": True,
         }
