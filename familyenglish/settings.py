@@ -2,7 +2,8 @@
 Django settings for the FamilyEnglish project.
 
 Development defaults are safe to run locally. For production, set the
-environment variables DJANGO_SECRET_KEY, DJANGO_DEBUG=0 and DJANGO_ALLOWED_HOSTS.
+FE_* settings in .env (see .env.example). All settings use the FE_
+prefix so variables from other projects on the same machine are never picked up.
 """
 
 import os
@@ -12,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 def _load_env_file(path):
-    """Load KEY=VALUE lines from a .env file (used on cPanel hosting). Real env vars win."""
+    """Load KEY=VALUE lines from a .env file (used on cPanel hosting). The project .env wins."""
     if not path.exists():
         return
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -20,31 +21,31 @@ def _load_env_file(path):
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, value = line.split("=", 1)
-        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+        os.environ[key.strip()] = value.strip().strip('"').strip("'")
 
 
 _load_env_file(BASE_DIR / ".env")
 
 SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
+    "FE_SECRET_KEY",
     "dev-only-change-me-familyenglish-0b7c1e9f4a2d",
 )
-DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
+DEBUG = os.environ.get("FE_DEBUG", "1") == "1"
 ALLOWED_HOSTS = [
     h.strip()
-    for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+    for h in os.environ.get("FE_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
     if h.strip()
 ]
 CSRF_TRUSTED_ORIGINS = [
     o.strip()
-    for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    for o in os.environ.get("FE_CSRF_TRUSTED_ORIGINS", "").split(",")
     if o.strip()
 ]
 
 if not DEBUG:
     # Behind cPanel's Apache/Passenger, which terminates HTTPS.
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SSL_REDIRECT", "1") == "1"
+    SECURE_SSL_REDIRECT = os.environ.get("FE_SSL_REDIRECT", "1") == "1"
     SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT
     CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
     SECURE_CONTENT_TYPE_NOSNIFF = True

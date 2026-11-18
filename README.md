@@ -80,11 +80,11 @@ environment variables override it. Never upload your local `.env` or `db.sqlite3
 
 | Variable | Value |
 | --- | --- |
-| `DJANGO_SECRET_KEY` | A long random string: `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
-| `DJANGO_DEBUG` | `0` |
-| `DJANGO_ALLOWED_HOSTS` | `familyenglish.global,www.familyenglish.global` |
-| `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://familyenglish.global,https://www.familyenglish.global` |
-| `DJANGO_SSL_REDIRECT` | `1` (set it to `0` only until the SSL certificate is active) |
+| `FE_SECRET_KEY` | A long random string: `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
+| `FE_DEBUG` | `0` |
+| `FE_ALLOWED_HOSTS` | `familyenglish.global,www.familyenglish.global` |
+| `FE_CSRF_TRUSTED_ORIGINS` | `https://familyenglish.global,https://www.familyenglish.global` |
+| `FE_SSL_REDIRECT` | `1` (set it to `0` only until the SSL certificate is active) |
 | `FE_DB_NAME`, `FE_DB_USER`, `FE_DB_PASSWORD` | The PostgreSQL database, user and password from cPanel |
 | `FE_DB_HOST`, `FE_DB_PORT` | `localhost` and `5432` (the defaults) |
 
@@ -105,7 +105,7 @@ it uses SQLite (`db.sqlite3`).
    `familyenglish`), create a user with a strong password, then add the user to the database. cPanel puts
    your username in front of both names, for example `cpaneluser_familyenglish`.
 5. **Create `.env`** in `/home/<cpaneluser>/familyenglish/` with the values above, using the full prefixed
-   database and user names. Use `DJANGO_SSL_REDIRECT=0` for now.
+   database and user names. Use `FE_SSL_REDIRECT=0` for now.
 6. **Install and set up.** Copy the "Enter to the virtual environment" command from the app page, run
    it in cPanel → Terminal, then run:
 
@@ -120,7 +120,7 @@ it uses SQLite (`db.sqlite3`).
 
    Click **Restart** on the app page. If Terminal is missing, ask ExonHost support to enable SSH or Terminal access.
 7. **HTTPS.** cPanel → SSL/TLS Status → Run AutoSSL. When `https://familyenglish.global` opens, set
-   `DJANGO_SSL_REDIRECT=1` in `.env` and restart the app.
+   `FE_SSL_REDIRECT=1` in `.env` and restart the app.
 
 ### Updating the live site
 
@@ -146,7 +146,7 @@ If the site shows an error page, check `~/familyenglish/stderr.log`, or the erro
 
 ## Before going live
 
-1. Follow **Deploying** above. Never run the live site with `DJANGO_DEBUG=1`.
+1. Follow **Deploying** above. Never run the live site with `FE_DEBUG=1`.
 2. The bKash/Nagad number (01710503504) is set in `templates/core/pay.html`. Change it there if needed.
    Later, replace the manual flow with a payment gateway.
 3. **Children's privacy and YouTube.** Most kids' videos are "made for kids". Google's API policy requires
