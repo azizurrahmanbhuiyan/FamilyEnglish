@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Create your family account{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-md card p-8">
+  <h1 class="font-display text-3xl font-bold">Create your family account</h1>
+  <p class="mt-1 text-stone-600">Any adult can open it — father, mother, grandparent or elder. You'll add the learners next.</p>
+  <form method="post" class="mt-6">
+    {% include "core/_form.html" %}
+    <button class="btn-primary w-full">Create account</button>
+  </form>
+  <p class="mt-4 text-center text-sm text-stone-500">Already have one? <a class="font-bold text-brand-600" href="{% url 'core:login' %}">Sign in</a></p>
+</div>
+{% endblock %}

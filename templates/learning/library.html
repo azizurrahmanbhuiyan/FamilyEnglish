@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}All lessons{% endblock %}
+{% block content %}
+<h1 class="font-display text-4xl font-bold">All lessons</h1>
+<p class="mt-1 text-stone-600">Every level, module and lesson. Your plan picks them for you, but you can open any of them.</p>
+<div class="mt-8 space-y-6">
+  {% for lv in levels %}
+  <details class="card overflow-hidden" {% if forloop.first %}open{% endif %}>
+    <summary class="flex cursor-pointer items-center gap-4 p-5">
+      <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl font-display text-xl font-bold text-white" style="background: {{ lv.colour }}">{{ lv.number }}</span>
+      <div><p class="text-lg font-bold">{{ lv.name }} <span class="font-bn font-normal text-stone-500">· {{ lv.name_bn }}</span></p>
+        <p class="text-sm text-stone-500">{{ lv.matches }} · {{ lv.typical_learner }}</p></div>
+    </summary>
+    <div class="space-y-4 border-t border-stone-100 p-5">
+      {% for m in lv.modules.all %}
+      <div>
+        <p class="font-bold">{{ m.title }} {% if m.title_bn and m.title_bn != m.title %}<span class="font-bn font-normal text-stone-500">· {{ m.title_bn }}</span>{% endif %}</p>
+        <div class="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {% for l in m.lessons.all %}
+          <a href="{% url 'learning:lesson' l.pk %}" class="flex items-center gap-2 rounded-xl border border-stone-100 bg-stone-50 px-3 py-2 text-sm hover:border-brand-500">
+            <span>{% if l.id in done_ids %}✅{% else %}▶{% endif %}</span><span class="truncate">{{ l.title }}</span>
+            <span class="ml-auto shrink-0 text-xs text-stone-400">{{ l.minutes }}m</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </details>
+  {% endfor %}
+</div>
+{% endblock %}

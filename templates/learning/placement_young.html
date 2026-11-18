@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load fe %}
+{% block title %}Tap game{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <h1 class="font-display text-3xl font-bold">Listen and tap 🧸</h1>
+  <p class="mt-1 font-bn text-stone-600">বাবা-মা: ▶ চাপুন, শিশু শুনে সঠিক ছবিতে চাপ দেবে। শিশুকে উত্তর বলে দেবেন না।</p>
+  <form method="post" class="mt-6 space-y-5">{% csrf_token %}
+    {% for q in questions %}
+    <fieldset class="card p-5">
+      <div class="flex items-center gap-4">
+        <button type="button" class="speak-btn" data-say="{{ q.spoken }}" data-rate="0.7" aria-label="Play">▶</button>
+        <legend class="font-bold">{{ forloop.counter }}. {{ q.prompt }}</legend>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-3">
+        {% for c in q.shuffled %}
+        <label><input type="radio" class="sr-only" name="{{ q.id }}" value="{{ c }}" required><span class="choice block text-xl">{{ c }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+    {% endfor %}
+    <button class="btn-primary w-full text-lg">See my level</button>
+  </form>
+</div>
+{% endblock %}

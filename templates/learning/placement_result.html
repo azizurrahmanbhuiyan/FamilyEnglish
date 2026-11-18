@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Your level{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl text-center">
+  <p class="text-6xl pop">🎉</p>
+  <h1 class="mt-2 font-display text-4xl font-bold">{{ current_learner.name }} is at Level {{ p.overall }}</h1>
+  {% if overall %}<p class="mt-1 text-lg text-stone-600">{{ overall.name }} · <span class="font-bn">{{ overall.name_bn }}</span> · {{ overall.matches }}</p>{% endif %}
+  <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+    {% for name, value, lv in skills %}
+    <div class="card p-4 {% if name|lower == weakest %}ring-2 ring-amber-400{% endif %}">
+      <p class="text-sm text-stone-500">{{ name }}</p>
+      <p class="font-display text-4xl font-bold" style="color: {{ lv.colour|default:'#e11d48' }}">{{ value }}</p>
+      <p class="text-xs text-stone-500">{{ lv.name }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% if not p.young_child_test %}<p class="mt-4 text-sm text-stone-600">The plan will start from the weakest skill (highlighted), so nothing is skipped.</p>{% endif %}
+  <a href="{% url 'learning:plan_new' %}" class="btn-primary mt-8 text-lg">Make my study plan</a>
+</div>
+{% endblock %}

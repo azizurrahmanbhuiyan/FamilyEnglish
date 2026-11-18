@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Who's learning?{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1 class="font-display text-4xl font-bold">Who's learning now?</h1>
+  <p class="mt-1 font-bn text-stone-600">কে এখন শিখবে?</p>
+  <div class="mt-10 flex flex-wrap justify-center gap-6">
+    {% for l in learners %}
+    <a href="{% url 'core:choose' l.pk %}" class="group w-36">
+      <span class="mx-auto grid h-28 w-28 place-items-center rounded-3xl bg-white text-6xl shadow-md ring-4 ring-transparent transition group-hover:ring-brand-500">{{ l.avatar }}</span>
+      <span class="mt-3 block text-lg font-bold">{{ l.name }}</span>
+      <span class="text-xs text-stone-500">{% if l.pin_hash %}🔒 {% endif %}{{ l.get_role_display }}</span>
+    </a>
+    {% endfor %}
+    {% if learners|length < 5 %}
+    <a href="{% url 'core:learner_add' %}" class="group w-36">
+      <span class="mx-auto grid h-28 w-28 place-items-center rounded-3xl border-4 border-dashed border-stone-300 text-5xl text-stone-400 transition group-hover:border-brand-500 group-hover:text-brand-600">+</span>
+      <span class="mt-3 block text-lg font-bold text-stone-500">Add learner</span>
+    </a>
+    {% endif %}
+  </div>
+  <a href="{% url 'core:family' %}" class="btn-ghost mt-10">Parent dashboard</a>
+</div>
+{% endblock %}

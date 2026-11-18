@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Placement test{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1 class="font-display text-4xl font-bold">Placement test for {{ current_learner.name }}</h1>
+  <p class="mt-2 text-stone-600">Choose the test that fits. We suggest the highlighted one.</p>
+</div>
+<div class="mx-auto mt-8 grid max-w-3xl gap-5 md:grid-cols-2">
+  <a href="{% url 'learning:placement_young' %}" class="card p-6 hover:ring-2 hover:ring-brand-500 {% if suggested == 'young' %}ring-2 ring-brand-500{% endif %}">
+    <p class="text-5xl">🧸</p>
+    <h2 class="mt-2 font-display text-2xl font-bold">Little learner tap game</h2>
+    <p class="mt-1 text-stone-600">5 minutes. For children under 7 or anyone who cannot read yet. A parent sits beside the child and presses ▶.</p>
+    <p class="mt-2 font-bn text-sm text-stone-500">ছোটদের জন্য — শুনে ছবিতে চাপ দিন।</p>
+  </a>
+  <a href="{% url 'learning:placement_reader' %}" class="card p-6 hover:ring-2 hover:ring-brand-500 {% if suggested == 'reader' %}ring-2 ring-brand-500{% endif %}">
+    <p class="text-5xl">📝</p>
+    <h2 class="mt-2 font-display text-2xl font-bold">Reader test</h2>
+    <p class="mt-1 text-stone-600">About 15 minutes. Listening, Reading, Writing and a Speaking checklist. For readers, older children and adults.</p>
+    <p class="mt-2 font-bn text-sm text-stone-500">যারা পড়তে পারে তাদের জন্য।</p>
+  </a>
+</div>
+{% endblock %}

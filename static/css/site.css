@@ -1,0 +1,38 @@
+.nav-link { padding: .5rem .75rem; border-radius: .75rem; color: #44403c; }
+.nav-link:hover { background: #fff1f2; color: #be123c; }
+
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border-radius: 9999px; background: #e11d48; color: #fff; font-weight: 700;
+  padding: .7rem 1.4rem; box-shadow: 0 4px 0 #9f1239; transition: transform .08s, box-shadow .08s; }
+.btn-primary:hover { background: #be123c; }
+.btn-primary:active { transform: translateY(3px); box-shadow: 0 1px 0 #9f1239; }
+
+.btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border-radius: 9999px; border: 2px solid #e7e5e4; background: #fff; font-weight: 700;
+  padding: .6rem 1.2rem; color: #44403c; }
+.btn-ghost:hover { border-color: #f43f5e; color: #be123c; }
+
+.card { border-radius: 1.5rem; background: #fff; border: 1px solid #f5f5f4;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px -12px rgba(120,53,15,.15); }
+
+.prose-bn { font-family: "Hind Siliguri", sans-serif; line-height: 1.75; }
+.prose-bn p + p { margin-top: .75rem; }
+
+.choice { border: 2px solid #e7e5e4; border-radius: 1rem; background: #fff; padding: .9rem 1rem;
+  font-weight: 700; font-size: 1.05rem; text-align: center; cursor: pointer; transition: all .12s; }
+.choice:hover { border-color: #fda4af; }
+.choice.is-right { border-color: #10b981; background: #ecfdf5; }
+.choice.is-wrong { border-color: #ef4444; background: #fef2f2; animation: shake .3s; }
+input[type=radio]:checked + .choice { border-color: #e11d48; background: #fff1f2; }
+
+.speak-btn { display: inline-grid; place-items: center; width: 3.25rem; height: 3.25rem;
+  border-radius: 9999px; background: #e11d48; color: #fff; font-size: 1.3rem;
+  box-shadow: 0 4px 0 #9f1239; }
+.speak-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #9f1239; }
+
+.video-frame { position: relative; padding-top: 56.25%; border-radius: 1rem; overflow: hidden; background: #1c1917; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-4px) } 75% { transform: translateX(4px) } }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0 } 100% { transform: scale(1); opacity: 1 } }
+.pop { animation: pop .35s ease-out; }

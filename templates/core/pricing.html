@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pricing{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1 class="font-display text-4xl font-bold">One plan for the whole family</h1>
+  <p class="mt-2 text-stone-600">Up to 5 learners. Any adult — parent, grandparent or elder — can buy it for everyone.</p>
+</div>
+<div class="mt-10 grid gap-5 md:grid-cols-4">
+  <div class="card p-6">
+    <p class="font-bold">Free</p>
+    <p class="mt-2 font-display text-4xl font-bold">৳0</p>
+    <ul class="mt-4 space-y-2 text-sm text-stone-600">
+      <li>✔ Placement test for everyone</li>
+      <li>✔ 14 days of full access</li>
+      <li>✔ Then the first module of every level</li>
+    </ul>
+    <a href="{% url 'core:signup' %}" class="btn-ghost mt-6 w-full">Start free</a>
+  </div>
+  <div class="card p-6 ring-2 ring-brand-500">
+    <p class="font-bold text-brand-600">Family Monthly</p>
+    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.monthly }}<span class="text-base font-normal text-stone-500">/month</span></p>
+    <ul class="mt-4 space-y-2 text-sm text-stone-600">
+      <li>✔ All levels, plans and notes</li>
+      <li>✔ Up to 5 learner profiles</li>
+      <li>✔ Parent dashboard</li>
+    </ul>
+    <a href="{% url 'core:pay' %}?plan=monthly" class="btn-primary mt-6 w-full">Choose</a>
+  </div>
+  <div class="card p-6">
+    <p class="font-bold">Family 6 months</p>
+    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.half_year }}</p>
+    <p class="text-sm text-stone-500">≈ ৳167 a month</p>
+    <ul class="mt-4 space-y-2 text-sm text-stone-600"><li>✔ Everything in Monthly</li><li>✔ Pay once</li></ul>
+    <a href="{% url 'core:pay' %}?plan=half_year" class="btn-ghost mt-6 w-full">Choose</a>
+  </div>
+  <div class="card p-6">
+    <p class="font-bold">Family 12 months</p>
+    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.year }}</p>
+    <p class="text-sm text-stone-500">≈ ৳150 a month</p>
+    <ul class="mt-4 space-y-2 text-sm text-stone-600"><li>✔ Everything in Monthly</li><li>✔ Best value</li></ul>
+    <a href="{% url 'core:pay' %}?plan=year" class="btn-ghost mt-6 w-full">Choose</a>
+  </div>
+</div>
+<p class="mt-8 text-center text-sm text-stone-500">Schools and NGOs: ask about class plans. Families who cannot pay can apply for a free seat through their school or a community organisation.</p>
+{% endblock %}

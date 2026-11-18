@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load fe %}
+{% block title %}Parent dashboard{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-end gap-4">
+  <div>
+    <p class="text-sm font-bold uppercase tracking-wide text-stone-400">Parent dashboard</p>
+    <h1 class="font-display text-4xl font-bold">{{ family.name }}</h1>
+  </div>
+  <div class="ml-auto flex flex-wrap gap-2">
+    {% if can_add %}<a href="{% url 'core:learner_add' %}" class="btn-ghost">+ Add learner</a>{% endif %}
+    <a href="{% url 'core:profiles' %}" class="btn-primary">Start learning</a>
+  </div>
+</div>
+
+<div class="mt-6 card flex flex-wrap items-center gap-4 p-5">
+  <div class="text-3xl">💳</div>
+  <div>
+    <p class="font-bold">
+      {% if family.is_paid_active %}{{ family.get_plan_display }} · active until {{ family.paid_until|date:"j M Y" }}
+      {% elif family.has_full_access %}Free trial · full access until {{ family.trial_ends|date:"j M Y" }}
+      {% else %}Free plan · the first module of every level is open{% endif %}
+    </p>
+    <p class="text-sm text-stone-500">One plan covers everyone. Any adult in the family can pay.</p>
+  </div>
+  <a href="{% url 'core:pay' %}" class="btn-primary ml-auto">{% if family.is_paid_active %}Extend plan{% else %}Upgrade · ৳199/month{% endif %}</a>
+</div>
+
+<h2 class="mt-10 font-display text-2xl font-bold">Learners</h2>
+<div class="mt-4 grid gap-4 md:grid-cols-2">
+  {% for r in rows %}
+  <div class="card p-5">
+    <div class="flex items-center gap-3">
+      <span class="text-5xl">{{ r.learner.avatar }}</span>
+      <div>
+        <p class="text-xl font-bold">{{ r.learner.name }}</p>
+        <p class="text-sm text-stone-500">{{ r.learner.get_role_display }}{% if r.learner.age %} · age {{ r.learner.age }}{% endif %} · limit {{ r.learner.daily_limit_minutes }} min/day</p>
+      </div>
+      <a href="{% url 'core:learner_edit' r.learner.pk %}" class="ml-auto text-sm font-semibold text-stone-500 hover:text-brand-600">Edit</a>
+    </div>
+
+    {% if r.placement %}
+    <div class="mt-4 grid grid-cols-4 gap-2 text-center">
+      <div class="rounded-xl bg-stone-50 p-2"><p class="text-xs text-stone-500">Listening</p><p class="font-display text-2xl font-bold">{{ r.placement.listening }}</p></div>
+      <div class="rounded-xl bg-stone-50 p-2"><p class="text-xs text-stone-500">Speaking</p><p class="font-display text-2xl font-bold">{{ r.placement.speaking }}</p></div>
+      <div class="rounded-xl bg-stone-50 p-2"><p class="text-xs text-stone-500">Reading</p><p class="font-display text-2xl font-bold">{{ r.placement.reading }}</p></div>
+      <div class="rounded-xl bg-stone-50 p-2"><p class="text-xs text-stone-500">Writing</p><p class="font-display text-2xl font-bold">{{ r.placement.writing }}</p></div>
+    </div>
+    {% else %}
+    <p class="mt-4 rounded-xl bg-amber-50 p-3 text-sm">No placement test yet.</p>
+    {% endif %}
+
+    <div class="mt-4">
+      {% if r.plan %}
+      <div class="flex justify-between text-sm"><span>Plan: Level {{ r.plan.start_level }} → {{ r.plan.target_level }} by {{ r.plan.end_date|date:"j M Y" }}</span><span class="font-bold">{{ r.percent }}%</span></div>
+      <div class="mt-1 h-3 rounded-full bg-stone-100"><div class="h-3 rounded-full bg-brand-500" style="width: {{ r.percent }}%"></div></div>
+      <p class="mt-1 text-xs text-stone-500">{{ r.done }} of {{ r.total }} plan days done · 🔥 {{ r.streak }}-day streak</p>
+      {% else %}
+      <p class="text-sm text-stone-500">No study plan yet.</p>
+      {% endif %}
+    </div>
+
+    {% if r.recent %}
+    <ul class="mt-3 space-y-1 text-sm">
+      {% for p in r.recent %}<li class="flex justify-between"><span>{{ p.lesson.title }}</span><span>{{ p.stars|stars }}</span></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% empty %}
+  <p class="text-stone-500">No learners yet. <a class="font-bold text-brand-600" href="{% url 'core:learner_add' %}">Add the first one</a>.</p>
+  {% endfor %}
+</div>
+
+<h2 class="mt-10 font-display text-2xl font-bold">Adults who manage this family</h2>
+<div class="mt-4 card p-5">
+  <ul class="space-y-2">
+    <li class="flex items-center gap-2"><span class="text-xl">👑</span> <strong>{{ family.owner.first_name|default:family.owner.email }}</strong> <span class="text-sm text-stone-500">· owner · {{ family.owner.email }}</span></li>
+    {% for m in managers %}
+    <li class="flex items-center gap-2"><span class="text-xl">🤝</span> <strong>{{ m.user.first_name|default:m.user.email }}</strong>
+      <span class="text-sm text-stone-500">· {{ m.relation|default:"co-manager" }} · {{ m.user.email }}</span>
+      {% if is_owner %}
+      <form method="post" action="{% url 'core:manager_remove' m.pk %}" class="ml-auto">{% csrf_token %}<button class="text-sm text-red-600 hover:underline">Remove</button></form>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% if is_owner %}
+  <form method="post" action="{% url 'core:manager_add' %}" class="mt-5 grid gap-3 sm:grid-cols-[2fr_1fr_auto] sm:items-end">
+    {% csrf_token %}
+    <div><label class="mb-1 block text-sm font-semibold">Add a co-manager (their email)</label>{{ manager_form.email }}</div>
+    <div><label class="mb-1 block text-sm font-semibold">Relation</label>{{ manager_form.relation }}</div>
+    <button class="btn-ghost">Add</button>
+  </form>
+  <p class="mt-2 text-xs text-stone-500">The other parent or a grandparent signs up first, then you add them here. They can see progress and pay for the family.</p>
+  {% endif %}
+</div>
+{% endblock %}

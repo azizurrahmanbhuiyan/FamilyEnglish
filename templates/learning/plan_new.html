@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Make a study plan{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl card p-8">
+  <h1 class="font-display text-3xl font-bold">Make {{ current_learner.name }}'s study plan</h1>
+  <p class="mt-1 text-stone-600">Choose where to finish and how long you have. Lesson days follow the school week (Sunday–Thursday); Fridays are family English days.</p>
+  {% if placement %}<p class="mt-2 text-sm text-stone-500">Placement: Listening {{ placement.listening }} · Speaking {{ placement.speaking }} · Reading {{ placement.reading }} · Writing {{ placement.writing }}</p>{% endif %}
+  <form method="post" class="mt-6">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="grid gap-4 sm:grid-cols-2">
+      {% for field in form %}
+      <div><label class="mb-1 block font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+        {% for e in field.errors %}<p class="text-sm text-red-600">{{ e }}</p>{% endfor %}</div>
+      {% endfor %}
+    </div>
+    {% if feas %}
+    <div class="mt-6 rounded-2xl p-4 {% if feas.ok %}bg-emerald-50 text-emerald-900{% else %}bg-red-50 text-red-800{% endif %}">
+      <p class="font-bold">{{ feas.message }}</p>
+      <p class="text-sm">{{ feas.lessons }} lessons + {{ feas.review_days }} review days over {{ feas.study_days }} study days ≈ {{ feas.per_day|floatformat:1 }} a day.</p>
+    </div>
+    {% endif %}
+    <div class="mt-6 flex flex-wrap gap-3">
+      <button name="check" value="1" class="btn-ghost">Check the pace</button>
+      {% if feas and feas.ok %}<button name="create" value="1" class="btn-primary">Create plan</button>{% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

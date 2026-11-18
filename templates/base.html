@@ -1,0 +1,67 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FamilyEnglish{% endblock %} · FamilyEnglish</title>
+  <meta name="description" content="Learn English together at home — children and parents, from first letter sounds to confident English. Bangla-first, low-cost.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Hind+Siliguri:wght@400;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-amber-50/60 text-stone-800 font-sans antialiased">
+  <header class="sticky top-0 z-30 border-b border-stone-200/70 bg-white/90 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
+      <a href="{% url 'core:home' %}" class="flex items-center gap-2">
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-lg text-white font-display">Fe</span>
+        <span class="font-display text-xl font-bold text-stone-900">Family<span class="text-brand-600">English</span></span>
+      </a>
+      <nav class="ml-auto flex items-center gap-1 text-sm font-semibold">
+        {% if user.is_authenticated %}
+          {% if current_learner %}
+            <a class="nav-link" href="{% url 'learning:today' %}">Today</a>
+            <a class="nav-link hidden sm:inline-block" href="{% url 'learning:plan' %}">Plan</a>
+            <a class="nav-link hidden sm:inline-block" href="{% url 'learning:library' %}">Lessons</a>
+          {% endif %}
+          <a class="nav-link" href="{% url 'core:family' %}">Family</a>
+          <a href="{% url 'core:switch' %}" class="ml-1 flex items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1.5 hover:border-brand-500" title="Switch learner">
+            {% if current_learner %}<span class="text-lg leading-none">{{ current_learner.avatar }}</span><span class="hidden sm:inline">{{ current_learner.name }}</span>{% else %}Who's learning?{% endif %}
+          </a>
+          <form method="post" action="{% url 'core:logout' %}" class="hidden sm:block">{% csrf_token %}
+            <button class="nav-link text-stone-500">Sign out</button>
+          </form>
+        {% else %}
+          <a class="nav-link" href="{% url 'core:pricing' %}">Pricing</a>
+          <a class="nav-link" href="{% url 'core:login' %}">Sign in</a>
+          <a class="btn-primary !py-2" href="{% url 'core:signup' %}">Start free</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="mx-auto max-w-6xl px-4 pt-4 space-y-2">
+    {% for m in messages %}
+      <div class="rounded-xl border px-4 py-3 text-sm font-semibold {% if m.tags == 'error' %}border-red-200 bg-red-50 text-red-800{% elif m.tags == 'warning' %}border-amber-200 bg-amber-50 text-amber-800{% else %}border-emerald-200 bg-emerald-50 text-emerald-800{% endif %}">{{ m }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <main class="mx-auto max-w-6xl px-4 py-6 sm:py-10">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-stone-200 bg-white/70">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-4 py-6 text-sm text-stone-500">
+      <span>© FamilyEnglish — English for the whole family.</span>
+      <a href="{% url 'core:pricing' %}" class="hover:text-brand-600">Pricing</a>
+      <a href="{% url 'core:privacy' %}" class="hover:text-brand-600">Privacy &amp; videos</a>
+      <span class="ml-auto font-bn">ঘরে বসে, পরিবারের সবাই মিলে ইংরেজি।</span>
+    </div>
+  </footer>
+  <script src="{% static 'js/speech.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

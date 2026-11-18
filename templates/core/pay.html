@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Pay for the family{% endblock %}
+{% block content %}
+<div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+  <div class="card p-8">
+    <h1 class="font-display text-3xl font-bold">Pay for {{ family.name }}</h1>
+    <p class="mt-1 text-stone-600">Any adult in the family can pay. The plan covers every learner.</p>
+    <ol class="mt-5 list-decimal space-y-1 pl-5 text-sm text-stone-700">
+      <li>Send the amount with bKash or Nagad <strong>Send Money</strong> to <strong>01710503504</strong> (bKash or Nagad).</li>
+      <li>Copy the Transaction ID (TrxID) from the SMS.</li>
+      <li>Fill in the form. We confirm and switch your plan.</li>
+    </ol>
+    <ul class="mt-4 text-sm">
+      <li>Family Monthly — ৳{{ prices.monthly }}</li>
+      <li>Family 6 months — ৳{{ prices.half_year }}</li>
+      <li>Family 12 months — ৳{{ prices.year }}</li>
+    </ul>
+  </div>
+  <div class="card p-8">
+    <form method="post">{% include "core/_form.html" %}<button class="btn-primary w-full">Submit payment</button></form>
+    {% if payments %}
+    <h2 class="mt-6 font-bold">Recent payments</h2>
+    <ul class="mt-2 space-y-1 text-sm">
+      {% for p in payments %}<li class="flex justify-between"><span>{{ p.created_at|date:"j M" }} · {{ p.get_plan_display }} · ৳{{ p.amount_bdt }}</span><span class="font-semibold">{{ p.get_status_display }}</span></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

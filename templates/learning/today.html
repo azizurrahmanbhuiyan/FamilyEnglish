@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Today{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center gap-4">
+  <span class="text-6xl">{{ current_learner.avatar }}</span>
+  <div>
+    <p class="text-sm font-bold uppercase tracking-wide text-stone-400">Hello</p>
+    <h1 class="font-display text-4xl font-bold">{{ current_learner.name }}</h1>
+  </div>
+  <div class="ml-auto grid grid-cols-3 gap-3 text-center">
+    <div class="card px-4 py-3"><p class="text-2xl">🔥</p><p class="font-display text-2xl font-bold">{{ streak }}</p><p class="text-xs text-stone-500">day streak</p></div>
+    <div class="card px-4 py-3"><p class="text-2xl">⭐</p><p class="font-display text-2xl font-bold">{{ stars }}</p><p class="text-xs text-stone-500">stars</p></div>
+    <div class="card px-4 py-3"><p class="text-2xl">📚</p><p class="font-display text-2xl font-bold">{{ done_count }}</p><p class="text-xs text-stone-500">lessons</p></div>
+  </div>
+</div>
+
+{% if not placement %}
+<div class="mt-8 card p-8 text-center">
+  <div class="text-5xl">🧩</div>
+  <h2 class="mt-2 font-display text-2xl font-bold">First, a short placement test</h2>
+  <p class="mt-1 text-stone-600">It finds the right level so lessons are not too easy or too hard.</p>
+  <a href="{% url 'learning:placement_start' %}" class="btn-primary mt-5">Start the test</a>
+</div>
+{% elif not plan %}
+<div class="mt-8 card p-8 text-center">
+  <div class="text-5xl">🗓️</div>
+  <h2 class="mt-2 font-display text-2xl font-bold">Make your study plan</h2>
+  <p class="mt-1 text-stone-600">Your level: {{ placement.overall }}. Choose a finish level and how many months you have.</p>
+  <a href="{% url 'learning:plan_new' %}" class="btn-primary mt-5">Make my plan</a>
+</div>
+{% else %}
+<div class="mt-8 grid gap-6 lg:grid-cols-[3fr_2fr]">
+  <div class="card overflow-hidden">
+    <div class="bg-gradient-to-r from-brand-600 to-orange-500 p-6 text-white">
+      <p class="text-sm font-bold uppercase tracking-wide opacity-80">🎯 Today's mission</p>
+      {% if mission %}
+        <h2 class="mt-1 font-display text-3xl font-bold">{{ mission.lesson.title }}</h2>
+        <p class="opacity-90">Level {{ mission.lesson.module.level.number }} · {{ mission.lesson.module.title }} · {{ mission.lesson.minutes }} min</p>
+      {% else %}
+        <h2 class="mt-1 font-display text-3xl font-bold">All plan lessons done! 🎉</h2>
+        <p class="opacity-90">Make a new plan for the next level.</p>
+      {% endif %}
+    </div>
+    <div class="flex flex-wrap items-center gap-3 p-6">
+      {% if mission %}
+        <a href="{% url 'learning:lesson' mission.lesson.pk %}" class="btn-primary text-lg">▶ Start lesson</a>
+        <span class="text-sm text-stone-500">Planned for {{ mission.date|date:"l j M" }}</span>
+      {% else %}
+        <a href="{% url 'learning:plan_new' %}" class="btn-primary">New plan</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold">Coming up</h3>
+      <a href="{% url 'learning:plan' %}" class="text-sm font-semibold text-brand-600">Calendar →</a>
+    </div>
+    <ul class="mt-3 divide-y divide-stone-100">
+      {% for d in week %}
+      <li class="flex items-center gap-3 py-2 text-sm">
+        <span class="w-20 shrink-0 text-stone-500">{{ d.date|date:"D j M" }}</span>
+        {% if d.kind == "lesson" %}<span class="truncate">{{ d.lesson.title }}</span>
+        {% elif d.kind == "review" %}<span>🔁 Review day</span>
+        {% else %}<span>🏠 Family English day</span>{% endif %}
+        {% if d.status == "done" %}<span class="ml-auto">✅</span>{% endif %}
+      </li>
+      {% empty %}<li class="py-2 text-sm text-stone-500">Nothing planned.</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+
+<div class="mt-8 grid gap-4 sm:grid-cols-3">
+  <a href="{% url 'learning:library' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">📚</p><p class="mt-1 font-bold">All lessons</p><p class="text-sm text-stone-500">Browse every level</p></a>
+  <a href="{% url 'learning:placement_start' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">🧩</p><p class="mt-1 font-bold">Re-take the test</p><p class="text-sm text-stone-500">Every 4 weeks is a good rhythm</p></a>
+  <a href="{% url 'learning:plan_new' %}" class="card p-5 hover:ring-2 hover:ring-brand-500"><p class="text-3xl">🗓️</p><p class="mt-1 font-bold">Change the plan</p><p class="text-sm text-stone-500">Finished lessons are kept</p></a>
+</div>
+{% endblock %}
