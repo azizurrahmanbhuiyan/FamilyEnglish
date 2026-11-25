@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load fe_ui static %}
+{% block title %}Practice: {{ label }}{% endblock %}
+{% block content %}
+<a href="{% url 'course:weak_spots' %}" class="text-sm font-bold text-stone-400 hover:text-brand-600">← {% tr "Weak spots" "দুর্বল দিক" %}</a>
+<h1 class="mt-2 font-display text-3xl font-bold sm:text-4xl">{{ emoji }} {{ label }}</h1>
+<p class="text-stone-600">{% tr "Questions of this type from different lessons. Mistakes are explained right away." "বিভিন্ন পাঠ থেকে এই ধরনের প্রশ্ন। ভুল হলে সাথে সাথে ব্যাখ্যা।" %}</p>
+<section class="mt-6" data-check-url="{% url 'course:check' %}" data-source="drill">{% csrf_token %}
+  <div class="flex items-center gap-3"><span class="text-sm font-bold text-stone-500">{% tr "Done" "হয়েছে" %} <span id="practice-count"></span></span><div class="band-bar w-40"><span id="practice-bar" style="width:0;background:#2b6f4f"></span></div></div>
+  <div class="mt-4 grid gap-4 md:grid-cols-2">
+    {% for c in cards %}{% include "course/_card.html" %}{% empty %}<p class="text-stone-600">{% tr "No questions of this type are open on your plan yet." "আপনার প্ল্যানে এই ধরনের প্রশ্ন এখনো খোলা নেই।" %}</p>{% endfor %}
+  </div>
+  <div class="mt-6 flex gap-2"><a href="{% url 'course:drill' qtype %}" class="btn-primary">🔀 {% tr "New set" "নতুন সেট" %}</a><a href="{% url 'course:weak_spots' %}" class="btn-ghost">{% tr "Back to weak spots" "দুর্বল দিকে ফিরে যান" %}</a></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/course.js' %}"></script>{% endblock %}

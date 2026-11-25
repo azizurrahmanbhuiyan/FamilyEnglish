@@ -1,27 +1,46 @@
-{% extends "base.html" %}
-{% block title %}Pay for the family{% endblock %}
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Pay for the family" "পরিবারের জন্য পেমেন্ট" %}{% endblock %}
 {% block content %}
 <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
   <div class="card p-8">
-    <h1 class="font-display text-3xl font-bold">Pay for {{ family.name }}</h1>
-    <p class="mt-1 text-stone-600">Any adult in the family can pay. The plan covers every learner.</p>
-    <ol class="mt-5 list-decimal space-y-1 pl-5 text-sm text-stone-700">
-      <li>Send the amount with bKash or Nagad <strong>Send Money</strong> to <strong>01710503504</strong> (bKash or Nagad).</li>
-      <li>Copy the Transaction ID (TrxID) from the SMS.</li>
-      <li>Fill in the form. We confirm and switch your plan.</li>
-    </ol>
-    <ul class="mt-4 text-sm">
-      <li>Family Monthly — ৳{{ prices.monthly }}</li>
-      <li>Family 6 months — ৳{{ prices.half_year }}</li>
-      <li>Family 12 months — ৳{{ prices.year }}</li>
-    </ul>
+    <h1 class="font-display text-3xl font-bold">{% tr "Pay for" "পেমেন্ট:" %} {{ family.name }}</h1>
+    <p class="mt-1 text-stone-600">{% tr "Any adult in the family can pay. The plan covers every learner." "পরিবারের যেকোনো বড় সদস্য পেমেন্ট করতে পারেন। প্ল্যানে সব শিক্ষার্থী থাকে।" %}</p>
+    {% if online %}
+    <form method="post" action="{% url 'core:pay_online' %}" class="mt-6" id="pay-online">{% csrf_token %}
+      <div class="grid gap-3">
+        {% for p in plans %}
+        <label class="pay-plan flex cursor-pointer items-center justify-between rounded-2xl border p-4">
+          <span class="flex items-center gap-3"><input type="radio" name="plan" value="{{ p.code }}" {% if p.code == chosen %}checked{% endif %} required>
+            <span class="font-semibold">{{ p.name }}</span></span>
+          <span class="text-lg font-bold">{% if p.currency == "USD" %}${{ p.amount }}{% else %}৳{{ p.amount }}{% endif %}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <button class="btn-primary mt-5 w-full">💳 {% tr "Pay now" "এখনই পেমেন্ট করুন" %}</button>
+      <p class="mt-3 text-center text-xs text-stone-500">
+        {% if in_bd %}{% tr "Card, bKash, Nagad, Rocket or internet banking — secured by SSLCommerz. Your plan switches on as soon as the payment is done." "কার্ড, বিকাশ, নগদ, রকেট বা ইন্টারনেট ব্যাংকিং — SSLCommerz দিয়ে নিরাপদ। পেমেন্ট হলেই প্ল্যান চালু হয়।" %}
+        {% else %}{% tr "Visa, Mastercard or American Express, in US dollars — secured by SSLCommerz. Your plan switches on as soon as the payment is done." "ভিসা, মাস্টারকার্ড বা আমেরিকান এক্সপ্রেস, মার্কিন ডলারে — SSLCommerz দিয়ে নিরাপদ।" %}{% endif %}
+      </p>
+    </form>
+    {% elif not in_bd %}
+    <p class="mt-6 rounded-2xl border p-4 text-sm">{% tr "Card payment opens soon. Write to us and we will help you pay." "কার্ডে পেমেন্ট শিগগিরই চালু হবে। আমাদের লিখুন, আমরা সাহায্য করব।" %}</p>
+    {% endif %}
   </div>
   <div class="card p-8">
-    <form method="post">{% include "core/_form.html" %}<button class="btn-primary w-full">Submit payment</button></form>
+    {% if in_bd %}
+    <h2 class="font-bold">{% if online %}{% tr "Or send money yourself" "অথবা নিজে সেন্ড মানি করুন" %}{% else %}{% tr "Pay with bKash or Nagad" "বিকাশ বা নগদে পেমেন্ট" %}{% endif %}</h2>
+    <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-stone-700">
+      <li>{% tr "Send the amount with bKash or Nagad Send Money to 01710503504." "বিকাশ বা নগদে ০১৭১০৫০৩৫০৪ নম্বরে সেন্ড মানি করুন।" %}</li>
+      <li>{% tr "Copy the Transaction ID (TrxID) from the SMS." "এসএমএস থেকে ট্রানজেকশন আইডি (TrxID) কপি করুন।" %}</li>
+      <li>{% tr "Fill in the form. We confirm and switch your plan." "ফর্মটি পূরণ করুন। আমরা যাচাই করে প্ল্যান চালু করব।" %}</li>
+    </ol>
+    <ul class="mt-3 text-sm"><li>{% tr "1 month" "১ মাস" %} — ৳{{ prices.monthly }}</li><li>{% tr "6 months" "৬ মাস" %} — ৳{{ prices.half_year }}</li><li>{% tr "1 year" "১ বছর" %} — ৳{{ prices.year }}</li></ul>
+    <form method="post" class="mt-4">{% include "core/_form.html" %}<button class="btn-ghost w-full">{% tr "Submit payment" "পেমেন্ট জমা দিন" %}</button></form>
+    {% endif %}
     {% if payments %}
-    <h2 class="mt-6 font-bold">Recent payments</h2>
+    <h2 class="mt-6 font-bold">{% tr "Recent payments" "সাম্প্রতিক পেমেন্ট" %}</h2>
     <ul class="mt-2 space-y-1 text-sm">
-      {% for p in payments %}<li class="flex justify-between"><span>{{ p.created_at|date:"j M" }} · {{ p.get_plan_display }} · ৳{{ p.amount_bdt }}</span><span class="font-semibold">{{ p.get_status_display }}</span></li>{% endfor %}
+      {% for p in payments %}<li class="flex justify-between gap-2"><span>{{ p.created_at|date:"j M" }} · {{ p.get_plan_display }} · {{ p.display_amount }}</span><span class="font-semibold">{{ p.get_status_display }}</span></li>{% endfor %}
     </ul>
     {% endif %}
   </div>

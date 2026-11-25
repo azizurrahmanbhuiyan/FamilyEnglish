@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Coach{% endblock %}{% block page_title %}{% tr "Coach" "কোচ" %}{% endblock %}
+{% block content %}
+<p class="s-eyebrow">✦ {% tr "Most popular" "সবচেয়ে জনপ্রিয়" %}</p>
+<a href="{% url 'studio:sounds' %}" class="s-feature mt-3 block">
+  <p class="text-3xl font-extrabold">{% tr "Pronunciation coach" "উচ্চারণ কোচ" %}</p>
+  <p class="mt-1 text-lg s-sub">{% tr "Learn clear British pronunciation" "পরিষ্কার ব্রিটিশ উচ্চারণ শিখুন" %}</p>
+  <span class="ipa-bubble" style="left:8%;bottom:22%">/θ/</span><span class="ipa-bubble" style="left:34%;bottom:46%">/æ/</span><span class="ipa-bubble" style="left:52%;bottom:16%">/tʃ/</span>
+  {% include "_mascot.html" with uid="cf" %}
+</a>
+<p class="s-eyebrow mt-8">{% tr "All coaches" "সব কোচ" %}</p>
+<div class="s-tabs mt-3">
+  {% for code, en, bn in categories %}<a href="?c={{ code }}" class="{% if code == cat %}is-on{% endif %}">{% tr en bn %}</a>{% endfor %}
+</div>
+<div class="s-grid md-2 mt-4">
+  {% for c in coaches %}
+  <a href="{% url 'studio:coach_detail' c.slug %}" class="s-coach">
+    <span class="s-coach-ico">{{ c.icon }}</span>
+    <span class="min-w-0 flex-1"><span class="flex flex-wrap items-center gap-2 text-xl font-extrabold">{% tr c.title c.title_bn %}
+      {% if c.tag == "new" %}<span class="s-pill is-new">New</span>{% elif c.tag == "beta" %}<span class="s-pill is-beta">Beta</span>{% elif c.tag == "popular" %}<span class="s-pill is-popular">★</span>{% endif %}</span>
+      <span class="mt-1 block s-muted">{% tr c.desc c.desc_bn %}</span></span>
+    <span class="s-muted">{% icon "chevron" %}</span>
+  </a>
+  {% endfor %}
+</div>
+<div class="s-grid md-2 mt-6">
+  <a href="{% url 'practice:tutor' %}" class="s-coach"><span class="s-coach-ico">🐦</span><span><span class="block text-xl font-extrabold">{% tr "Ask Tuntuni" "টুনটুনিকে জিজ্ঞেস করুন" %}</span><span class="block s-muted">{% tr "Your English helper for any question." "যেকোনো প্রশ্নে ইংরেজি সহায়ক।" %}</span></span></a>
+  <a href="{% url 'practice:writing' %}" class="s-coach"><span class="s-coach-ico">✍️</span><span><span class="block text-xl font-extrabold">{% tr "Writing coach" "লেখার কোচ" %}</span><span class="block s-muted">{% tr "Check paragraphs, letters and essays." "অনুচ্ছেদ, চিঠি ও রচনা যাচাই।" %}</span></span></a>
+  <a href="{% url 'practice:speaking' %}" class="s-coach"><span class="s-coach-ico">🗨️</span><span><span class="block text-xl font-extrabold">{% tr "Speaking practice" "বলার অনুশীলন" %}</span><span class="block s-muted">{% tr "Answer questions and get feedback." "প্রশ্নের উত্তর দিয়ে ফিডব্যাক নিন।" %}</span></span></a>
+</div>
+<p class="mt-8 text-center s-muted">🕒 {% tr "More coaches coming soon!" "আরও কোচ আসছে!" %}</p>
+{% endblock %}

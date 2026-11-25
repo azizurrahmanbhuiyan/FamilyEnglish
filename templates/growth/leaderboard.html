@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Your progress" "আপনার অগ্রগতি" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "trophy" "ico" %}</span>{% tr "Leaderboard" "লিডারবোর্ড" %}</h1>
+<nav class="mt-4 chip-row">
+  <a class="chip {% if tab == 'league' %}is-on{% endif %}" href="?tab=league">{{ league_icon }} {% tr "Weekly league" "সাপ্তাহিক লীগ" %}</a>
+  <a class="chip {% if tab == 'family' %}is-on{% endif %}" href="?tab=family">👪 {% tr "Family XP" "পরিবারের XP" %}</a>
+  <a class="chip {% if tab == 'streaks' %}is-on{% endif %}" href="?tab=streaks">🔥 {% tr "Family streaks" "পরিবারের ধারা" %}</a>
+</nav>
+
+{% if tab == "league" %}
+<section class="mt-5 grid gap-5 lg:grid-cols-3">
+  <div class="card p-5 lg:col-span-2">
+    <div class="flex flex-wrap items-center gap-2"><h2 class="font-display text-2xl font-bold">{{ league_icon }} {{ league_name }} {% tr "league" "লীগ" %}</h2><span class="ml-auto text-sm text-stone-500">{% tr "Ends" "শেষ" %} {{ week_end|date:"D j M" }}</span></div>
+    <p class="text-sm text-stone-600">{% tr "Top" "শীর্ষ" %} {{ promote }} {% tr "move up next week. Learners from other families only see avatars and nicknames — never real names." "পরের সপ্তাহে উপরের লীগে যাবে। অন্য পরিবারের কেউ আসল নাম দেখে না — শুধু অ্যাভাটার ও ডাকনাম।" %}</p>
+    <ol class="mt-4 divide-y divide-stone-100">
+      {% for r in rows %}
+      <li class="flex items-center gap-3 rounded-xl px-2 py-2 {% if r.zone == 'up' %}zone-up{% elif r.zone == 'down' %}zone-down{% endif %} {% if r.me %}ring-2 ring-brand-500{% endif %}">
+        <span class="w-6 text-center font-extrabold text-stone-500">{{ r.rank }}</span>
+        <span class="text-2xl">{{ r.learner.avatar }}</span>
+        <span class="flex-1 font-bold">{% if r.family %}{{ r.learner.name }}{% if r.me %} ({% tr "you" "আপনি" %}){% endif %}{% else %}{{ r.learner.public_name }}{% endif %}</span>
+        {% if r.zone == 'up' %}<span class="text-xs font-bold text-emerald-700">⬆</span>{% elif r.zone == 'down' %}<span class="text-xs font-bold text-rose-700">⬇</span>{% endif %}
+        <span class="font-extrabold">⚡ {{ r.xp }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  <aside class="card p-5">
+    <p class="font-extrabold">{% tr "Your place" "আপনার অবস্থান" %}</p>
+    <p class="font-display text-4xl font-bold">#{{ mine.rank }} <span class="text-lg text-stone-400">/ {{ size }}</span></p>
+    <p class="text-sm text-stone-500">⚡ {{ mine.xp }} XP {% tr "this week" "এই সপ্তাহে" %}</p>
+    <p class="mt-4 font-extrabold">{% tr "Leagues" "লীগ" %}</p>
+    <ul class="mt-1 space-y-1 text-sm">{% for key, name, icon in leagues %}<li class="{% if key == league %}font-extrabold text-brand-700{% endif %}">{{ icon }} {{ name }}</li>{% endfor %}</ul>
+    <a href="{% url 'growth:profile' %}" class="btn-ghost mt-4 w-full !py-2 text-sm">{% tr "Change my nickname" "ডাকনাম বদলান" %}</a>
+  </aside>
+</section>
+{% elif tab == "family" %}
+<section class="mt-5 card p-5">
+  <p class="text-sm text-stone-600">{% tr "XP earned this week by everyone in your family." "এই সপ্তাহে পরিবারের সবার XP।" %}</p>
+  <ol class="mt-3 divide-y divide-stone-100">{% for r in family %}<li class="flex items-center gap-3 py-2"><span class="w-8 text-xl">{{ r.medal }}</span><span class="text-2xl">{{ r.learner.avatar }}</span><span class="flex-1 font-bold">{{ r.learner.name }}</span><span class="text-sm text-stone-500">🔥 {{ r.streak }}</span><span class="font-extrabold">⚡ {{ r.week_xp }}</span></li>{% endfor %}</ol>
+</section>
+{% else %}
+<section class="mt-5 card p-5">
+  <ol class="divide-y divide-stone-100">{% for r in fam_streaks %}<li class="flex items-center gap-3 py-2"><span class="text-2xl">{{ r.learner.avatar }}</span><span class="flex-1 font-bold">{{ r.learner.name }}</span><span class="text-sm text-stone-500">{% tr "best" "সেরা" %} {{ r.best }}</span><span class="font-extrabold">🔥 {{ r.streak }}</span></li>{% endfor %}</ol>
+</section>
+{% endif %}
+{% endblock %}

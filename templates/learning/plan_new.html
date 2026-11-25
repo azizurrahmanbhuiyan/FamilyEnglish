@@ -1,28 +1,77 @@
-{% extends "base.html" %}
-{% block title %}Make a study plan{% endblock %}
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Make a study plan" "স্টাডি প্ল্যান তৈরি" %}{% endblock %}
 {% block content %}
-<div class="mx-auto max-w-2xl card p-8">
-  <h1 class="font-display text-3xl font-bold">Make {{ current_learner.name }}'s study plan</h1>
-  <p class="mt-1 text-stone-600">Choose where to finish and how long you have. Lesson days follow the school week (Sunday–Thursday); Fridays are family English days.</p>
-  {% if placement %}<p class="mt-2 text-sm text-stone-500">Placement: Listening {{ placement.listening }} · Speaking {{ placement.speaking }} · Reading {{ placement.reading }} · Writing {{ placement.writing }}</p>{% endif %}
+<div class="mx-auto max-w-4xl">
+  <p class="eyebrow">{% tr "Study plan" "স্টাডি প্ল্যান" %}</p>
+  <h1 class="mt-1 font-display text-3xl font-semibold">{% tr "Choose" "বেছে নিন" %} {{ current_learner.name }}{% tr "'s full course" "-এর পুরো কোর্স" %}</h1>
+  <p class="mt-1 max-w-2xl text-stone-600">{% tr "Each course runs from the first sounds to speaking with confidence. New lessons are spread over the whole time, and the days in between repeat what was learned — that is how English becomes easy to say." "প্রতিটি কোর্স প্রথম ধ্বনি থেকে আত্মবিশ্বাসের সাথে কথা বলা পর্যন্ত। নতুন পাঠ পুরো সময় জুড়ে ছড়ানো, আর মাঝের দিনগুলোতে শেখা পাঠ আবার করা হয় — এভাবেই ইংরেজি বলা সহজ হয়।" %}</p>
+
   <form method="post" class="mt-6">{% csrf_token %}
-    {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{{ form.non_field_errors }}</div>{% endif %}
     <div class="grid gap-4 sm:grid-cols-2">
-      {% for field in form %}
-      <div><label class="mb-1 block font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
-        {% for e in field.errors %}<p class="text-sm text-red-600">{{ e }}</p>{% endfor %}</div>
+      {% for t in track_cards %}
+      <label class="track-card relative">
+        <input type="radio" name="track" value="{{ t.key }}" {% if t.key == my_track %}checked{% endif %}>
+        <div class="card h-full p-5">
+          <div class="flex items-start gap-3">
+            <span class="icon-tile {% if t.key == 'kid' %}is-warm{% elif t.key == 'student' or t.key == 'ielts' %}is-sky{% elif t.key == 'elder' %}is-rose{% endif %}">{% if t.key == "kid" %}{% icon "seed" %}{% elif t.key == "student" %}{% icon "school" %}{% elif t.key == "ielts" %}{% icon "test" %}{% elif t.key == "adult" %}{% icon "user" %}{% else %}{% icon "grandparent" %}{% endif %}</span>
+            <div class="min-w-0 flex-1">
+              <p class="font-extrabold">{% tr t.en t.bn %}</p>
+              <p class="text-sm text-stone-500">{% tr t.why_en t.why_bn %}</p>
+            </div>
+            <p class="track-years">{% if t.months_options %}{% tr "3–12 mo" "৩–১২ মাস" %}{% elif lang == "bn" %}{% if t.years == 1 %}১{% elif t.years == 2 %}২{% else %}৩{% endif %} বছর{% else %}{{ t.years }} year{{ t.years|pluralize }}{% endif %}</p>
+          </div>
+          {% if t.months_options %}
+          <div class="mt-3 rounded-xl bg-stone-50 p-3 text-sm">
+            <label class="font-bold" for="ielts-months">{% tr "Course length" "কোর্সের সময়" %}</label>
+            <select id="ielts-months" name="ielts_months" class="field mt-1 !py-1.5" onchange="this.closest('label').querySelector('input[name=track]').checked = true">
+              {% for m in t.months_options %}<option value="{{ m }}" {% if m == ielts_rec %}selected{% endif %}>{{ m }} {% tr "months" "মাস" %}{% if m == 3 %} — {% tr "already around band 6" "এখনই প্রায় ব্যান্ড ৬" %}{% elif m == 6 %} — {% tr "around band 5–5.5" "প্রায় ব্যান্ড ৫–৫.৫" %}{% elif m == 9 %} — {% tr "around band 4.5–5" "প্রায় ব্যান্ড ৪.৫–৫" %}{% else %} — {% tr "starting from the basics" "শুরু থেকে" %}{% endif %}{% if m == ielts_rec %} ✓{% endif %}</option>{% endfor %}
+            </select>
+            <p class="mt-1 text-xs text-stone-500">{% if has_test %}{% tr "✓ marks the length your level test suggests." "✓ চিহ্নটি আপনার লেভেল টেস্টের পরামর্শ।" %}{% else %}{% tr "Take the level test first and we will suggest the right length." "আগে লেভেল টেস্ট দিন, আমরা সঠিক সময় বলে দেব।" %} <a class="font-bold text-brand-700 underline" href="{% url 'course:level_test' %}">{% tr "Level test" "লেভেল টেস্ট" %}</a>{% endif %}</p>
+            <p class="mt-1 text-xs text-stone-500">{% tr "Stages below are for the suggested length." "নিচের ধাপগুলো প্রস্তাবিত সময়ের জন্য।" %}</p>
+          </div>
+          {% endif %}
+          <ol class="mt-4 space-y-1.5 text-sm">
+            {% for s in t.stages %}<li class="flex items-baseline gap-2"><span class="h-2 w-2 shrink-0 rounded-full {% cycle 'bg-brand-200' 'bg-brand-400' 'bg-brand-600' %}"></span><span class="flex-1">{% tr s.en s.bn %}</span><span class="text-xs text-stone-500">{{ s.new }} {% tr "new" "নতুন" %}</span></li>{% endfor %}
+          </ol>
+        </div>
+      </label>
       {% endfor %}
     </div>
-    {% if feas %}
-    <div class="mt-6 rounded-2xl p-4 {% if feas.ok %}bg-emerald-50 text-emerald-900{% else %}bg-red-50 text-red-800{% endif %}">
-      <p class="font-bold">{{ feas.message }}</p>
-      <p class="text-sm">{{ feas.lessons }} lessons + {{ feas.review_days }} review days over {{ feas.study_days }} study days ≈ {{ feas.per_day|floatformat:1 }} a day.</p>
+    <div class="card mt-4 flex flex-wrap items-end gap-4 p-5">
+      <div><label class="mb-1 block text-sm font-semibold" for="dpw">{% tr "Study days a week" "সপ্তাহে কয় দিন" %}</label>
+        <select id="dpw" name="days_per_week" class="field">
+          <option value="3">{% tr "3 days" "৩ দিন" %}</option><option value="4">{% tr "4 days" "৪ দিন" %}</option>
+          <option value="5" selected>{% tr "5 days (Sun–Thu)" "৫ দিন (রবি–বৃহস্পতি)" %}</option><option value="6">{% tr "6 days (Sat–Thu)" "৬ দিন (শনি–বৃহস্পতি)" %}</option>
+        </select></div>
+      <div><label class="mb-1 block text-sm font-semibold" for="mpd">{% tr "Minutes a day" "দিনে কত মিনিট" %}</label>
+        <select id="mpd" name="minutes_per_day" class="field"><option value="15">15</option><option value="20" selected>20</option><option value="30">30</option></select></div>
+      <button class="btn-primary ml-auto">{% icon "calendar" "ico ico-sm" %} {% tr "Make my plan" "আমার প্ল্যান তৈরি করুন" %}</button>
     </div>
-    {% endif %}
-    <div class="mt-6 flex flex-wrap gap-3">
-      <button name="check" value="1" class="btn-ghost">Check the pace</button>
-      {% if feas and feas.ok %}<button name="create" value="1" class="btn-primary">Create plan</button>{% endif %}
-    </div>
+    {% if not current_family.has_full_access %}<p class="mt-3 flex items-center gap-2 text-sm text-stone-600">{% icon "lock" "ico ico-sm" %} {% tr "On the free plan only the phonics days open. The rest of the course opens with the family plan." "ফ্রি প্ল্যানে শুধু ফনিক্সের দিনগুলো খোলা। বাকি কোর্স ফ্যামিলি প্ল্যানে খুলবে।" %} <a href="{% url 'core:pricing' %}" class="font-bold text-brand-700 underline">{% tr "Prices" "দাম" %}</a></p>{% endif %}
   </form>
+
+  <details class="card mt-8 p-6" {% if feas or form.errors %}open{% endif %}>
+    <summary class="cursor-pointer font-bold">{% tr "Or make a short plan for a few levels" "অথবা কয়েকটি লেভেলের ছোট প্ল্যান" %}</summary>
+    {% if placement %}<p class="mt-2 text-sm text-stone-500">Placement: Listening {{ placement.listening }} · Speaking {{ placement.speaking }} · Reading {{ placement.reading }} · Writing {{ placement.writing }}</p>{% endif %}
+    <form method="post" class="mt-4">{% csrf_token %}
+      {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="grid gap-4 sm:grid-cols-2">
+        {% for field in form %}
+        <div><label class="mb-1 block font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+          {% for e in field.errors %}<p class="text-sm text-red-600">{{ e }}</p>{% endfor %}</div>
+        {% endfor %}
+      </div>
+      {% if feas %}
+      <div class="mt-6 rounded-2xl p-4 {% if feas.ok %}bg-emerald-50 text-emerald-900{% else %}bg-red-50 text-red-800{% endif %}">
+        <p class="font-bold">{{ feas.message }}</p>
+        <p class="text-sm">{{ feas.lessons }} lessons + {{ feas.review_days }} review days over {{ feas.study_days }} study days ≈ {{ feas.per_day|floatformat:1 }} a day.</p>
+      </div>
+      {% endif %}
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button name="check" value="1" class="btn-ghost">{% tr "Check the pace" "গতি দেখুন" %}</button>
+        {% if feas and feas.ok %}<button name="create" value="1" class="btn-primary">{% tr "Create plan" "প্ল্যান তৈরি" %}</button>{% endif %}
+      </div>
+    </form>
+  </details>
 </div>
 {% endblock %}

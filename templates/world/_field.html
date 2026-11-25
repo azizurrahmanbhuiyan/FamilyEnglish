@@ -1,0 +1,5 @@
+<div class="mb-4">
+  <label class="mb-1 block font-semibold" for="{{ f.id_for_label }}">{{ f.label }}</label>
+  {{ f }}
+  {% for e in f.errors %}<p class="mt-1 text-sm text-red-600">{{ e }}</p>{% endfor %}
+</div>

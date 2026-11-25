@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% load fe_ui static %}
+{% block title %}{{ s.title }}{% endblock %}{% block page_title %}{{ s.title }}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl t-chat-wrap">
+  <div class="flex items-center justify-between gap-3">
+    <a href="{% url 'talk:home' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Talk" "কথা বলুন" %}</a>
+    <span class="s-muted text-sm" id="t-turns"></span>
+  </div>
+  {% if s.setting %}<div class="s-card is-pad mt-3 t-scene"><p class="s-eyebrow">{% tr "Situation" "পরিস্থিতি" %}</p>
+    <p class="font-bold">{{ s.setting }}</p>{% if s.goal %}<p class="text-sm s-muted">🎯 {{ s.goal }}</p>{% endif %}</div>{% endif %}
+
+  <div id="t-log" class="t-log mt-4" aria-live="polite"></div>
+
+  <div class="t-bar">
+    <p id="t-status" class="t-status">{% tr "Tap the microphone and answer" "মাইক্রোফোনে চাপ দিয়ে উত্তর দিন" %}</p>
+    <div class="t-controls">
+      <button type="button" class="t-round" id="t-hint" title="Hint">💡</button>
+      <button type="button" class="t-mic" id="t-mic" title="Speak">{% icon "mic" "ico ico-lg" %}</button>
+      <button type="button" class="t-round" id="t-kb" title="Type">⌨️</button>
+    </div>
+    <form id="t-typed" class="t-typed hidden"><input id="t-text" class="t-input" autocomplete="off" placeholder="Type your answer…"><button class="s-btn">{% tr "Send" "পাঠান" %}</button></form>
+    <button type="button" class="s-btn-ghost w-full mt-3" id="t-finish">🏁 {% tr "Finish and see my report" "শেষ করে রিপোর্ট দেখুন" %}</button>
+  </div>
+</div>
+{{ cfg|json_script:"t-config" }}
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/talk.js' %}"></script>{% endblock %}

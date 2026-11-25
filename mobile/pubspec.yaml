@@ -1,0 +1,34 @@
+name: familyenglish_app
+description: FamilyEnglish — speak English with confidence. Phone app for familyenglish.global.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2              # talk to the FamilyEnglish API
+  provider: ^6.1.2          # share app state (who is logged in, which learner)
+  shared_preferences: ^2.3.2 # remember the login on the phone
+  flutter_tts: ^4.2.0       # the phone reads English aloud (British voice)
+  speech_to_text: ^7.0.0    # the phone listens to the learner
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.1  # makes the app icon from assets/icon/ (Doel the bird)
+
+flutter:
+  uses-material-design: true
+
+# App icon (run: dart run flutter_launcher_icons — the GitHub build does it for you)
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#110F33"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  min_sdk_android: 21

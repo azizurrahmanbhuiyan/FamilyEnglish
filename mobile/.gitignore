@@ -1,0 +1,19 @@
+.dart_tool/
+.idea/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+# Android files made by `flutter create` on GitHub (only the manifest is ours)
+android/*
+!android/app/
+android/app/*
+!android/app/src/
+android/app/src/*
+!android/app/src/main/
+android/app/src/main/*
+!android/app/src/main/AndroidManifest.xml
+# Signing keys never go in git
+*.jks
+*.keystore
+key.properties

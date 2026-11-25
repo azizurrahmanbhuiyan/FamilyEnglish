@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Weak spots{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Practice by question type" "প্রশ্নের ধরন অনুযায়ী অনুশীলন" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "target" "ico" %}</span>{% tr "Your weak spots" "আপনার দুর্বল দিক" %}</h1>
+<p class="mt-1 text-stone-600">{% tr "From your last 90 days of answers" "গত ৯০ দিনের উত্তর থেকে" %} ({{ answered }}). {% tr "Practise the types you miss most." "যেগুলোতে বেশি ভুল হয় সেগুলো অনুশীলন করুন।" %}</p>
+
+<section class="mt-6 card p-5">
+  {% if weak %}
+  <ol class="space-y-3">
+    {% for s in weak %}
+    <li class="flex flex-wrap items-center gap-3 rounded-2xl bg-rose-50 px-4 py-3">
+      <span class="text-2xl">{{ s.emoji }}</span>
+      <div class="min-w-0 flex-1"><p class="font-extrabold">{{ forloop.counter }}. {{ s.label }}</p><p class="text-sm text-stone-600">{{ s.wrong }} {% tr "mistakes in" "টি ভুল" %} {{ s.n }} · {% tr "accuracy" "সঠিকতা" %} {{ s.accuracy }}%</p></div>
+      <div class="w-32"><div class="band-bar"><span style="width: {{ s.accuracy }}%; background: #fb7185"></span></div></div>
+      <a href="{% url 'course:drill' s.qtype %}" class="btn-primary !py-2 text-sm">{% tr "Practise now" "এখনই অনুশীলন" %}</a>
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="text-stone-600">🌱 {% tr "No weak spots yet. Do a few lessons or the AI level test and they will appear here." "এখনো কোনো দুর্বল দিক পাওয়া যায়নি। কয়েকটি পাঠ বা AI লেভেল টেস্ট দিলে এখানে দেখাবে।" %}</p>
+  {% endif %}
+</section>
+
+{% if recent %}
+<section class="mt-6 card p-5">
+  <h2 class="font-extrabold">🧾 {% tr "Recent mistakes" "সাম্প্রতিক ভুল" %}</h2>
+  <ul class="mt-2 divide-y divide-stone-100 text-sm">
+    {% for a in recent %}<li class="py-2"><span class="dw dw-wrong">{{ a.given|default:"—"|truncatechars:60 }}</span> → <strong class="text-emerald-700">{{ a.expected|truncatechars:80 }}</strong>{% if a.lesson %} · <a class="text-brand-600 hover:underline" href="{% url 'course:lesson' a.lesson.slug %}">{{ a.lesson.title }}</a>{% endif %}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<h2 class="mt-8 font-display text-2xl font-bold">{% tr "All question types" "সব প্রশ্নের ধরন" %}</h2>
+<div class="mt-3 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  {% for skill, em, name, types in by_skill %}
+  <section class="card p-5">
+    <p class="font-display text-xl font-bold">{{ em }} {{ name }}</p>
+    <ul class="mt-2 space-y-1 text-sm">
+      {% for t in types %}<li class="flex items-center gap-2"><a class="flex-1 font-semibold hover:text-brand-600" href="{% url 'course:drill' t.qtype %}">{{ t.label }}</a>{% if t.stat %}<span class="text-xs text-stone-500">{{ t.stat.accuracy }}% · {{ t.stat.n }}</span>{% endif %}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

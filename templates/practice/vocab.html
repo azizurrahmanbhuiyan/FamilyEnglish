@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Vocabulary flashcards{% endblock %}
+{% block content %}
+<p class="eyebrow">Learning · vocabulary</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "cards" "ico" %}</span>Vocabulary flashcards</h1>
+<p class="mt-1 max-w-2xl text-stone-600">Picture cards with Bangla meanings and an example. Cards you know come back less often; cards you miss come back tomorrow.</p>
+
+<div class="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+  <div class="stat"><p class="text-xl">🗂️</p><p class="stat-num">{{ deck_count }}</p><p class="stat-label">Topic decks</p></div>
+  <div class="stat"><p class="text-xl">👀</p><p class="stat-num">{{ total_seen }}</p><p class="stat-label">Cards studied</p></div>
+  <div class="stat"><p class="text-xl">✅</p><p class="stat-num">{{ total_learned }}</p><p class="stat-label">Words learned</p></div>
+  <div class="stat"><p class="text-xl">🔁</p><p class="stat-num">{{ total_due }}</p><p class="stat-label">Due for review</p></div>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+  {% if total_due %}<a href="{% url 'practice:vocab_review' %}" class="btn-primary">🔁 Review {{ total_due }} due card{{ total_due|pluralize }}</a>{% endif %}
+  {% if missed %}<a href="{% url 'practice:vocab_review' %}?mode=missed" class="btn-ghost">🧯 Review {{ missed }} missed word{{ missed|pluralize }}</a>{% endif %}
+  <form method="get" class="ml-auto flex gap-2"><input class="field !py-2" name="q" value="{{ q }}" placeholder="Search a word or topic…"><button class="btn-ghost !py-2">🔎</button></form>
+</div>
+{% if q %}
+<section class="mt-4 card p-4">
+  <p class="font-extrabold">Words matching “{{ q }}”</p>
+  <ul class="mt-2 grid gap-2 sm:grid-cols-2">{% for w in found %}<li class="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2"><button type="button" class="speak-btn !h-8 !w-8 !text-sm" data-say="{{ w.word }}">▶</button><span class="text-xl">{{ w.emoji }}</span><span class="font-bold">{{ w.word }}</span><span class="text-xs text-stone-400">{{ w.pos }}</span><span class="ml-auto font-bn text-sm">{{ w.meaning_bn }}</span></li>{% empty %}<li class="text-stone-500">No words found.</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+<div class="mt-6 flex flex-wrap gap-2">
+  <a href="?" class="chip {% if not band %}is-on{% endif %}">All levels</a>
+  {% for b in bands %}<a href="?band={{ b }}" class="chip {% if band == b %}is-on{% endif %}">{{ b }}</a>{% endfor %}
+</div>
+<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {% for r in rows %}
+  <a href="{% url 'practice:vocab_deck' r.deck.slug %}" class="card block p-5 hover:ring-2 hover:ring-brand-500">
+    <div class="flex items-center gap-3">
+      <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-3xl">{{ r.deck.emoji }}</span>
+      <div class="min-w-0"><p class="truncate font-extrabold">{{ r.deck.title }}</p><p class="font-bn text-sm text-stone-500">{{ r.deck.title_bn }}</p></div>
+    </div>
+    <div class="bar mt-4"><span style="width: {{ r.percent }}%"></span></div>
+    <div class="mt-2 flex justify-between text-xs font-bold text-stone-500">
+      <span>{{ r.learned }}/{{ r.deck.n }} learned{% if r.due %} · {{ r.due }} due{% endif %}</span>
+      <span class="rounded-full bg-stone-100 px-2 py-0.5">L{{ r.deck.level }} · {{ r.deck.band }}</span>
+    </div>
+  </a>
+  {% empty %}<p class="text-stone-500">No decks yet. Run <code>python manage.py seed_practice</code>.</p>
+  {% endfor %}
+</div>
+{% endblock %}

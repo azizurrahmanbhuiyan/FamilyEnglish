@@ -1,0 +1,51 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Pronunciation course{% endblock %}{% block page_title %}{% tr "Pronunciation course" "উচ্চারণ কোর্স" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <a href="{% url 'studio:learn' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Learn" "শিখুন" %}</a>
+  <div class="s-card is-pad mt-4">
+    <p class="text-sm font-bold uppercase tracking-wide s-muted">{% tr "British English, step by step" "ধাপে ধাপে ব্রিটিশ ইংরেজি" %}</p>
+    <h1 class="mt-1 text-3xl font-extrabold">{% tr "Speak clearly and naturally" "পরিষ্কার ও স্বাভাবিকভাবে বলুন" %}</h1>
+    <p class="mt-2 s-sub">{% tr "22 short lessons in the order you need them: sounds first, then endings, then rhythm, linking and intonation. Each lesson has a word drill, and the stories let you practise everything together." "প্রয়োজনের ক্রমে ২২টি ছোট পাঠ: আগে ধ্বনি, তারপর শব্দের শেষ, তারপর ছন্দ, জোড়া লাগানো ও সুর। প্রতিটি পাঠের সাথে শব্দ-অনুশীলন, আর গল্পে সব একসাথে চর্চা।" %}</p>
+    <div class="s-bar mt-4"><i style="width: {% widthratio done total 100 %}%"></i></div>
+    <div class="mt-2 flex flex-wrap items-center gap-3">
+      <span class="s-muted text-sm">{{ done }}/{{ total }} {% tr "lessons" "পাঠ" %}</span>
+      {% if next %}<a class="s-btn ml-auto" href="{% url 'studio:pron_lesson' next.slug %}">{% if done %}{% tr "Continue" "চালিয়ে যান" %}{% else %}{% tr "Start" "শুরু করুন" %}{% endif %}: {{ next.title }}</a>{% endif %}
+    </div>
+  </div>
+
+  {% for st in stages %}
+  <section class="mt-8">
+    <h2 class="s-h2">{{ forloop.counter }}. {{ st.icon }} {% tr st.title st.title_bn %}</h2>
+    <div class="mt-3 grid gap-3">
+      {% for p in st.lessons %}
+      <div class="s-gcard">
+        <span class="s-gicon">{{ p.icon }}</span>
+        <a href="{% url 'studio:pron_lesson' p.slug %}" class="min-w-0 flex-1">
+          <span class="block text-xl font-extrabold">{% tr p.title p.title_bn %}</span>
+          <span class="block s-muted">{{ p.sub }}</span></a>
+        {% if not paid and p.slug not in free %}<span class="s-muted">{% icon "lock" %}</span>
+        {% else %}
+          <a href="{% url 'studio:pron_drill' p.slug %}" class="s-pill {% if p.drilled %}is-free{% endif %}" title="{% tr "Word drill" "শব্দ অনুশীলন" %}">🎙️ {% tr "Drill" "ড্রিল" %}</a>
+          {% if p.done %}<span class="text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>{% elif not paid %}<span class="s-pill is-free">Free</span>{% endif %}
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+
+  <a href="{% url 'studio:sounds' %}" class="s-card is-pad mt-8 flex items-center gap-4">
+    <span class="text-4xl">🔊</span>
+    <span class="flex-1"><span class="block text-xl font-extrabold">{% tr "Extra sound drills" "আরও ধ্বনি-অনুশীলন" %}</span>
+      <span class="block s-muted">{% tr "One drill for each British sound, with words from your units" "প্রতিটি ব্রিটিশ ধ্বনির জন্য আলাদা অনুশীলন, আপনার ইউনিটের শব্দ দিয়ে" %}</span></span>
+    {% icon "chevron" "ico ico-lg" %}
+  </a>
+  <a href="{% url 'studio:stories' %}" class="s-card is-pad mt-3 flex items-center gap-4">
+    <span class="text-4xl">📖</span>
+    <span class="flex-1"><span class="block text-xl font-extrabold">{% tr "Stories for shadowing" "শ্যাডোয়িংয়ের গল্প" %}</span>
+      <span class="block s-muted">{{ story_count }} {% tr "short stories — listen, copy the flow, then take the word quiz" "ছোট গল্প — শুনুন, প্রবাহ নকল করুন, তারপর শব্দ কুইজ" %}</span></span>
+    {% icon "chevron" "ico ico-lg" %}
+  </a>
+</div>
+{% endblock %}

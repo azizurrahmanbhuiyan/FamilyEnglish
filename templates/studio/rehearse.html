@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Presentation coach{% endblock %}{% block page_title %}{% tr "Presentation coach" "প্রেজেন্টেশন কোচ" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:coach' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Coach" "কোচ" %}</a>
+  <h2 class="mt-3 text-3xl font-extrabold">📊 {% tr "Rehearse your talk" "আপনার বক্তৃতা অনুশীলন" %} <span class="s-pill is-beta">Beta</span></h2>
+  <p class="mt-2 s-sub">{% tr "Paste your speech, presentation notes or a school recitation. You will practise it sentence by sentence and see which words were not clear." "বক্তৃতা, প্রেজেন্টেশনের নোট বা স্কুলের আবৃত্তি পেস্ট করুন। বাক্য ধরে ধরে অনুশীলন করবেন আর দেখবেন কোন শব্দ পরিষ্কার হয়নি।" %}</p>
+  <form method="post" class="s-card is-pad mt-5 grid gap-3">{% csrf_token %}
+    <textarea name="text" rows="10" class="w-full p-3" maxlength="5000" required placeholder="Good morning everyone. Today I want to talk about…"></textarea>
+    <button class="s-btn is-block">{% tr "Start rehearsal" "অনুশীলন শুরু" %}</button>
+  </form>
+</div>
+{% endblock %}

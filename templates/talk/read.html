@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Read and talk{% endblock %}{% block page_title %}{% tr "Read and talk" "পড়ুন ও বলুন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-4xl">
+  <a href="{% url 'talk:home' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Talk" "কথা বলুন" %}</a>
+  <h1 class="mt-4 text-3xl font-extrabold">{% tr "Read a short article, then talk about it" "ছোট একটা লেখা পড়ুন, তারপর আলোচনা করুন" %}</h1>
+  {% for c in sections %}
+  <section class="mt-6"><h2 class="s-h2">{{ c.emoji }} {% tr c.title c.title_bn %}{% if c.key in mine %} <span class="s-pill is-popular">{% tr "For you" "আপনার জন্য" %}</span>{% endif %}</h2>
+    <div class="t-row mt-3">{% for it in c.items %}{% if it.ready %}
+      <a class="t-art {% if it.seed %}is-seed{% endif %}" href="{% url 'talk:article' it.slug %}">
+        <span class="t-art-ico">{{ c.emoji }}</span><b>{{ it.title }}</b>
+        <span class="t-art-meta">{% if it.locked %}{% icon "lock" %}{% elif it.free %}<span class="s-pill is-free">Free</span>{% endif %}</span></a>
+    {% endif %}{% endfor %}</div></section>
+  {% endfor %}
+  {% if not ai_on %}<p class="mt-6 s-muted">{% tr "More articles appear when AI is switched on." "এআই চালু হলে আরও লেখা আসবে।" %}</p>{% endif %}
+</div>
+{% endblock %}

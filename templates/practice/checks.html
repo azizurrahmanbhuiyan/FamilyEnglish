@@ -1,0 +1,64 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Level checks & skill practice{% endblock %}
+{% block content %}
+<p class="eyebrow">Practice & tests</p>
+<h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "check" "ico" %}</span>Level checks & skill practice</h1>
+<p class="mt-1 max-w-2xl text-stone-600">A <strong>level check</strong> re-tests one skill and updates {{ current_learner.name }}'s level — once a month is a good rhythm.
+  <strong>Skill practice</strong> is a quick 10-question round you can do any day.</p>
+<p class="mt-1 font-bn text-sm text-stone-500">মাসে একবার লেভেল চেক, প্রতিদিন ছোট অনুশীলন।</p>
+
+{% if placement %}
+<div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+  <div class="stat"><p class="stat-label">Listening</p><p class="stat-num">{{ placement.listening }}</p></div>
+  <div class="stat"><p class="stat-label">Speaking</p><p class="stat-num">{{ placement.speaking }}</p></div>
+  <div class="stat"><p class="stat-label">Reading</p><p class="stat-num">{{ placement.reading }}</p></div>
+  <div class="stat"><p class="stat-label">Writing</p><p class="stat-num">{{ placement.writing }}</p></div>
+</div>
+{% endif %}
+
+<div class="mt-6 card flex flex-wrap items-center gap-4 p-5">
+  <span class="text-4xl">🧩</span>
+  <div><p class="font-extrabold">Full level check (all four skills)</p>
+    <p class="text-sm text-stone-500">The complete placement test — about 15 minutes.</p></div>
+  <a href="{% url 'learning:placement_start' %}" class="btn-primary ml-auto">Start full check</a>
+</div>
+
+<h2 class="mt-8 font-display text-2xl font-bold">Check or practise one skill</h2>
+<div class="mt-4 grid gap-4 md:grid-cols-2">
+  {% for c in cards %}
+  <div class="card p-5">
+    <div class="flex items-center gap-3">
+      <span class="text-4xl">{{ c.emoji }}</span>
+      <div><p class="text-lg font-extrabold">{{ c.name }}</p><p class="text-sm text-stone-500">{{ c.desc }}</p></div>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+      <div class="rounded-xl bg-stone-50 p-3">
+        <p class="font-bold text-stone-500">Last level check</p>
+        {% if c.check %}<p class="font-display text-2xl font-bold">Level {{ c.check.level }}</p><p class="text-xs text-stone-500">{{ c.check.taken_at|date:"j M" }} · {{ c.check.score }}/{{ c.check.total }}</p>
+        {% else %}<p class="mt-1 text-stone-400">Not taken yet</p>{% endif %}
+      </div>
+      <div class="rounded-xl bg-stone-50 p-3">
+        <p class="font-bold text-stone-500">Last practice</p>
+        {% if c.practice %}<p class="font-display text-2xl font-bold">{{ c.practice.percent }}%</p><p class="text-xs text-stone-500">{{ c.practice.taken_at|date:"j M" }} · {{ c.practice.score }}/{{ c.practice.total }}</p>
+        {% else %}<p class="mt-1 text-stone-400">Not tried yet</p>{% endif %}
+      </div>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <a href="{% url 'practice:level_check' c.key %}" class="btn-primary !py-2">Level check</a>
+      <a href="{% url 'practice:skill_practice' c.key %}" class="btn-ghost !py-2">Practise 10</a>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="card p-5">
+    <div class="flex items-center gap-3"><span class="text-4xl">🗣️</span>
+      <div><p class="text-lg font-extrabold">Speaking</p><p class="text-sm text-stone-500">Say sentences into the microphone, or answer questions.</p></div></div>
+    <a href="{% url 'practice:speaking' %}" class="btn-primary mt-4 !py-2">Speaking practice</a>
+  </div>
+  <div class="card p-5">
+    <div class="flex items-center gap-3"><span class="text-4xl">🎧</span>
+      <div><p class="text-lg font-extrabold">Word dictation</p><p class="text-sm text-stone-500">Hear a word, type it. Easy, medium or hard.</p></div></div>
+    {% if dictation %}<p class="mt-3 text-sm text-stone-500">Last: {{ dictation.score }}/{{ dictation.total }} ({{ dictation.detail }})</p>{% endif %}
+    <a href="{% url 'practice:dictation' %}" class="btn-primary mt-4 !py-2">Play dictation</a>
+  </div>
+</div>
+{% endblock %}

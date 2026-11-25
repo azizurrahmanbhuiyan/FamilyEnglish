@@ -1,13 +1,17 @@
-{% extends "base.html" %}
-{% block title %}Sign in{% endblock %}
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Sign in" "সাইন ইন" %}{% endblock %}
 {% block content %}
-<div class="mx-auto max-w-md card p-8">
-  <h1 class="font-display text-3xl font-bold">Welcome back</h1>
-  <p class="mt-1 text-stone-600">Sign in as the adult who manages the family.</p>
-  <form method="post" class="mt-6">
-    {% include "core/_form.html" %}
-    <button class="btn-primary w-full">Sign in</button>
+<div class="mx-auto max-w-md s-card is-pad">
+  <h1 class="text-3xl font-extrabold">{% tr "Welcome back" "আবার স্বাগতম" %}</h1>
+  <p class="mt-1 s-sub">{% tr "Sign in as the adult who manages the family." "যিনি পরিবার পরিচালনা করেন তিনি সাইন ইন করুন।" %}</p>
+  <a href="{% url 'world:login_code' %}" class="s-btn-ghost mt-6 w-full">✉️ {% tr "Sign in with a code (no password)" "কোড দিয়ে সাইন ইন (পাসওয়ার্ড ছাড়া)" %}</a>
+  <p class="my-4 text-center text-xs s-muted">— {% tr "or" "অথবা" %} —</p>
+  <form method="post">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{% tr "Email or password is not right. If you just signed up, confirm your code first." "ইমেইল বা পাসওয়ার্ড ঠিক নয়। সদ্য সাইন আপ করলে আগে কোড নিশ্চিত করুন।" %}</div>{% endif %}
+    <div class="mb-4"><label class="mb-1 block font-semibold" for="id_username">{% tr "Email" "ইমেইল" %}</label>{{ form.username }}</div>
+    <div class="mb-4"><label class="mb-1 block font-semibold" for="id_password">{% tr "Password" "পাসওয়ার্ড" %}</label>{{ form.password }}</div>
+    <button class="s-btn is-block">{% tr "Sign in" "সাইন ইন" %}</button>
   </form>
-  <p class="mt-4 text-center text-sm text-stone-500">New here? <a class="font-bold text-brand-600" href="{% url 'core:signup' %}">Create a family account</a></p>
+  <p class="mt-4 text-center text-sm s-muted">{% tr "New here?" "নতুন?" %} <a class="font-bold text-sky-300" href="{% url 'core:signup' %}">{% tr "Create a family account" "পারিবারিক অ্যাকাউন্ট খুলুন" %}</a></p>
 </div>
 {% endblock %}

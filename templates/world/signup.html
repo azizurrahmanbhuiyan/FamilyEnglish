@@ -1,0 +1,57 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Create your family account" "পারিবারিক অ্যাকাউন্ট খুলুন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-md s-card is-pad">
+  <h1 class="text-3xl font-extrabold">{% tr "Create your family account" "পারিবারিক অ্যাকাউন্ট খুলুন" %}</h1>
+  <p class="mt-1 s-sub">{% tr "Any adult can open it — father, mother, grandparent or elder. You'll add the learners next." "যেকোনো প্রাপ্তবয়স্ক খুলতে পারেন — বাবা, মা, দাদা-দাদি। এরপর শিক্ষার্থী যোগ করবেন।" %}</p>
+  {% if inviter %}<p class="mt-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">{% tr "Invited by" "আমন্ত্রণ করেছেন" %} {{ inviter.name }} — +{{ extra_days }} {% tr "days of the full family plan, free" "দিন পুরো ফ্যামিলি প্ল্যান, ফ্রি" %}.</p>{% endif %}
+  <form method="post" class="mt-6" id="signup-form">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{{ form.non_field_errors }}</div>{% endif %}
+    {% include "world/_field.html" with f=form.language %}
+    {% include "world/_field.html" with f=form.country %}
+    <div class="mb-4">
+      <label class="mb-1 block font-semibold" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+      <div class="flex gap-2">
+        <span class="dial-box" id="dial">+880</span>
+        {{ form.phone }}
+      </div>
+      <p class="mt-1 text-xs s-muted">{% tr "Example" "উদাহরণ" %}: <span id="dial-example"></span></p>
+      {% for e in form.phone.errors %}<p class="mt-1 text-sm text-red-600">{{ e }}</p>{% endfor %}
+    </div>
+    {% include "world/_field.html" with f=form.first_name %}
+    {% include "world/_field.html" with f=form.email %}
+    {% include "world/_field.html" with f=form.password1 %}
+    {% include "world/_field.html" with f=form.password2 %}
+    <details class="mb-4"><summary class="cursor-pointer text-sm font-bold text-sky-300">{% tr "More (optional)" "আরও (ঐচ্ছিক)" %}</summary>
+      <div class="mt-3">{% include "world/_field.html" with f=form.family_name %}{% include "world/_field.html" with f=form.relation %}</div></details>
+    <p class="mb-4 text-sm s-muted">🔒 {% if sms_on %}{% tr "We will send a 6-digit code to your email and mobile to confirm it's you." "নিশ্চিত করতে আপনার ইমেইল ও মোবাইলে ৬ সংখ্যার কোড পাঠাব।" %}{% else %}{% tr "We will send a 6-digit code to your email to confirm it's you." "নিশ্চিত করতে আপনার ইমেইলে ৬ সংখ্যার কোড পাঠাব।" %}{% endif %}</p>
+    <button class="s-btn is-block">{% tr "Create account" "অ্যাকাউন্ট খুলুন" %}</button>
+  </form>
+  <p class="mt-4 text-center text-sm s-muted">{% tr "Already have one?" "আগেই আছে?" %} <a class="font-bold text-sky-300" href="{% url 'core:login' %}">{% tr "Sign in" "সাইন ইন" %}</a></p>
+</div>
+{{ country_data|json_script:"country-data" }}
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById("country-data").textContent);
+  var country = document.getElementById("id_country"), language = document.getElementById("id_language");
+  var dial = document.getElementById("dial"), example = document.getElementById("dial-example"), phone = document.getElementById("id_phone");
+  var touched = false;
+  language.addEventListener("change", function () {
+    touched = true;
+    location.href = "{% url 'growth:lang' 'XX' %}".replace("XX", language.value) + "?next=" + encodeURIComponent(location.pathname + "?country=" + country.value);
+  });
+  function update(suggest) {
+    var c = data[country.value]; if (!c) return;
+    dial.textContent = c.flag + " +" + c.dial;
+    example.textContent = c.example || "";
+    phone.placeholder = c.example || "";
+  }
+  country.addEventListener("change", function () { update(true); });
+  var q = new URLSearchParams(location.search).get("country");
+  if (q && data[q] && !{{ form.is_bound|yesno:"true,false" }}) country.value = q;
+  update(false);
+})();
+</script>
+{% endblock %}

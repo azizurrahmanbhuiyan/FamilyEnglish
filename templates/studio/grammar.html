@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% load fe_ui studio_ui %}
+{% block title %}Grammar coach{% endblock %}{% block page_title %}{% tr "Master English grammar" "ইংরেজি ব্যাকরণ" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <a href="{% url 'studio:learn' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Learn" "শিখুন" %}</a>
+  <div class="s-levels mt-4">
+    {% for code, name, name_bn in levels %}{% with c=counts|get:code %}
+    <a href="?level={{ code }}" class="s-level {% if code == level %}is-on{% endif %}">{{ code }}<small>{{ c.0 }}/{{ c.1 }}</small></a>
+    {% endwith %}{% endfor %}
+  </div>
+  <h2 class="mt-6 text-2xl font-extrabold">{% tr level_info.1 level_info.2 %}</h2>
+  <p class="s-muted text-lg">{% tr "Finish" "শেষ করুন" %} {{ lessons|length }} {% tr "lessons to upskill" "টি পাঠ" %} · {% tr "explained in English and Bangla" "ইংরেজি ও বাংলায় ব্যাখ্যা" %}</p>
+  <div class="mt-5 grid gap-3">
+    {% for g in lessons %}
+    <a href="{% url 'studio:grammar_lesson' g.slug %}" class="s-gcard">
+      <span class="s-gicon">{{ g.icon }}</span>
+      <span class="min-w-0 flex-1"><span class="block text-xl font-extrabold">{{ g.title }}</span>
+        <span class="block s-muted">{{ g.sub }} · <span class="font-bn">{{ g.title_bn }}</span></span></span>
+      {% if g.done %}<span class="text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>
+      {% elif not paid and g.slug not in free %}<span class="s-muted">{% icon "lock" %}</span>
+      {% elif not paid %}<span class="s-pill is-free">Free</span>{% else %}<span class="s-muted">{% icon "chevron" %}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

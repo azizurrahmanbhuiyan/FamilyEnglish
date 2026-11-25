@@ -1,0 +1,70 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Progress{% endblock %}{% block page_title %}{% tr "Progress" "অগ্রগতি" %}{% endblock %}
+{% block content %}
+<div class="s-grid lg-2-1">
+  <div class="s-grid content-start">
+    <section class="s-card is-pad">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 class="s-h2">{% tr "English proficiency" "ইংরেজি দক্ষতা" %}</h2>
+        {% if scores.cefr %}<span class="s-tag">{{ scores.cefr }}</span><span class="s-tag is-violet">IELTS ≈ {{ scores.ielts }}</span>{% endif %}
+        <span class="ml-auto text-3xl font-extrabold">{% if scores.overall is not None %}{{ scores.overall }}%{% else %}–{% endif %}</span>
+      </div>
+      <div class="mt-2 grid place-items-center">
+        <svg class="s-pent w-full max-w-sm" viewBox="0 0 {{ pent.size }} {{ pent.size }}" role="img" aria-label="Skill scores">
+          {% for r in pent.rings %}<polygon points="{{ r }}" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>{% endfor %}
+          {% for x, y in pent.axes %}<line x1="{{ pent.cx }}" y1="{{ pent.cy }}" x2="{{ x }}" y2="{{ y }}" stroke="rgba(255,255,255,.1)"/>{% endfor %}
+          <polygon points="{{ pent.shape }}" fill="rgba(70,168,255,.35)" stroke="#46a8ff" stroke-width="2.5" stroke-linejoin="round"/>
+          {% for l in pent.labels %}<text x="{{ l.x }}" y="{{ l.y }}" text-anchor="middle" font-size="10" font-weight="700" fill="#b9bce6">{% tr l.en l.bn %}<tspan x="{{ l.x }}" dy="12" font-size="11" fill="#fff">{% if l.score is not None %}{{ l.score }}{% else %}–{% endif %}</tspan></text>{% endfor %}
+        </svg>
+      </div>
+      <div class="mt-2"><div class="flex justify-between text-sm font-bold"><span>{{ journey.current }}</span><span>{{ journey.next }}</span></div><div class="s-bar mt-1"><i style="width: {{ journey.percent }}%"></i></div></div>
+      <p class="mt-3 text-sm s-muted">{% tr "Scores come from your practice: repeat-after-me (pronunciation), conversations and speech analyzer (fluency), level test and listening (listening), grammar coach (grammar), and learned words (vocabulary). Skills you haven't practised show –." "স্কোর আসে আপনার অনুশীলন থেকে। যে দক্ষতা অনুশীলন করেননি তাতে – দেখাবে।" %}</p>
+    </section>
+
+    <div class="s-stat-row">
+      <div class="s-stat"><b>{{ hours }}h {{ mins }}m</b><span>{% tr "Learning time" "শেখার সময়" %}</span></div>
+      <div class="s-stat"><b>{{ lessons }}</b><span>{% tr "Lessons finished" "শেষ করা পাঠ" %}</span></div>
+      <div class="s-stat"><b>{{ streak.streak }} 🔥</b><span>{% tr "Day streak · best" "দিনের ধারা · সেরা" %} {{ streak.best }}</span></div>
+      <div class="s-stat"><b>{{ xp.xp }}</b><span>XP · {{ xp.league_icon }} {{ xp.league_name }}</span></div>
+    </div>
+
+    <section class="s-card is-pad">
+      <h2 class="s-h2">{% tr "Last 7 days" "গত ৭ দিন" %}</h2>
+      <div class="s-chart mt-4">{% for d in week %}<div class="{% if d.today %}is-today{% endif %}"><span class="text-white font-bold">{{ d.xp }}</span><i style="height: {{ d.height }}%"></i>{{ d.label }}</div>{% endfor %}</div>
+      <p class="mt-2 text-xs s-muted">XP {% tr "per day" "প্রতিদিন" %}</p>
+    </section>
+
+    <section class="s-card is-pad">
+      <h2 class="s-h2">{% tr "Lesson history" "পাঠের ইতিহাস" %}</h2>
+      <div class="mt-3 grid gap-2">
+        {% for h in history %}<div class="flex items-center gap-3"><span class="text-emerald-300">{% icon "check-circle" %}</span><span class="min-w-0 flex-1 truncate">{{ h.title|default:h.key }}</span><span class="s-muted text-sm">{{ h.finished_at|date:"d M" }}</span><b>{{ h.score }}%</b></div>
+        {% empty %}<p class="s-muted">{% tr "Finished lessons will appear here." "শেষ করা পাঠ এখানে দেখাবে।" %}</p>{% endfor %}
+      </div>
+      <a href="{% url 'practice:reports' %}" class="mt-4 inline-block text-sm font-bold text-sky-300">{% tr "Detailed skill reports" "বিস্তারিত রিপোর্ট" %} →</a>
+    </section>
+  </div>
+
+  <div class="s-grid content-start">
+    <section class="s-card is-pad">
+      <div class="flex items-baseline justify-between"><h2 class="s-h2">{% tr "Achievements" "অর্জন" %}</h2><a href="{% url 'studio:badges' %}" class="text-sm font-bold text-sky-300">{{ badge_count }}/{{ badge_total }} →</a></div>
+      <div class="mt-3 grid grid-cols-3 gap-2">{% for b in badges_earned|slice:":6" %}<div class="s-badge"><span class="em">{{ b.icon }}</span><b>{% tr b.name b.name_bn %}</b></div>{% empty %}<p class="col-span-3 s-muted">{% tr "Your first badge is close!" "প্রথম ব্যাজ খুব কাছে!" %}</p>{% endfor %}</div>
+      {% for b in badges_next %}<div class="mt-3"><div class="flex justify-between text-sm"><span>{{ b.icon }} {% tr b.name b.name_bn %}</span><span class="s-muted">{{ b.now }}/{{ b.target }}</span></div><div class="s-bar is-thin mt-1"><i style="width: {{ b.percent }}%"></i></div></div>{% endfor %}
+    </section>
+
+    <section class="s-card is-pad">
+      <h2 class="s-h2">{% tr "Certificates" "সার্টিফিকেট" %}</h2>
+      {% for c in certificates %}<a href="{% url 'studio:certificate' c.number %}" class="mt-3 flex items-center gap-3 rounded-2xl p-3" style="background: rgba(255,194,71,.12)"><span class="text-3xl">📜</span><span><b class="block">{% tr c.title c.title_bn %}</b><span class="text-xs s-muted">{{ c.number }} · {{ c.issued_at|date:"d M Y" }}</span></span></a>
+      {% empty %}<p class="mt-2 s-muted text-sm">{% tr "Finish a whole grammar level, all units of a level or an IELTS band course to earn a printable certificate." "পুরো একটি ব্যাকরণ লেভেল, একটি লেভেলের সব ইউনিট বা একটি IELTS কোর্স শেষ করলে সার্টিফিকেট পাবেন।" %}</p>{% endfor %}
+    </section>
+
+    <section class="s-card is-pad" id="gems">
+      <h2 class="s-h2">{% icon "gem" %} {{ wallet.gems }} {% tr "gems" "জেম" %}</h2>
+      <p class="mt-1 text-sm s-muted">{% tr "Earn 2 gems for each new lesson, 5 for 90% or more." "প্রতিটি নতুন পাঠে ২টি, ৯০%+ হলে ৫টি জেম।" %} {% tr "Streak freezes left this month:" "এ মাসে বাকি স্ট্রিক ফ্রিজ:" %} <b>{{ streak.freezes_left }}</b></p>
+      <form method="post" action="{% url 'studio:buy_freeze' %}" class="mt-3">{% csrf_token %}<button class="s-btn-ghost w-full">🧊 {% tr "Buy a streak freeze — 20 gems" "স্ট্রিক ফ্রিজ কিনুন — ২০ জেম" %}</button></form>
+    </section>
+
+    <a href="{% url 'growth:leaderboard' %}" class="s-coach"><span class="s-coach-ico">🏆</span><span><span class="block text-xl font-extrabold">{% tr "Leaderboard" "লিডারবোর্ড" %}</span><span class="block s-muted">#{{ xp.rank|default:"–" }} / {{ xp.size }} · {% tr "nicknames only" "শুধু ডাকনাম" %}</span></span></a>
+    <a href="{% url 'growth:streaks' %}" class="s-coach"><span class="s-coach-ico">🎯</span><span><span class="block text-xl font-extrabold">{% tr "Goals & streaks" "লক্ষ্য ও ধারা" %}</span><span class="block s-muted">{% tr "Set your daily goal." "দৈনিক লক্ষ্য ঠিক করুন।" %}</span></span></a>
+  </div>
+</div>
+{% endblock %}

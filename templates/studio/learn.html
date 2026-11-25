@@ -1,0 +1,71 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Learn{% endblock %}{% block page_title %}{% tr "Learn" "শিখুন" %}{% endblock %}
+{% block content %}
+<section>
+  <h2 class="s-h2">{% tr "Courses" "কোর্স" %}</h2>
+  <div class="s-chips mt-3">
+    <a href="{% url 'studio:grammar' %}" class="s-chip-audio">📚 {% tr "Grammar A1–C" "ব্যাকরণ A1–C" %} <span class="s-muted text-sm">{{ grammar_done }}/{{ grammar_total }}</span></a>
+    <a href="{% url 'studio:pronunciation' %}" class="s-chip-audio">🗣️ {% tr "Pronunciation" "উচ্চারণ" %} <span class="s-muted text-sm">{{ pron_done }}/{{ pron_total }}</span></a>
+    <a href="{% url 'studio:stories' %}" class="s-chip-audio">📖 {% tr "Stories" "গল্প" %} <span class="s-muted text-sm">{{ stories_total }}</span></a>
+    <a href="{% url 'studio:ielts' %}" class="s-chip-audio">🎓 IELTS 6 · 7 · 8</a>
+    <a href="{% url 'learning:phonics_year' %}" class="s-chip-audio">🔤 {% tr "Phonics Year (36 weeks)" "ফনিক্স বছর (৩৬ সপ্তাহ)" %} <span class="s-pill is-free">{% tr "2 weeks free" "২ সপ্তাহ ফ্রি" %}</span></a>
+    <a href="{% url 'practice:words' %}" class="s-chip-audio">🃏 {% tr "Word weeks 3000/7000" "সাপ্তাহিক শব্দ" %}</a>
+    <a href="{% url 'course:home' %}" class="s-chip-audio">🧭 {% tr "Skill course" "দক্ষতার কোর্স" %}</a>
+    <a href="{% url 'course:handbook' %}" class="s-chip-audio">📘 {% tr "Pronunciation handbook (23 PDFs)" "উচ্চারণ হ্যান্ডবুক (২৩টি PDF)" %} <span class="s-pill is-free">{% tr "2 free" "২টি ফ্রি" %}</span></a>
+    <a href="{% url 'learning:library' %}" class="s-chip-audio">🪜 {% tr "Kids' ladder 0–8" "শিশুদের ধাপ ০–৮" %}</a>
+    <a href="{% url 'learning:talk_hub' %}" class="s-chip-audio">👨‍👩‍👧 {% tr "Talk at home" "বাসায় কথা" %}</a>
+    <a href="{% url 'course:level_test' %}" class="s-chip-audio">🧠 {% tr "Level test" "লেভেল টেস্ট" %}</a>
+  </div>
+</section>
+
+{% for level, units in levels %}
+<section class="mt-8">
+  <div class="flex items-baseline gap-3"><h2 class="s-h2">{% tr "Everyday English" "দৈনন্দিন ইংরেজি" %} {{ level }}</h2>
+    <span class="s-muted text-sm">{{ units|length }} {% tr "units · 5 lessons each" "ইউনিট · প্রতিটিতে ৫টি পাঠ" %}</span></div>
+  <div class="s-grid md-2 lg-3 mt-3">
+    {% for u in units %}
+    <button type="button" class="s-unit" data-open="sheet-{{ u.slug }}">
+      <div class="flex items-center gap-2">
+        <span class="s-tag {% cycle '' 'is-violet' %}">{% tr "Unit" "ইউনিট" %} {{ u.num }}</span>
+        {% if u.free and not paid %}<span class="s-pill is-free">Free</span>{% elif not paid %}<span class="s-pill is-lock">{% icon "lock" "ico ico-sm" %}</span>{% endif %}
+        {% if u.progress.done == u.progress.total %}<span class="ml-auto text-emerald-300">{% icon "check-circle" %}</span>{% endif %}
+      </div>
+      <div class="s-unit-title"><span><span class="s-unit-emoji">{{ u.emoji }}</span> {% tr u.title u.title_bn %}</span>{% icon "chevron" "ico ico-lg" %}</div>
+      <div class="s-bar is-thin mt-3"><i style="width: {{ u.progress.percent }}%"></i></div>
+    </button>
+
+    <dialog class="s-sheet" id="sheet-{{ u.slug }}">
+      <div class="s-sheet-in">
+        <div class="s-grab"></div>
+        <div class="flex items-center gap-3"><span class="s-tag">{% tr "Unit" "ইউনিট" %} {{ u.num }}</span><span class="s-muted text-lg">5 {% tr "Lessons" "পাঠ" %}</span>
+          <form method="dialog" class="ml-auto"><button class="p-close" aria-label="Close">{% icon "close" "ico ico-lg" %}</button></form></div>
+        <h3 class="mt-4 text-3xl font-extrabold">{{ u.emoji }} {% tr u.title u.title_bn %}</h3>
+        <p class="mt-2 text-lg s-sub">{% tr u.desc u.desc_bn %}</p>
+        <p class="s-eyebrow mt-6">{% tr "Vocabulary" "শব্দভান্ডার" %}</p>
+        <div class="s-chips mt-3">
+          {% for w in u.words_parsed %}<button type="button" class="s-chip-audio" data-say="{{ w.text }}">{% icon "volume" "ico" %}{{ w.text }}</button>{% endfor %}
+        </div>
+        <p class="s-eyebrow mt-6">{% tr "Grammar" "ব্যাকরণ" %}</p>
+        <div class="s-grammar-box mt-3">
+          <p class="text-xl font-extrabold">{{ u.grammar_lesson.title }}</p>
+          <p class="mt-1 s-sub">"{{ u.grammar_lesson.examples.0.0 }}"</p>
+        </div>
+        <a href="{% url 'studio:unit' u.slug %}" class="s-btn is-block mt-6">{% tr "Start now" "এখনই শুরু" %}</a>
+      </div>
+    </dialog>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script>
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("[data-open]"); if (!b) return;
+  var d = document.getElementById(b.dataset.open); if (d && d.showModal) d.showModal();
+});
+document.querySelectorAll("dialog.s-sheet").forEach(function (d) {
+  d.addEventListener("click", function (e) { if (e.target === d) d.close(); });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% load static fe_ui %}
+{% block title %}Short videos{% endblock %}
+{% block body_class %}is-shorts{% endblock %}
+{% block main_class %}{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="sh-wrap">
+  <div class="sh-head">
+    <a href="{% url 'studio:discover' %}" class="p-close" aria-label="Back">{% icon "back" "ico ico-lg" %}</a>
+    <div class="min-w-0"><p class="text-lg font-extrabold leading-tight">{% tr "Short videos" "ছোট ভিডিও" %}</p>
+      <p class="text-xs s-muted">{% tr "Watch a line, then say it back" "লাইনটি দেখুন, তারপর বলুন" %}</p></div>
+    <span class="sh-count ml-auto" id="sh-today" title="{% tr 'Said today' 'আজ বলেছেন' %}">🎬 <b>{{ done_today }}</b>{% if not paid %}/{{ free_per_day }}{% endif %}</span>
+  </div>
+  <div class="sh-topics">
+    {% for key, en, bn, em in topics %}{% if key != "videos" or counts.videos %}
+    <a href="?t={{ key }}" class="{% if key == topic %}is-on{% endif %}">{{ em }} {% tr en bn %}</a>
+    {% endif %}{% endfor %}
+  </div>
+  <div class="sh-feed" id="sh-feed" aria-live="polite"></div>
+  <div class="sh-start" id="sh-start">
+    {% include "_mascot.html" with cls="doel-lg" uid="sh" %}
+    <p class="mt-2 text-2xl font-extrabold">{% tr "Watch. Listen. Say it back." "দেখুন। শুনুন। বলুন।" %}</p>
+    <p class="mt-1 max-w-xs text-center s-sub">{% tr "Swipe up for the next short. Each line you say well earns XP." "পরের ভিডিওর জন্য ওপরে সোয়াইপ করুন। ঠিকভাবে বললে XP পাবেন।" %}</p>
+    {% if not paid %}<p class="mt-2 text-sm s-muted">{% tr "Free: 5 shorts a day. The family plan has them all." "ফ্রি: দিনে ৫টি। ফ্যামিলি প্ল্যানে সব।" %}</p>{% endif %}
+    <button type="button" class="s-btn mt-5 !px-10" id="sh-go">{% icon "play" %} {% tr "Start" "শুরু" %}</button>
+  </div>
+</div>
+<template id="tpl-icons">
+  <span data-i="replay">{% icon "retry" "ico" %}</span><span data-i="snail">{% icon "snail" "ico" %}</span>
+  <span data-i="bookmark">{% icon "bookmark" "ico" %}</span><span data-i="mic">{% icon "mic" "ico" %}</span>
+  <span data-i="stop">{% icon "stop" "ico" %}</span><span data-i="down">{% icon "chevron" "ico" %}</span>
+  <span data-i="ok">{% icon "check-circle" "ico" %}</span><span data-i="lock">{% icon "lock" "ico" %}</span>
+</template>
+{{ cfg|json_script:"sh-config" }}
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/shorts.js' %}"></script>{% endblock %}

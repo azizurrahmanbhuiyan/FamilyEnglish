@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}My Words{% endblock %}{% block page_title %}{% tr "My Words" "আমার শব্দ" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:discover' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Discover" "খুঁজুন" %}</a>
+  {% if marks %}
+  <a href="?practise=1" class="s-btn is-block mt-4">{% icon "mic" %} {% tr "Practise my words" "আমার শব্দ অনুশীলন" %} ({{ marks|length }})</a>
+  <div class="mt-4 grid gap-2">
+    {% for m in marks %}
+    <div class="s-task"><button type="button" class="text-sky-300" data-say="{{ m.text }}">{% icon "volume" "ico ico-lg" %}</button>
+      <span class="min-w-0"><span class="block text-lg font-extrabold">{{ m.text }}</span><span class="block text-sm s-muted">{{ m.ipa }}{% if m.meaning_bn %} · <span class="font-bn">{{ m.meaning_bn }}</span>{% endif %}</span></span>
+      <span class="s-count text-xs">{{ m.created_at|date:"d M" }}</span></div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="s-card is-pad mt-4 text-center"><p class="text-5xl">🔖</p><p class="mt-2 text-lg font-bold">{% tr "No saved words yet" "এখনো কোনো শব্দ সংরক্ষিত নেই" %}</p>
+    <p class="s-sub">{% tr "Tap the bookmark on any word in a lesson or in the dictionary." "পাঠ বা অভিধানের যেকোনো শব্দে বুকমার্কে চাপ দিন।" %}</p></div>
+  {% endif %}
+</div>
+{% endblock %}

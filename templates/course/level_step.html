@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load fe_ui static %}
+{% block title %}AI level test{% endblock %}
+{% block content %}
+<div class="flex items-center gap-3">
+  <p class="eyebrow"><span class="mr-1.5 text-brand-600">{% icon "test" "ico" %}</span>{% tr "AI level test" "AI লেভেল টেস্ট" %} · {% tr "part" "অংশ" %} {{ number }} / {{ count }}</p>
+  <div class="band-bar ml-auto w-48"><span style="width: {{ percent }}%; background: #2b6f4f"></span></div>
+</div>
+
+<form method="post" class="mt-3" id="step-form">{% csrf_token %}
+{% if skill == "listening" %}
+  <h1 class="font-display text-3xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "ear" "ico" %}</span>{% tr "Listening" "শোনা" %}{% if part == "2" %} · {% tr "Advanced round" "উচ্চতর রাউন্ড" %} 🚀{% endif %}</h1>
+  <p class="text-stone-600">{% tr "Press ▶ to listen (you can play twice), then choose." "▶ চেপে শুনুন (দুবার শোনা যাবে), তারপর বেছে নিন।" %}</p>
+{% elif skill == "reading" %}
+  <h1 class="font-display text-3xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "book" "ico" %}</span>{% tr "Reading" "পড়া" %}{% if part == "2" %} · {% tr "Advanced round" "উচ্চতর রাউন্ড" %} 🚀{% endif %}</h1>
+{% elif skill == "grammar" %}
+  <h1 class="font-display text-3xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "puzzle" "ico" %}</span>{% tr "Grammar" "ব্যাকরণ" %}{% if part == "2" %} · {% tr "Advanced round" "উচ্চতর রাউন্ড" %} 🚀{% endif %}</h1>
+  <p class="text-stone-600">{% tr "Choose the word that completes the sentence." "বাক্য পূর্ণ করে এমন শব্দ বেছে নিন।" %}</p>
+{% endif %}
+
+{% if items %}
+  {% if passages %}{% for p in passages %}<div class="mt-4 card p-5"><p class="text-xs font-bold uppercase text-stone-400">{% tr "Text" "লেখা" %} {{ forloop.counter }}</p><p class="mt-1 text-lg leading-relaxed">{{ p.text }}</p></div>{% endfor %}{% endif %}
+  <div class="mt-4 space-y-3">
+    {% for c in items %}
+    <article class="qcard">
+      <div class="flex items-center gap-2"><span class="qnum">{{ c.n }}</span><p class="text-lg font-bold">{{ c.q }}</p></div>
+      {% if c.say %}<button type="button" class="btn-ghost mt-2 !py-1.5 text-sm" data-play-limited="{{ c.say }}">▶ {% tr "Play" "শুনুন" %} <span data-left>2</span></button>{% endif %}
+      <div class="mt-3 grid gap-2 sm:grid-cols-3">
+        {% for o in c.opts %}<label><input type="radio" class="sr-only" name="q{{ c.i }}" value="{{ o }}"><span class="opt">{{ o }}</span></label>{% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="mt-3 text-xs text-stone-500">{% tr "Not sure? Leave it blank — guessing makes your level less accurate." "নিশ্চিত না হলে ফাঁকা রাখুন — আন্দাজে দিলে লেভেল ঠিকমতো আসবে না।" %}</p>
+{% elif skill == "writing" %}
+  <h1 class="font-display text-3xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "pen" "ico" %}</span>{% tr "Writing" "লেখা" %}</h1>
+  <div class="mt-4 card p-5" data-mic-box>
+    <p class="text-lg font-bold">{{ task.q }}</p>
+    <textarea name="text" rows="9" class="field mt-3" data-answer required placeholder="{% tr 'Write in English…' 'ইংরেজিতে লিখুন…' %}"></textarea>
+    <p class="mt-1 text-sm text-stone-500">{% tr "Words" "শব্দ" %}: <span data-count>0</span> · {% tr "aim for at least" "অন্তত" %} {{ task.min }}. {% tr "Don't use a translator — we want your real level." "অনুবাদক ব্যবহার করবেন না — আমরা আপনার আসল লেভেল জানতে চাই।" %}</p>
+  </div>
+{% elif skill == "speaking" %}
+  <h1 class="font-display text-3xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "speak" "ico" %}</span>{% tr "Speaking" "বলা" %}</h1>
+  <p class="text-stone-600">{% tr "Press 🎤, speak, and your words appear in the box. No microphone? Type what you would say." "🎤 চেপে বলুন, কথাগুলো বক্সে আসবে। মাইক নেই? যা বলতেন তা লিখুন।" %}</p>
+  {% for s in sp.repeat %}
+  <div class="mt-4 qcard" data-mic-box>
+    <p class="text-sm font-bold text-stone-500">{% tr "Read this aloud" "জোরে পড়ুন" %} ({{ forloop.counter }}/2)</p>
+    <p class="font-display text-2xl font-bold text-brand-800">“{{ s }}”</p>
+    <div class="mt-2 flex items-center gap-2"><button type="button" class="speak-btn" data-mic>🎤</button><input class="field !text-base" name="r{{ forloop.counter0 }}" data-answer placeholder="…"></div>
+  </div>
+  {% endfor %}
+  <div class="mt-4 qcard" data-mic-box>
+    <p class="text-sm font-bold text-stone-500">{% tr "Answer the question (speak for about 1 minute)" "প্রশ্নের উত্তর দিন (প্রায় ১ মিনিট)" %}</p>
+    <p class="text-lg font-bold">{{ sp.open }}</p>
+    <div class="mt-2 flex items-start gap-2"><button type="button" class="speak-btn shrink-0" data-mic data-append>🎤</button><textarea class="field" rows="5" name="open" data-answer></textarea></div>
+    <p class="mt-1 text-xs text-stone-500">{% tr "Press 🎤 again to add more. Words" "আরও যোগ করতে আবার 🎤 চাপুন। শব্দ" %}: <span data-count>0</span> · {% tr "aim for" "লক্ষ্য" %} {{ sp.min }}+</p>
+  </div>
+  <label class="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" name="typed" value="1"> {% tr "I typed instead of speaking" "আমি বলার বদলে লিখেছি" %}</label>
+{% endif %}
+  <button class="btn-primary mt-6">{% if number == count %}{% tr "Finish and get my report" "শেষ করুন ও রিপোর্ট দেখুন" %}{% else %}{% tr "Next" "পরবর্তী" %} →{% endif %}</button>
+  {% if number == count %}<p class="mt-2 text-sm text-stone-500" id="wait" hidden>⏳ {% tr "The AI coach is marking your test… this can take up to a minute." "AI কোচ নম্বর দিচ্ছে… এক মিনিট পর্যন্ত লাগতে পারে।" %}</p>{% endif %}
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/course.js' %}"></script>
+<script>
+document.querySelectorAll("[data-play-limited]").forEach(b => {
+  let left = 2;
+  b.addEventListener("click", () => {
+    if (!left) return;
+    left -= 1; b.querySelector("[data-left]").textContent = left;
+    window.feSay && window.feSay(b.dataset.playLimited, 0.9);
+    if (!left) b.disabled = true, b.classList.add("opacity-50");
+  });
+});
+document.getElementById("step-form").addEventListener("submit", e => {
+  const w = document.getElementById("wait"); if (w) w.hidden = false;
+  e.target.querySelector("button.btn-primary").disabled = true;
+});
+</script>
+{% endblock %}

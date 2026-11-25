@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Discover{% endblock %}{% block page_title %}{% tr "Discover" "খুঁজুন" %}{% endblock %}
+{% block content %}
+<form action="{% url 'studio:dictionary' %}" class="relative">
+  <span class="absolute left-4 top-1/2 -translate-y-1/2 s-muted">{% icon "search" "ico ico-lg" %}</span>
+  <input name="q" class="w-full !rounded-2xl py-4 pl-14 pr-4 text-lg" placeholder="{% tr 'Search the dictionary — meaning, IPA, Bangla' 'অভিধানে খুঁজুন — অর্থ, IPA, বাংলা' %}">
+</form>
+<div class="s-grid lg-2-1 mt-6">
+  <div class="s-grid content-start">
+    {% if word %}
+    <section class="s-card is-glow is-pad">
+      <p class="s-eyebrow">{% tr "Word of the day" "আজকের শব্দ" %}</p>
+      <div class="mt-2 flex items-center gap-3"><p class="text-4xl font-extrabold">{{ word.word }}</p>
+        <button type="button" class="text-sky-300" data-say="{{ word.word }}">{% icon "volume" "ico ico-xl" %}</button>
+        <button type="button" class="text-sky-300" data-say="{{ word.word }}" data-rate="0.55">{% icon "snail" "ico ico-xl" %}</button></div>
+      <p class="s-muted text-lg" style="font-family: 'Charis SIL', serif">{{ word.ipa }}{% if word.pos %} · {{ word.pos }}{% endif %}</p>
+      <p class="mt-2 text-lg">{{ word.definition }}</p>
+      {% if word.example %}<p class="mt-1 s-sub italic">“{{ word.example }}”</p>{% endif %}
+      {% if word.meaning_bn %}<p class="mt-2 font-bn text-lg">{{ word.meaning_bn }}</p>{% endif %}
+      <a class="mt-3 inline-flex items-center gap-1 text-sm font-bold text-sky-300" target="_blank" rel="noopener" href="https://youglish.com/pronounce/{{ word.word|urlencode }}/english/uk">{% icon "external" "ico ico-sm" %} {% tr "Hear it in real British videos" "আসল ব্রিটিশ ভিডিওতে শুনুন" %}</a>
+    </section>
+    {% endif %}
+    <section>
+      <div class="flex items-baseline justify-between"><h2 class="s-h2">🎬 {% tr "Short videos" "ছোট ভিডিও" %} <span class="s-pill is-new">New</span></h2>
+        <a href="{% url 'learning:videos' %}" class="text-sm font-bold text-sky-300">{% tr "Topic videos" "বিষয়ভিত্তিক ভিডিও" %} →</a></div>
+      <p class="mt-1 s-sub">{% tr "Watch one line, then say it back. Swipe for the next." "একটি লাইন দেখুন, তারপর বলুন। পরেরটির জন্য সোয়াইপ করুন।" %}
+        {% if shorts_today %}· {% tr "Today" "আজ" %}: <b>{{ shorts_today }}</b>{% endif %}</p>
+      <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {% for key, en, bn, em in short_topics %}
+        <a href="{% url 'studio:shorts' %}?t={{ key }}" class="sh-tile" style="--a: {{ em.1.0 }}; --b: {{ em.1.1 }}">
+          <span class="text-4xl">{{ em.0 }}</span><span class="font-extrabold">{% tr en bn %}</span></a>
+        {% endfor %}
+      </div>
+      <a href="{% url 'studio:shorts' %}" class="s-btn is-block mt-4">{% icon "play" %} {% tr "Start watching" "দেখা শুরু করুন" %}</a>
+    </section>
+  </div>
+  <div class="s-grid content-start">
+    <a href="{% url 'studio:my_words' %}" class="s-coach"><span class="s-coach-ico">🔖</span><span class="flex-1"><span class="block text-xl font-extrabold">{% tr "My Words" "আমার শব্দ" %}</span>
+      <span class="block s-muted">{{ bookmark_count }} {% tr "saved — practise them any time" "টি সংরক্ষিত — যেকোনো সময় অনুশীলন" %}</span></span></a>
+    <a href="{% url 'practice:words' %}" class="s-coach"><span class="s-coach-ico">🗓️</span><span><span class="block text-xl font-extrabold">{% tr "Word weeks" "সাপ্তাহিক শব্দ" %}</span><span class="block s-muted">{% tr "3000 words for kids · 7000 for school and IELTS" "শিশুদের ৩০০০ · স্কুল ও IELTS-এর ৭০০০ শব্দ" %}</span></span></a>
+    <a href="{% url 'learning:talk_hub' %}" class="s-coach"><span class="s-coach-ico">👨‍👩‍👧</span><span><span class="block text-xl font-extrabold">{% tr "Talk at home" "বাসায় কথা" %}</span><span class="block s-muted">{% tr "Family conversations for every day." "প্রতিদিনের পারিবারিক কথোপকথন।" %}</span></span></a>
+    <a href="{% url 'practice:dictation' %}" class="s-coach"><span class="s-coach-ico">🎧</span><span><span class="block text-xl font-extrabold">{% tr "Dictation" "ডিক্টেশন" %}</span><span class="block s-muted">{% tr "Listen and write." "শুনে লিখুন।" %}</span></span></a>
+    <a href="{% url 'practice:typing' %}" class="s-coach"><span class="s-coach-ico">⌨️</span><span><span class="block text-xl font-extrabold">{% tr "Typing speed" "টাইপিং স্পিড" %}</span><span class="block s-muted">{% tr "Type English faster." "দ্রুত ইংরেজি টাইপ করুন।" %}</span></span></a>
+  </div>
+</div>
+{% endblock %}

@@ -40,6 +40,8 @@ class Module(models.Model):
     title = models.CharField(max_length=120)
     title_bn = models.CharField(max_length=160, blank=True)
     summary_bn = models.TextField(blank=True)
+    plan = models.JSONField(default=dict, blank=True,
+                            help_text="Phonics Year week: {week, term, goal, prepare: [...], tricky: [...]}")
 
     class Meta:
         ordering = ["level__number", "order"]
@@ -68,6 +70,11 @@ class Lesson(models.Model):
     home_task_bn = models.TextField(help_text="'Use it at home' task in Bangla")
     home_task_en = models.TextField(blank=True)
     activity = models.CharField(max_length=12, choices=Activity.choices, default=Activity.DICTATION)
+    teacher = models.JSONField(default=dict, blank=True,
+                               help_text="Parents' guide: {day, story, story_bn, steps: [{t, t_bn, min, do, do_bn}], words, sentences, tricky, text, kind}")
+    family_talk = models.JSONField(
+        default=list, blank=True,
+        help_text='Talk at home: [{"who": "sister", "me": "...", "them": "...", "me_bn": "...", "them_bn": "..."}]')
 
     class Meta:
         ordering = ["module__level__number", "module__order", "order"]
@@ -191,6 +198,9 @@ class StudyPlan(models.Model):
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    kind = models.CharField(max_length=10, default="levels",
+                            help_text="levels = level ladder lessons; course = AI-test skill course; track = full programme")
+    track = models.CharField(max_length=10, blank=True, help_text="kid, student, adult or elder (full programme)")
 
     class Meta:
         ordering = ["-created_at"]
@@ -209,8 +219,32 @@ class PlanDay(models.Model):
     plan = models.ForeignKey(StudyPlan, on_delete=models.CASCADE, related_name="days")
     date = models.DateField()
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
+    course_lesson = models.ForeignKey("course.CourseLesson", on_delete=models.CASCADE, null=True, blank=True)
+    topic = models.ForeignKey("learning.TalkTopic", on_delete=models.CASCADE, null=True, blank=True)
+    deck = models.ForeignKey("practice.VocabDeck", on_delete=models.CASCADE, null=True, blank=True,
+                             help_text="A week of the 3000/7000 word list")
     kind = models.CharField(max_length=12, default="lesson",
-                            help_text="lesson, review or family")
+                            help_text="lesson, course, topic, review (repeat an earlier item) or family")
+    stage = models.CharField(max_length=80, blank=True, help_text="Stage of a full programme, e.g. Year 1")
+
+    XP = {"lesson": 50, "course": 60, "topic": 40, "words": 40, "review": 15, "family": 10}
+
+    @property
+    def item(self):
+        return self.course_lesson or self.lesson or self.topic or self.deck
+
+    @property
+    def title(self):
+        item = self.item
+        if item and self.kind == "review":
+            return f"Repeat: {item.title}"
+        if item:
+            return item.title
+        return "Review day" if self.kind == "review" else "Family English day"
+
+    @property
+    def xp(self):
+        return self.XP.get(self.kind, 10)
     status = models.CharField(max_length=6, choices=Status.choices, default=Status.TODO)
 
     class Meta:
@@ -227,3 +261,151 @@ class Progress(models.Model):
     class Meta:
         unique_together = ("learner", "lesson")
         ordering = ["-completed_at"]
+
+
+class TalkTopic(models.Model):
+    """A 'Talk at home' theme lesson: daily life (good morning, prayers…) or a topic (animals, planets, trips…)."""
+
+    class Group(models.TextChoices):
+        DAILY = "daily", "Daily life"
+        STUDY = "study", "Topics"
+        TRIP = "trip", "Trips"
+
+    slug = models.SlugField(unique=True)
+    group = models.CharField(max_length=8, choices=Group.choices)
+    order = models.PositiveSmallIntegerField(default=1)
+    emoji = models.CharField(max_length=16, blank=True)
+    title = models.CharField(max_length=120)
+    title_bn = models.CharField(max_length=160, blank=True)
+    intro_bn = models.TextField(blank=True)
+    words = models.JSONField(default=list, blank=True, help_text='[{"word", "emoji", "bn"}]')
+    rhyme = models.TextField(blank=True, help_text="Optional public-domain rhyme")
+    rhyme_note = models.CharField(max_length=120, blank=True)
+    family_talk = models.JSONField(default=list, blank=True)
+
+    class Meta:
+        ordering = ["group", "order"]
+
+    def __str__(self):
+        return self.title
+
+
+class FamilyTalkSet(models.Model):
+    """New 'Talk at home' sentences a family asked the AI to make for one lesson (latest set is shown)."""
+
+    family = models.ForeignKey("core.Family", on_delete=models.CASCADE, related_name="talk_sets")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="talk_sets", null=True, blank=True)
+    topic = models.ForeignKey(TalkTopic, on_delete=models.CASCADE, related_name="talk_sets", null=True, blank=True)
+    learner = models.ForeignKey("core.Learner", on_delete=models.SET_NULL, null=True, blank=True,
+                                related_name="talk_sets", help_text="Who asked (counts toward the daily AI limit)")
+    data = models.JSONField(default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class VideoClipQuerySet(models.QuerySet):
+    def for_item(self, item):
+        return self.filter(**VideoClip.target_kwargs(item))
+
+    def visible(self):
+        return self.filter(status=VideoClip.Status.APPROVED)
+
+
+class VideoClip(models.Model):
+    """A short part of a YouTube video for one lesson: only seconds start..end are played.
+
+    Max 5 minutes per clip and 20 minutes per lesson (see learning/clips.py)."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Waiting for approval"
+        APPROVED = "approved", "Shown"
+        REJECTED = "rejected", "Rejected"
+
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True, related_name="clips")
+    course_lesson = models.ForeignKey("course.CourseLesson", on_delete=models.CASCADE, null=True, blank=True,
+                                      related_name="clips")
+    topic = models.ForeignKey(TalkTopic, on_delete=models.CASCADE, null=True, blank=True, related_name="clips")
+    order = models.PositiveSmallIntegerField(default=1)
+    youtube_id = models.CharField(max_length=20, help_text="Video ID or paste the full YouTube link")
+    start = models.PositiveIntegerField(default=0, help_text="Start, in seconds")
+    end = models.PositiveIntegerField(help_text="End, in seconds (at most 5 minutes after the start)")
+    title = models.CharField(max_length=200, blank=True)
+    channel = models.CharField(max_length=80, blank=True)
+    part = models.CharField(max_length=120, blank=True, help_text="Chapter used, for long videos")
+    source = models.CharField(max_length=8, default="manual")
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.APPROVED)
+    say_line = models.CharField(max_length=200, blank=True,
+                                help_text="Short videos: the exact line spoken in this clip. Learners watch it, then say it back. "
+                                          "Keep the clip under 60 seconds.")
+    say_line_bn = models.CharField(max_length=240, blank=True, help_text="Bangla meaning of the line (optional)")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = VideoClipQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.title or self.youtube_id} ({self.start_label}–{self.end_label})"
+
+    @staticmethod
+    def target_kwargs(item):
+        from course.models import CourseLesson
+        if isinstance(item, Lesson):
+            return {"lesson": item}
+        if isinstance(item, CourseLesson):
+            return {"course_lesson": item}
+        if isinstance(item, TalkTopic):
+            return {"topic": item}
+        raise ValueError("Unknown lesson type")
+
+    @property
+    def length(self):
+        return max(0, self.end - self.start)
+
+    @property
+    def start_label(self):
+        from .clips import fmt_time
+        return fmt_time(self.start)
+
+    @property
+    def end_label(self):
+        from .clips import fmt_time
+        return fmt_time(self.end)
+
+    @property
+    def length_label(self):
+        from .clips import fmt_time
+        return fmt_time(self.length)
+
+    @property
+    def embed_url(self):
+        # Only this part plays. youtube-nocookie, no autoplay, related videos only from the same channel.
+        return (f"https://www.youtube-nocookie.com/embed/{self.youtube_id}?start={self.start}&end={self.end}"
+                "&rel=0&modestbranding=1&playsinline=1")
+
+    @property
+    def thumb(self):
+        return f"https://i.ytimg.com/vi/{self.youtube_id}/mqdefault.jpg"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        from .clips import MAX_CLIP, MAX_TOTAL, youtube_id
+
+        vid = youtube_id(self.youtube_id)
+        if not vid:
+            raise ValidationError({"youtube_id": "Paste a single YouTube video link or ID (not a playlist)."})
+        self.youtube_id = vid
+        targets = [x for x in (self.lesson_id, self.course_lesson_id, self.topic_id) if x]
+        if len(targets) != 1:
+            raise ValidationError("Choose exactly one lesson, course lesson or topic.")
+        if self.end <= self.start:
+            raise ValidationError({"end": "End must be after the start."})
+        if self.end - self.start > MAX_CLIP:
+            raise ValidationError({"end": "A clip can be at most 5 minutes long."})
+        others = VideoClip.objects.filter(lesson_id=self.lesson_id, course_lesson_id=self.course_lesson_id,
+                                          topic_id=self.topic_id).exclude(pk=self.pk).exclude(status="rejected")
+        if sum(c.length for c in others) + self.length > MAX_TOTAL:
+            raise ValidationError("All clips of a lesson together can be at most 20 minutes.")

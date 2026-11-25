@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{{ unit.title }}{% endblock %}{% block page_title %}{% tr unit.title unit.title_bn %} · <span class="s-muted">{% tr "Unit" "ইউনিট" %} {{ num }}</span>{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:learn' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Learn" "শিখুন" %}</a>
+  <h2 class="mt-3 text-3xl font-extrabold">{{ unit.emoji }} {% tr unit.title unit.title_bn %}</h2>
+  <p class="mt-1 s-sub">{% tr unit.desc unit.desc_bn %}</p>
+
+  <p class="s-eyebrow mt-6">{% tr "Outcomes" "যা শিখবেন" %}</p>
+  <div class="s-card is-pad mt-3">
+    <p class="s-eyebrow">{% tr "At the end of this unit, you can:" "এই ইউনিট শেষে আপনি পারবেন:" %}</p>
+    <div class="s-outcome mt-4"><span class="ok">{% icon "check-circle" "ico ico-sm" %}</span><p class="text-lg">{% tr unit.outcome unit.outcome_bn %}</p></div>
+    <div class="s-outcome mt-3"><span class="ok">{% icon "check-circle" "ico ico-sm" %}</span><p class="text-lg">{% tr "Use" "ব্যবহার করতে" %} <b>{{ grammar.title }}</b></p></div>
+    <div class="s-outcome mt-3"><span class="ok">{% icon "check-circle" "ico ico-sm" %}</span><p class="text-lg">{% tr "Say" "উচ্চারণ করতে" %} {% for w in words|slice:":4" %}<b>{{ w.text }}</b>{% if not forloop.last %}, {% endif %}{% endfor %} {% tr "with a clear British accent" "পরিষ্কার ব্রিটিশ উচ্চারণে" %}</p></div>
+  </div>
+
+  <div class="s-lessons mt-6">
+    <div class="flex items-center gap-4 px-3 py-3"><b class="text-lg">{{ progress.done }}/{{ progress.total }}</b>
+      <span class="s-eyebrow !text-white">{% tr unit.outcome unit.outcome_bn %}</span></div>
+    {% for l in lessons %}
+    <a href="{% if locked %}{% url 'core:pay' %}{% else %}{% url 'studio:unit_lesson' unit.slug l.n %}{% endif %}" class="s-lesson {% if l.next %}is-next{% endif %} {% if l.done %}is-done{% endif %}">
+      <span class="s-lesson-ico k-{{ l.icon }}">{% if l.icon == "repeat" %}{% icon "repeat" %}{% elif l.icon == "wave" %}{% icon "wave" %}{% elif l.icon == "mic" %}{% icon "mic" %}{% else %}{% icon "chat" %}{% endif %}</span>
+      <span class="min-w-0">
+        <span class="s-lesson-t"><span class="s-lesson-n">{% if l.next %}{% tr "Next up" "এরপর" %}{% else %}{% tr "Lesson" "পাঠ" %} {{ l.n }}{% endif %} -</span> {% tr l.title l.title_bn %}</span>
+        <span class="block s-diff">{{ l.difficulty }}{% if l.score is not None %} · <span class="text-emerald-300">{{ l.score }}%</span>{% endif %}</span>
+      </span>
+      {% if locked %}<span class="ml-auto s-muted">{% icon "lock" %}</span>{% elif l.done %}<span class="ml-auto text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% if locked %}<p class="mt-4 text-center s-sub">{% tr "Units are part of the family plan. The first unit is free to try." "ইউনিটগুলো ফ্যামিলি প্ল্যানের অংশ। প্রথম ইউনিট ফ্রি।" %} <a class="font-bold text-sky-300" href="{% url 'core:pricing' %}">{% tr "See plans" "প্ল্যান দেখুন" %}</a></p>{% endif %}
+</div>
+{% endblock %}

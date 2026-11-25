@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{{ c.title }}{% endblock %}{% block page_title %}{% tr c.title c.title_bn %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:coach' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Coach" "কোচ" %}</a>
+  <div class="mt-4 flex items-center gap-4"><span class="s-coach-ico">{{ c.icon }}</span>
+    <div><h2 class="text-3xl font-extrabold">{% tr c.title c.title_bn %}</h2><p class="s-sub">{% tr c.desc c.desc_bn %}</p></div></div>
+  <p class="s-eyebrow mt-8">{% tr "Scenarios" "পরিস্থিতি" %}</p>
+  <div class="s-lessons mt-3">
+    {% for s in scenarios %}
+    <div class="s-lesson {% if s.done %}is-done{% endif %}">
+      <span class="s-lesson-ico k-chat">{% icon "chat" %}</span>
+      <span class="min-w-0 flex-1"><span class="s-lesson-t">{% tr s.title s.title_bn %}</span>
+        <span class="block text-sm s-muted">{{ s.setting }} · {% tr "you talk with" "যার সাথে কথা" %} {{ s.persona }}</span>
+        <span class="mt-2 flex flex-wrap gap-2">
+          <a href="{% url 'studio:coach_play' c.slug s.slug %}" class="s-btn !py-2 !px-4 text-sm">{% tr "Practise script" "স্ক্রিপ্ট অনুশীলন" %}</a>
+          {% if ai_on %}<a href="{% url 'studio:coach_play' c.slug s.slug %}?free=1" class="s-btn-ghost !py-2 !px-4 text-sm">✨ {% tr "Free talk" "মুক্ত আলাপ" %}</a>{% endif %}
+        </span></span>
+      {% if s.done %}<span class="text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% if ai_on %}<p class="mt-3 text-sm s-muted">✨ {% tr "Free talk uses AI:" "মুক্ত আলাপে AI ব্যবহার হয়:" %} {{ ai_left }} {% tr "replies left today." "টি উত্তর আজ বাকি।" %}</p>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,3001 @@
+rank	word	pos	ipa_gb
+1	mother	noun, verb	/ˈmʌðə/
+2	father	noun, verb	/ˈfɑːðə/
+3	mum	noun, adjective	/mʌm/
+4	dad	noun	/dæd/
+5	baby	noun, verb	/ˈbeɪbi/
+6	brother	noun	/ˈbrʌðə/
+7	sister	noun	/ˈsɪstə/
+8	grandma	noun	/ˈɡræmˌmɑː/
+9	grandpa	noun	/ˈɡræmˌpɑː/
+10	family	noun	/ˈfæmli/
+11	friend	noun	/frend/
+12	boy	noun	/bɔɪ/
+13	girl	noun	/ɡɜːl/
+14	man	noun, verb	/mæn/
+15	woman	noun	/ˈwʊmən/
+16	child	noun	/tʃaɪld/
+17	teacher	noun	/ˈtiːtʃə/
+18	school	noun, verb	/skuːl/
+19	book	noun, verb	/bʊk/
+20	pen	noun, verb	/pen/
+21	pencil	noun, verb	/ˈpensəl/
+22	bag	noun, verb	/bæɡ/
+23	desk	noun	/desk/
+24	chair	noun, verb	/tʃeə/
+25	table	noun, verb	/ˈteɪbəl/
+26	door	noun	/dɔː/
+27	window	noun, verb	/ˈwɪndəʊ/
+28	house	noun, verb	/haʊs/
+29	home	noun, verb	/həʊm/
+30	room	noun, verb	/ruːm/
+31	bed	noun, verb	/bed/
+32	kitchen	noun	/ˈkɪtʃən/
+33	bathroom	noun	/ˈbɑːˌθruːm/
+34	garden	noun, verb	/ˈɡɑːdən/
+35	tree	noun, verb	/triː/
+36	flower	noun, verb	/ˈflaʊə/
+37	sun	noun, verb	/sʌn/
+38	moon	noun, verb	/muːn/
+39	star	noun, verb	/stɑː/
+40	sky	noun, verb	/skaɪ/
+41	rain	noun, verb	/reɪn/
+42	water	noun, verb	/ˈwɔːtə/
+43	fire	noun, verb	/ˈfaɪə/
+44	cloud	noun, verb	/klaʊd/
+45	wind	noun, verb	/wɪnd/
+46	sea	noun	/siː/
+47	river	noun	/ˈrɪvə/
+48	beach	noun, verb	/biːtʃ/
+49	cat	noun, verb	/kæt/
+50	dog	noun, verb	/dɒɡ/
+51	cow	noun, verb	/kaʊ/
+52	goat	noun	/ɡəʊt/
+53	hen	noun	/hen/
+54	duck	noun, verb	/dʌk/
+55	fish	noun, verb	/fɪʃ/
+56	bird	noun	/bɜːd/
+57	horse	noun, verb	/hɔːs/
+58	elephant	noun	/ˈelɪfənt/
+59	tiger	noun	/ˈtaɪɡə/
+60	lion	noun	/ˈlaɪən/
+61	monkey	noun, verb	/ˈmʌŋki/
+62	snake	noun, verb	/sneɪk/
+63	frog	noun, verb	/frɒɡ/
+64	rabbit	noun, verb	/ˈræbɪt/
+65	bee	noun	/biː/
+66	ant	noun	/ænt/
+67	red	noun, adjective	/red/
+68	blue	noun, verb	/bluː/
+69	green	noun, verb	/ɡriːn/
+70	yellow	noun, verb	/ˈjeləʊ/
+71	orange	noun, adjective	/ˈɒrɪndʒ/
+72	pink	noun, verb	/pɪŋk/
+73	purple	noun, adjective	/ˈpɜːpəl/
+74	black	noun, verb	/blæk/
+75	white	noun, verb	/waɪt/
+76	brown	noun, verb	/braʊn/
+77	colour	noun, verb	/ˈkʌlə/
+78	one	number	/wʌn/
+79	two	number	/tuː/
+80	three	number	/θriː/
+81	four	number	/fɔː/
+82	five	number	/faɪv/
+83	six	number	/sɪks/
+84	seven	number	/ˈsevən/
+85	eight	number	/eɪt/
+86	nine	number	/naɪn/
+87	ten	number	/ten/
+88	number	noun, verb	/ˈnʌmbə/
+89	head	noun, verb	/hed/
+90	hair	noun	/heə/
+91	eye	noun, verb	/aɪ/
+92	ear	noun, verb	/ɪə/
+93	nose	noun, verb	/nəʊz/
+94	mouth	noun, verb	/maʊθ/
+95	tooth	noun	/tuːθ/
+96	face	noun, verb	/feɪs/
+97	hand	noun, verb	/hænd/
+98	arm	noun, verb	/ɑːm/
+99	leg	noun	/leɡ/
+100	foot	noun, verb	/fʊt/
+101	finger	noun, verb	/ˈfɪŋɡə/
+102	apple	noun	/ˈæpəl/
+103	banana	noun	/bəˈnɑːnə/
+104	rice	noun	/raɪs/
+105	bread	noun	/bred/
+106	egg	noun, verb	/eɡ/
+107	milk	noun, verb	/mɪlk/
+108	tea	noun	/tiː/
+109	juice	noun, verb	/dʒuːs/
+110	cake	noun, verb	/keɪk/
+111	sweet	noun, adjective	/swiːt/
+112	fruit	noun, verb	/fruːt/
+113	vegetable	noun, adjective	/ˈvedʒtəbəl/
+114	food	noun	/fuːd/
+115	lunch	noun, verb	/lʌntʃ/
+116	dinner	noun	/ˈdɪnə/
+117	breakfast	noun, verb	/ˈbrekfəst/
+118	ball	noun, verb	/bɔːl/
+119	toy	noun, verb	/tɔɪ/
+120	car	noun	/kɑː/
+121	bus	noun, verb	/bʌs/
+122	train	noun, verb	/treɪn/
+123	boat	noun, verb	/bəʊt/
+124	plane	noun, verb	/pleɪn/
+125	bike	noun, verb	/baɪk/
+126	kite	noun, verb	/kaɪt/
+127	game	noun, verb	/ɡeɪm/
+128	big	adjective	/bɪɡ/
+129	small	noun, adjective	/smɔːl/
+130	hot	verb, adjective	/hɒt/
+131	cold	noun, adjective	/kəʊld/
+132	happy	adjective	/ˈhæpi/
+133	sad	adjective	/sæd/
+134	good	noun, adjective	/ɡʊd/
+135	bad	adjective, adverb	/bæd/
+136	new	adjective	/njuː/
+137	old	noun, adjective	/əʊld/
+138	long	noun, verb	/lɒŋ/
+139	short	noun, verb	/ʃɔːt/
+140	tall	adjective	/tɔːl/
+141	fast	noun, verb	/fɑːst/
+142	slow	verb, adjective	/sləʊ/
+143	clean	noun, verb	/kliːn/
+144	dirty	verb, adjective	/ˈdɜːti/
+145	hungry	adjective	/ˈhʌŋɡri/
+146	thirsty	adjective	/ˈθɜːsti/
+147	tired	adjective	/ˈtaɪəd/
+148	go	noun, verb	/ɡəʊ/
+149	come	verb	/kʌm/
+150	eat	verb	/iːt/
+151	drink	noun, verb	/drɪŋk/
+152	sleep	noun, verb	/sliːp/
+153	play	noun, verb	/pleɪ/
+154	run	noun, verb	/rʌn/
+155	walk	noun, verb	/wɔːk/
+156	jump	noun, verb	/dʒʌmp/
+157	sit	verb	/sɪt/
+158	stand	noun, verb	/stænd/
+159	look	noun, verb	/lʊk/
+160	see	verb	/siː/
+161	hear	verb	/hɪə/
+162	say	noun, verb	/seɪ/
+163	read	noun, verb	/riːd/
+164	write	verb	/raɪt/
+165	draw	noun, verb	/drɔː/
+166	sing	verb	/sɪŋ/
+167	dance	noun, verb	/dɑːns/
+168	wash	noun, verb	/wɒʃ/
+169	open	verb, adjective	/ˈəʊpən/
+170	close	noun, verb	/kləʊs/
+171	give	noun, verb	/ɡɪv/
+172	take	noun, verb	/teɪk/
+173	like	verb, adjective	/laɪk/
+174	love	noun, verb	/lʌv/
+175	want	noun, verb	/wɒnt/
+176	help	noun, verb	/help/
+177	know	verb	/nəʊ/
+178	make	noun, verb	/meɪk/
+179	put	verb	/pʊt/
+180	stop	noun, verb	/stɒp/
+181	wait	noun, verb	/weɪt/
+182	yes	adverb	/jes/
+183	no	adverb	/nəʊ/
+184	please	adverb	/pliːz/
+185	thank	verb	/θæŋk/
+186	sorry	exclamation	/ˈsɒri/
+187	hello	exclamation	/heˈləʊ/
+188	goodbye	exclamation	/ˌɡʊdˈbaɪ/
+189	morning	noun	/ˈmɔːnɪŋ/
+190	night	noun	/naɪt/
+191	day	noun	/deɪ/
+192	today	adverb	/təˈdeɪ/
+193	tomorrow	adverb	/təˈmɒˌrəʊ/
+194	week	noun	/wiːk/
+195	the	determiner	/ðə/
+196	to	preposition	/tə/
+197	and	conjunction	/ənd/
+198	of	preposition	/əv/
+199	a	determiner	/ə/
+200	in	preposition	/ɪn/
+201	I	pronoun	/aɪ/
+202	be	verb	/bɪ/
+203	that	pronoun	/ðət/
+204	you	pronoun	/jə/
+205	it	pronoun	/ɪt/
+206	on	preposition	/ɒn/
+207	with	preposition	/wɪð/
+208	this	pronoun	/ðɪs/
+209	as	conjunction	/æz/
+210	have	verb	/həv/
+211	at	preposition	/ət/
+212	he	pronoun	/hiː/
+213	not	adverb	/nɒt/
+214	by	preposition	/baɪ/
+215	but	conjunction	/bʌt/
+216	from	preposition	/frɒm/
+217	my	pronoun	/maɪ/
+218	our	conjunction	/ˈaʊə/
+219	we	pronoun	/wiː/
+220	an	determiner	/ən/
+221	your	pronoun	/jə/
+222	all	determiner	/ɔːl/
+223	so	conjunction	/səʊ/
+224	his	pronoun	/hɪz/
+225	they	pronoun	/ðeɪ/
+226	me	pronoun	/miː/
+227	if	conjunction	/ɪf/
+228	can	verb	/kən/
+229	will	verb	/wəl/
+230	just	adverb	/dʒəst/
+231	about	preposition	/əˈbaʊt/
+232	up	preposition	/ʌp/
+233	out	preposition	/aʊt/
+234	what	pronoun	/wɒt/
+235	when	conjunction	/wen/
+236	more	determiner	/mɔː/
+237	do	verb	/duː/
+238	who	pronoun	/huː/
+239	their	pronoun	/ðeə/
+240	there	adverb	/ðeə/
+241	her	pronoun	/hɜː/
+242	which	pronoun	/wɪtʃ/
+243	time	noun, verb	/taɪm/
+244	get	verb	/ɡet/
+245	would	verb	/wʊd/
+246	she	pronoun	/ʃiː/
+247	people	noun, verb	/ˈpiːpəl/
+248	how	noun, adverb	/haʊ/
+249	some	determiner	/sʌm/
+250	also	adverb	/ˈɔːlsəʊ/
+251	them	pronoun	/ðəm/
+252	now	adverb	/naʊ/
+253	other	pronoun	/ˈʌðə/
+254	its	pronoun	/ɪts/
+255	than	conjunction	/ðən/
+256	only	adverb	/ˈəʊnli/
+257	after	preposition	/ˈɑːftə/
+258	first	number	/fɜːst/
+259	him	pronoun	/ɪm/
+260	into	preposition	/ɪntə/
+261	over	preposition	/ˈəʊvə/
+262	think	noun, verb	/θɪŋk/
+263	any	determiner	/ˈeni/
+264	then	adverb	/ðen/
+265	could	verb	/kʊd/
+266	back	adverb	/bæk/
+267	these	pronoun	/ðiːz/
+268	us	pronoun	/ʌs/
+269	because	conjunction	/bɪˈkɒz/
+270	well	noun, verb	/wel/
+271	way	noun	/weɪ/
+272	most	determiner	/məʊst/
+273	much	determiner	/mʌtʃ/
+274	very	adverb	/ˈveri/
+275	where	noun, adverb	/weə/
+276	even	adverb	/ˈiːvən/
+277	should	verb	/ʃʊd/
+278	may	noun	/meɪ/
+279	here	adverb	/hɪə/
+280	need	noun, verb	/niːd/
+281	really	adverb	/ˈrɪəli/
+282	right	noun, verb	/raɪt/
+283	work	noun, verb	/wɜːk/
+284	year	noun	/jɪə/
+285	too	adverb	/tuː/
+286	before	preposition	/bɪˈfɔː/
+287	off	preposition	/ɒf/
+288	why	noun, adverb	/waɪ/
+289	still	adverb	/stɪl/
+290	many	determiner	/ˈmeni/
+291	never	adverb	/ˈnevə/
+292	those	pronoun	/ðəʊz/
+293	life	noun	/laɪf/
+294	world	noun	/wɜːld/
+295	down	preposition	/daʊn/
+296	great	noun, adjective	/ɡreɪt/
+297	through	preposition	/θruː/
+298	last	noun, verb	/lɑːst/
+299	while	conjunction	/waɪl/
+300	best	noun, verb	/best/
+301	such	determiner	/sʌtʃ/
+302	something	pronoun	/ˈsʌmθɪŋ/
+303	use	noun, verb	/juːs/
+304	same	adjective	/seɪm/
+305	used	adjective	/juːzd/
+306	both	determiner	/bəʊθ/
+307	every	determiner	/ˈevri/
+308	part	noun, verb	/pɑːt/
+309	state	noun, verb	/steɪt/
+310	around	preposition	/əˈraʊnd/
+311	between	preposition	/bɪˈtwiːn/
+312	always	adverb	/ˈɔːlwɪz/
+313	better	noun, verb	/ˈbetə/
+314	find	noun, verb	/faɪnd/
+315	high	noun, adjective	/haɪ/
+316	little	determiner	/ˈlɪtəl/
+317	since	preposition	/sɪns/
+318	another	pronoun	/əˈnʌðə/
+319	own	verb, adjective	/əʊn/
+320	thing	noun	/θɪŋ/
+321	under	preposition	/ˈʌndə/
+322	during	preposition	/ˈdjʊərɪŋ/
+323	place	noun, verb	/pleɪs/
+324	again	adverb	/əˈɡen/
+325	next	adjective, adverb	/nekst/
+326	each	pronoun	/iːtʃ/
+327	without	preposition	/wɪˈðaʊt/
+328	against	preposition	/əˈɡenst/
+329	end	noun, verb	/end/
+330	found	verb	/faʊnd/
+331	must	verb	/mʌst/
+332	show	noun, verb	/ʃəʊ/
+333	feel	verb	/fiːl/
+334	sure	adjective, adverb	/ʃɔː/
+335	team	noun, verb	/tiːm/
+336	ever	adverb	/ˈevə/
+337	keep	noun, verb	/kiːp/
+338	might	verb	/maɪt/
+339	money	noun	/ˈmʌni/
+340	free	noun, verb	/friː/
+341	second	number	/ˈsekənd/
+342	someone	pronoun	/ˈsʌmˌwʌn/
+343	away	adverb	/əˈweɪ/
+344	left	noun, adjective	/left/
+345	city	noun	/ˈsɪti/
+346	lot	noun	/lɒt/
+347	name	noun, verb	/neɪm/
+348	until	preposition	/ʌnˈtɪl/
+349	company	noun	/ˈkʌmpəni/
+350	few	determiner	/fjuː/
+351	let	verb	/let/
+352	real	noun, adjective	/rɪəl/
+353	call	noun, verb	/kɔːl/
+354	different	adjective	/ˈdɪfrənt/
+355	set	noun, verb	/set/
+356	thought	noun	/θɔːt/
+357	done	adjective	/dʌn/
+358	however	adverb	/ˌhaʊˈevə/
+359	god	noun	/ɡɒd/
+360	government	noun	/ˈɡʌvəmənt/
+361	group	noun, verb	/ɡruːp/
+362	public	noun, adjective	/ˈpʌblɪk/
+363	top	verb, adjective	/tɒp/
+364	business	noun	/ˈbɪznɪs/
+365	care	noun, verb	/keə/
+366	start	noun, verb	/stɑːt/
+367	system	noun	/ˈsɪstəm/
+368	already	adverb	/ɔːlˈredi/
+369	anything	pronoun	/ˈenɪˌθɪŋ/
+370	case	noun, verb	/keɪs/
+371	nothing	pronoun	/ˈnʌθɪŋ/
+372	person	noun	/ˈpɜːsən/
+373	change	noun, verb	/tʃeɪndʒ/
+374	enough	adverb	/ɪˈnʌf/
+375	everything	pronoun	/ˈevrɪˌθɪŋ/
+376	full	noun, verb	/fʊl/
+377	live	verb, adjective	/lɪv/
+378	point	noun, verb	/pɔɪnt/
+379	tell	verb	/tel/
+380	yet	adverb	/jet/
+381	hard	adjective, adverb	/hɑːd/
+382	mean	noun, verb	/miːn/
+383	once	conjunction	/wʌns/
+384	support	noun, verb	/səˈpɔːt/
+385	include	verb	/ɪnˈkluːd/
+386	music	noun	/ˈmjuːzɪk/
+387	power	noun, verb	/ˈpaʊə/
+388	base	noun, verb	/beɪs/
+389	believe	verb	/bɪˈliːv/
+390	national	noun, adjective	/ˈnæʃnəl/
+391	far	adjective, adverb	/fɑː/
+392	job	noun, verb	/dʒɒb/
+393	side	noun, verb	/saɪd/
+394	though	conjunction	/ðəʊ/
+395	try	noun, verb	/traɪ/
+396	actually	adverb	/ˈæktʃʊəli/
+397	later	adverb	/ˈleɪtə/
+398	less	determiner	/les/
+399	line	noun, verb	/laɪn/
+400	order	noun, verb	/ˈɔːdə/
+401	party	noun, verb	/ˈpɑːti/
+402	service	noun, verb	/ˈsɜːvɪs/
+403	country	noun, adjective	/ˈkʌntri/
+404	season	noun, verb	/ˈsiːzən/
+405	everyone	pronoun	/ˈevrɪˌwʌn/
+406	general	noun, adjective	/ˈdʒenrəl/
+407	united	adjective	/juːˈnaɪtɪd/
+408	area	noun	/ˈeərɪə/
+409	following	noun	/ˈfɒləʊɪŋ/
+410	law	noun	/lɔː/
+411	together	adverb	/təˈɡeðə/
+412	whole	noun, adjective	/həʊl/
+413	kind	noun, adjective	/kaɪnd/
+414	maybe	adverb	/ˈmeɪbi/
+415	per	preposition	/pə/
+416	president	noun	/ˈprezɪdənt/
+417	story	noun	/ˈstɔːri/
+418	course	noun, verb	/kɔːs/
+419	health	noun	/helθ/
+420	hope	noun, verb	/həʊp/
+421	important	adjective	/ɪmˈpɔːtənt/
+422	least	determiner	/liːst/
+423	news	noun	/njuːz/
+424	within	preposition	/wɪˈðɪn/
+425	able	adjective	/ˈeɪbəl/
+426	early	adjective, adverb	/ˈɜːli/
+427	information	noun	/ˌɪnfəˈmeɪʃən/
+428	local	noun, adjective	/ˈləʊkəl/
+429	oh	exclamation	/əʊ/
+430	post	noun, verb	/pəʊst/
+431	thanks	exclamation	/θæŋks/
+432	video	noun, verb	/ˈvɪdɪəʊ/
+433	young	noun, adjective	/jʌŋ/
+434	ago	adverb	/əˈɡəʊ/
+435	social	noun, adjective	/ˈsəʊʃəl/
+436	talk	noun, verb	/tɔːk/
+437	court	noun, verb	/kɔːt/
+438	fact	noun	/fækt/
+439	given	noun, adjective	/ˈɡɪvən/
+440	guy	noun, verb	/ɡaɪ/
+441	half	number	/hɑːf/
+442	level	noun, verb	/ˈlevəl/
+443	mind	noun, verb	/maɪnd/
+444	often	adverb	/ˈɒfən/
+445	single	noun, verb	/ˈsɪŋɡəl/
+446	become	verb	/bɪˈkʌm/
+447	body	noun	/ˈbɒdi/
+448	control	noun, verb	/kənˈtrəʊl/
+449	hour	noun	/ˈaʊə/
+450	office	noun	/ˈɒfɪs/
+451	pay	noun, verb	/peɪ/
+452	problem	noun	/ˈprɒbləm/
+453	south	noun, adverb	/saʊθ/
+454	true	verb, adjective	/truː/
+455	almost	adverb	/ˈɔːlˌməʊst/
+456	history	noun	/ˈhɪstri/
+457	known	noun	/nəʊn/
+458	large	adjective	/lɑːdʒ/
+459	lose	verb	/luːz/
+460	research	noun, verb	/rɪˈsɜːtʃ/
+461	several	determiner	/ˈsevrəl/
+462	university	noun	/ˌjuːnɪˈvɜːsɪti/
+463	win	noun, verb	/wɪn/
+464	wrong	noun, verb	/rɒŋ/
+465	along	preposition	/əˈlɒŋ/
+466	anyone	pronoun	/ˈenɪwən/
+467	else	adverb	/els/
+468	matter	noun, verb	/ˈmætə/
+469	pretty	adjective, adverb	/ˈprɪti/
+470	remember	verb	/rɪˈmembə/
+471	air	noun, verb	/eə/
+472	bit	noun	/bɪt/
+473	hit	noun, verb	/hɪt/
+474	nice	adjective	/naɪs/
+475	probably	adverb	/ˈprɒbəbli/
+476	understand	verb	/ˌʌndəˈstænd/
+477	class	noun, verb	/klɑːs/
+478	idea	noun	/aɪˈdɪə/
+479	international	noun, adjective	/ˌɪntəˈnæʃənəl/
+480	past	noun, adjective	/pɑːst/
+481	possible	noun, adjective	/ˈpɒsɪbəl/
+482	cause	noun, verb	/kɔːz/
+483	due	noun, adjective	/djuː/
+484	human	noun, adjective	/ˈhjuːmən/
+485	member	noun	/ˈmembə/
+486	month	noun	/mʌnθ/
+487	move	noun, verb	/muːv/
+488	question	noun, verb	/ˈkwestʃən/
+489	series	noun	/ˈsɪəriːz/
+490	ask	verb	/ɑːsk/
+491	community	noun	/kəˈmjuːnɪti/
+492	data	noun	/ˈdeɪtə/
+493	late	adjective, adverb	/leɪt/
+494	leave	noun, verb	/liːv/
+495	north	noun, adjective	/nɔːθ/
+496	saw	noun, verb	/sɔː/
+497	special	noun, adjective	/ˈspeʃəl/
+498	watch	noun, verb	/wɒtʃ/
+499	either	determiner	/ˈaɪðə/
+500	future	noun, adjective	/ˈfjuːtʃə/
+501	light	noun, verb	/laɪt/
+502	low	noun, verb	/ləʊ/
+503	million	number	/ˈmɪljən/
+504	police	noun, verb	/pəˈliːs/
+505	stay	noun, verb	/steɪ/
+506	age	noun, verb	/eɪdʒ/
+507	buy	noun, verb	/baɪ/
+508	deal	noun, verb	/diːl/
+509	rather	adverb	/ˈrɑːðə/
+510	reason	noun, verb	/ˈriːzən/
+511	report	noun, verb	/rɪˈpɔːt/
+512	soon	adverb	/suːn/
+513	third	number	/θɜːd/
+514	turn	noun, verb	/tɜːn/
+515	whether	conjunction	/ˈweðə/
+516	among	preposition	/əˈmʌŋ/
+517	check	noun, verb	/tʃek/
+518	development	noun	/dɪˈveləpmənt/
+519	form	noun, verb	/fɔːm/
+520	further	verb, adjective	/ˈfɜːðə/
+521	heart	noun	/hɑːt/
+522	minute	noun, verb	/ˈmɪnɪt/
+523	myself	pronoun	/ˌmaɪˈself/
+524	yourself	pronoun	/jəˈself/
+525	act	verb	/ækt/
+526	although	conjunction	/ˌɔːlˈðəʊ/
+527	fun	noun, adjective	/fʌn/
+528	living	noun, adjective	/ˈlɪvɪŋ/
+529	major	noun, verb	/ˈmeɪdʒə/
+530	media	noun	/ˈmiːdɪə/
+531	phone	noun, verb	/fəʊn/
+532	player	noun	/ˈpleɪə/
+533	art	noun	/ɑːt/
+534	behind	preposition	/bɪˈhaɪnd/
+535	build	noun, verb	/bɪld/
+536	easy	adjective, adverb	/ˈiːzi/
+537	market	noun, verb	/ˈmɑːkɪt/
+538	near	preposition	/nɪə/
+539	plan	noun, verb	/plæn/
+540	political	adjective	/pəˈlɪtɪkəl/
+541	quite	adverb	/kwaɪt/
+542	west	noun, adjective	/west/
+543	accord	noun, verb	/əˈkɔːd/
+544	available	adjective	/əˈveɪləbəl/
+545	education	noun	/ˌedjʊˈkeɪʃən/
+546	final	noun, adjective	/ˈfaɪnəl/
+547	former	noun, adjective	/ˈfɔːmə/
+548	front	noun, verb	/frʌnt/
+549	kid	noun, verb	/kɪd/
+550	list	noun, verb	/lɪst/
+551	ready	verb, adjective	/ˈredi/
+552	sometimes	adverb	/səmˈtaɪmz/
+553	son	noun	/sʌn/
+554	street	noun	/striːt/
+555	bring	verb	/brɪŋ/
+556	college	noun	/ˈkɒlɪdʒ/
+557	current	noun, adjective	/ˈkʌrənt/
+558	example	noun	/ɪɡˈzɑːmpəl/
+559	experience	noun, verb	/ɪkˈspɪərɪəns/
+560	London	noun	/ˈlʌndən/
+561	meet	noun, verb	/miːt/
+562	programme	noun, verb	/ˈprəʊˌɡræm/
+563	type	noun, verb	/taɪp/
+564	chance	noun, verb	/tʃɑːns/
+565	March	noun	/mɑːtʃ/
+566	process	noun, verb	/ˈprəʊˌses/
+567	song	noun	/sɒŋ/
+568	study	noun, verb	/ˈstʌdi/
+569	word	noun, verb	/wɜːd/
+570	across	preposition	/əˈkrɒs/
+571	action	noun, verb	/ˈækʃən/
+572	clear	noun, verb	/klɪə/
+573	himself	pronoun	/hɪmˈself/
+574	outside	preposition	/ˈaʊtsaɪd/
+575	self	noun, verb	/self/
+576	student	noun	/sˈtjuːdənt/
+577	board	noun, verb	/bɔːd/
+578	cost	noun, verb	/kɒst/
+579	cut	noun, verb	/kʌt/
+580	field	noun, verb	/fiːld/
+581	hold	noun, verb	/həʊld/
+582	instead	adverb	/ɪnˈsted/
+583	main	noun, adjective	/meɪn/
+584	moment	noun	/ˈməʊmənt/
+585	road	noun	/rəʊd/
+586	seem	verb	/siːm/
+587	town	noun	/taʊn/
+588	department	noun	/dɪˈpɑːtmənt/
+589	energy	noun	/ˈenədʒi/
+590	fight	noun, verb	/faɪt/
+591	fine	noun, verb	/faɪn/
+592	force	noun, verb	/fɔːs/
+593	issue	noun, verb	/ˈɪʃuː/
+594	price	noun, verb	/praɪs/
+595	rest	noun, verb	/rest/
+596	result	noun, verb	/rɪˈzʌlt/
+597	space	noun, verb	/speɪs/
+598	summer	noun, verb	/ˈsʌmə/
+599	term	noun, verb	/tɜːm/
+600	wife	noun	/waɪf/
+601	beautiful	adjective	/ˈbjuːtɪfəl/
+602	date	noun, verb	/deɪt/
+603	land	noun, verb	/lænd/
+604	miss	noun, verb	/mɪs/
+605	project	noun, verb	/ˈprɒdʒekt/
+606	shot	noun, adjective	/ʃɒt/
+607	site	noun, verb	/saɪt/
+608	strong	adjective	/strɒŋ/
+609	account	noun, verb	/əˈkaʊnt/
+610	especially	adverb	/ɪˈspeʃli/
+611	June	noun	/dʒuːn/
+612	parent	noun	/ˈpeərənt/
+613	period	noun, adjective	/ˈpɪərɪəd/
+614	position	noun, verb	/pəˈzɪʃən/
+615	record	noun, verb	/ˈrekɔːd/
+616	similar	adjective	/ˈsɪmɪlə/
+617	total	noun, verb	/ˈtəʊtəl/
+618	above	preposition	/əˈbʌv/
+619	club	noun, verb	/klʌb/
+620	common	noun, adjective	/ˈkɒmən/
+621	film	noun, verb	/fɪlm/
+622	happen	verb	/ˈhæpən/
+623	lead	noun, verb	/liːd/
+624	likely	adjective, adverb	/ˈlaɪkli/
+625	military	noun, adjective	/ˈmɪlɪtəri/
+626	perfect	noun, verb	/ˈpɜːˌfɪkt/
+627	personal	noun, adjective	/ˈpɜːsənəl/
+628	security	noun	/sɪˈkjʊərɪti/
+629	share	noun, verb	/ʃeə/
+630	April	noun	/ˈeɪprəl/
+631	centre	noun, verb	/ˈsentə/
+632	couple	noun, verb	/ˈkʌpəl/
+633	English	noun	/ˈɪŋɡlɪʃ/
+634	industry	noun	/ˈɪndəstri/
+635	inside	preposition	/ɪnˈsaɪd/
+636	online	adjective, adverb	/ˈɒnˌlaɪn/
+637	private	noun, adjective	/ˈpraɪvɪt/
+638	return	noun, verb	/rɪˈtɜːn/
+639	sense	noun, verb	/sens/
+640	test	noun, verb	/test/
+641	view	noun, verb	/vjuː/
+642	break	noun, verb	/breɪk/
+643	British	noun	/ˈbrɪtɪʃ/
+644	event	noun	/ɪˈvent/
+645	middle	noun, verb	/ˈmɪdəl/
+646	present	noun, verb	/prɪˈzent/
+647	wish	noun, verb	/wɪʃ/
+648	answer	noun, verb	/ˈɑːnsə/
+649	design	noun, verb	/dɪˈzaɪn/
+650	finally	adverb	/ˈfaɪnəli/
+651	gold	noun	/ɡəʊld/
+652	guess	noun, verb	/ɡes/
+653	interest	noun, verb	/ˈɪntrɪst/
+654	July	noun	/dʒəˈlaɪ/
+655	king	noun, verb	/kɪŋ/
+656	learn	verb	/lɜːn/
+657	policy	noun	/ˈpɒlɪsi/
+658	society	noun	/səˈsaɪəti/
+659	add	verb	/æd/
+660	alone	adjective, adverb	/əˈləʊn/
+661	average	noun, verb	/ˈævrɪdʒ/
+662	bank	noun, verb	/bæŋk/
+663	certain	adjective	/ˈsɜːtən/
+664	church	noun	/tʃɜːtʃ/
+665	east	noun, adverb	/iːst/
+666	medical	noun, adjective	/ˈmedɪkəl/
+667	movie	noun	/ˈmuːvi/
+668	original	noun, adjective	/əˈrɪdʒɪnəl/
+669	park	noun, verb	/pɑːk/
+670	performance	noun	/pəˈfɔːməns/
+671	press	noun, verb	/pres/
+672	receive	verb	/rɪˈsiːv/
+673	role	noun	/rəʊl/
+674	send	verb	/send/
+675	themselves	pronoun	/ðəmˈselvz/
+676	worth	noun, adjective	/wɜːθ/
+677	bill	noun, verb	/bɪl/
+678	cool	noun, verb	/kuːl/
+679	director	noun	/daɪˈrektə/
+680	exactly	adverb	/ɪɡˈzæktli/
+681	ground	noun, verb	/ɡraʊnd/
+682	provide	verb	/prəˈvaɪd/
+683	relationship	noun	/rɪˈleɪʃənˌʃɪp/
+684	September	noun	/sepˈtembə/
+685	sound	noun, verb	/saʊnd/
+686	source	noun, verb	/sɔːs/
+687	usually	adverb	/ˈjuːʒʊəli/
+688	value	noun, verb	/ˈvæljuː/
+689	evidence	noun, verb	/ˈevɪdəns/
+690	follow	verb	/ˈfɒləʊ/
+691	official	noun, adjective	/əˈfɪʃəl/
+692	production	noun	/prəˈdʌkʃən/
+693	rate	noun, verb	/reɪt/
+694	round	noun, verb	/raʊnd/
+695	save	noun, verb	/seɪv/
+696	stuff	noun, verb	/stʌf/
+697	tax	noun, verb	/tæks/
+698	whatever	noun	/ˌwɒˈtevə/
+699	amount	noun, verb	/əˈmaʊnt/
+700	drive	noun, verb	/draɪv/
+701	fall	noun, verb	/fɔːl/
+702	federal	noun, adjective	/ˈfedrəl/
+703	felt	noun	/felt/
+704	league	noun, verb	/liːɡ/
+705	management	noun	/ˈmænɪdʒmənt/
+706	match	noun, verb	/mætʃ/
+707	model	noun, verb	/ˈmɒdəl/
+708	picture	noun, verb	/ˈpɪktʃə/
+709	size	noun, verb	/saɪz/
+710	step	noun, verb	/step/
+711	trust	noun, verb	/trʌst/
+712	central	noun, adjective	/ˈsentrəl/
+713	England	noun	/ˈɪŋɡlənd/
+714	forward	noun, verb	/ˈfɔːwəd/
+715	key	noun, verb	/kiː/
+716	page	noun, verb	/peɪdʒ/
+717	range	noun, verb	/reɪndʒ/
+718	review	noun, verb	/rɪˈvjuː/
+719	science	noun	/ˈsaɪəns/
+720	trade	noun, verb	/treɪd/
+721	upon	preposition	/əˈpɒn/
+722	various	adjective	/ˈveərɪəs/
+723	attention	noun	/əˈtenʃən/
+724	character	noun	/ˈkærɪktə/
+725	chief	noun, adjective	/tʃiːf/
+726	cup	noun, verb	/kʌp/
+727	football	noun	/ˈfʊtˌbɔːl/
+728	hate	noun, verb	/heɪt/
+729	lower	verb	/ˈləʊə/
+730	natural	noun, adjective	/ˈnætʃrəl/
+731	October	noun	/ɒkˈtəʊbə/
+732	property	noun	/ˈprɒpəti/
+733	quality	noun	/ˈkwɒlɪti/
+734	style	noun, verb	/staɪl/
+735	vote	noun, verb	/vəʊt/
+736	amazing	adjective	/əˈmeɪzɪŋ/
+737	August	noun	/ˈɔːɡəst/
+738	china	noun	/ˈtʃaɪnə/
+739	complete	verb	/kəmˈpliːt/
+740	economic	adjective	/ˌiːkəˈnɒmɪk/
+741	involve	verb	/ɪnˈvɒlv/
+742	itself	pronoun	/ɪtˈself/
+743	language	noun, verb	/ˈlæŋɡwɪdʒ/
+744	lord	noun, verb	/lɔːd/
+745	November	noun	/nəʊˈvembə/
+746	oil	noun, verb	/ɔɪl/
+747	relate	verb	/rɪˈleɪt/
+748	serious	adjective	/ˈsɪərɪəs/
+749	stage	noun, verb	/steɪdʒ/
+750	title	noun, verb	/ˈtaɪtəl/
+751	article	noun, verb	/ˈɑːtɪkəl/
+752	attack	noun, verb	/əˈtæk/
+753	born	adjective	/bɔːn/
+754	decide	verb	/dɪˈsaɪd/
+755	decision	noun	/dɪˈsɪʒən/
+756	enjoy	verb	/enˈdʒɔɪ/
+757	entire	adjective	/ɪnˈtaɪə/
+758	January	noun	/ˈdʒænjʊəri/
+759	perhaps	adverb	/pəˈhæps/
+760	poor	noun, adjective	/pɔː/
+761	release	noun, verb	/rɪˈliːs/
+762	situation	noun	/ˌsɪtʃʊˈeɪʃən/
+763	technology	noun	/tekˈnɒlədʒi/
+764	choice	noun, adjective	/tʃɔɪs/
+765	code	noun, verb	/kəʊd/
+766	consider	verb	/kənˈsɪdə/
+767	continue	verb	/kənˈtɪnjuː/
+768	council	noun, adjective	/ˈkaʊnsəl/
+769	cover	noun, verb	/ˈkʌvə/
+770	currently	adverb	/ˈkʌrəntli/
+771	election	noun	/ɪˈlekʃən/
+772	financial	adjective	/ˌfaɪˈnænʃəl/
+773	foreign	adjective	/ˈfɒrɪn/
+774	increase	noun, verb	/ˈɪnˌkriːs/
+775	legal	adjective	/ˈliːɡəl/
+776	pick	noun, verb	/pɪk/
+777	race	noun, verb	/reɪs/
+778	sign	noun, verb	/saɪn/
+779	simple	noun, adjective	/ˈsɪmpəl/
+780	simply	adverb	/ˈsɪmpli/
+781	staff	noun, verb	/stɑːf/
+782	super	noun, adjective	/ˈsuːpə/
+783	union	noun	/ˈjuːnjən/
+784	begin	verb	/bɪˈɡɪn/
+785	career	noun, verb	/kəˈrɪə/
+786	crazy	adjective	/ˈkreɪzi/
+787	daily	noun, adjective	/ˈdeɪli/
+788	daughter	noun, adjective	/ˈdɔːtə/
+789	December	noun	/dɪˈsembə/
+790	difficult	adjective	/ˈdɪfɪkəlt/
+791	figure	noun, verb	/ˈfɪɡə/
+792	hospital	noun	/ˈhɒˌspɪtəl/
+793	loss	noun	/lɒs/
+794	modern	noun, adjective	/ˈmɒdən/
+795	paper	noun, verb	/ˈpeɪpə/
+796	popular	adjective	/ˈpɒpjʊlə/
+797	publish	verb	/ˈpʌblɪʃ/
+798	safe	noun, verb	/seɪf/
+799	version	noun, verb	/ˈvɜːʒən/
+800	voice	noun, verb	/vɔɪs/
+801	whose	pronoun	/huːz/
+802	army	noun, adjective	/ˈɑːmi/
+803	earth	noun, verb	/ɜːθ/
+804	forget	verb	/fəˈɡet/
+805	goal	noun	/ɡəʊl/
+806	huge	adjective	/hjuːdʒ/
+807	internet	noun	/ˈɪntəˌnet/
+808	listen	verb	/ˈlɪsən/
+809	okay	adverb	/ˌəʊˈkeɪ/
+810	practice	noun, verb	/ˈpræktɪs/
+811	rule	noun, verb	/ruːl/
+812	sir	noun	/sɜː/
+813	success	noun	/səkˈses/
+814	towards	preposition	/təˈwɔːdz/
+815	access	noun, verb	/ˈækˌses/
+816	below	preposition	/bɪˈləʊ/
+817	create	verb	/kriːˈeɪt/
+818	deep	adjective, adverb	/diːp/
+819	mark	noun, verb	/mɑːk/
+820	missing	adjective	/ˈmɪsɪŋ/
+821	offer	noun, verb	/ˈɒfə/
+822	pass	noun, verb	/pɑːs/
+823	professional	noun, adjective	/prəˈfeʃənəl/
+824	risk	noun, verb	/rɪsk/
+825	truth	noun	/truːθ/
+826	box	noun, verb	/bɒks/
+827	card	noun, verb	/kɑːd/
+828	dark	noun, adjective	/dɑːk/
+829	district	noun	/ˈdɪstrɪkt/
+830	mine	pronoun	/maɪn/
+831	minister	noun, verb	/ˈmɪnɪstə/
+832	note	noun, verb	/nəʊt/
+833	percent	noun, adverb	/pəˈsent/
+834	piece	noun, verb	/piːs/
+835	product	noun, verb	/ˈprɒdʌkt/
+836	recent	adjective	/ˈriːsənt/
+837	straight	noun, adjective	/streɪt/
+838	visit	noun, verb	/ˈvɪzɪt/
+839	wall	noun, verb	/wɔːl/
+840	allow	verb	/əˈlaʊ/
+841	culture	noun, verb	/ˈkʌltʃə/
+842	fan	noun, verb	/fæn/
+843	February	noun	/ˈfebjʊəri/
+844	growth	noun	/ɡrəʊθ/
+845	married	noun, adjective	/ˈmærid/
+846	officer	noun	/ˈɒfɪsə/
+847	pain	noun, verb	/peɪn/
+848	respect	noun, verb	/rɪˈspekt/
+849	response	noun	/rɪˈspɒns/
+850	rock	noun, verb	/rɒk/
+851	shall	verb	/ʃəl/
+852	speak	verb	/spiːk/
+853	specific	noun, adjective	/spɪˈsɪfɪk/
+854	standard	noun, adjective	/ˈstændəd/
+855	tonight	adverb	/təˈnaɪt/
+856	album	noun	/ˈælbəm/
+857	century	noun	/ˈsentʃəri/
+858	charge	noun, verb	/tʃɑːdʒ/
+859	effect	noun, verb	/ɪˈfekt/
+860	except	verb	/ɪkˈsept/
+861	funny	adjective	/ˈfʌni/
+862	limited	adjective	/ˈlɪmɪtɪd/
+863	network	noun, verb	/ˈneˌtwɜːk/
+864	peace	noun	/piːs/
+865	recently	adverb	/ˈriːsəntli/
+866	require	verb	/rɪˈkwaɪə/
+867	sale	noun	/seɪl/
+868	spend	verb	/spend/
+869	store	noun, verb	/stɔː/
+870	track	noun, verb	/træk/
+871	via	preposition	/ˈvaɪə/
+872	weight	noun, verb	/weɪt/
+873	addition	noun	/əˈdɪʃən/
+874	ahead	adjective, adverb	/əˈhed/
+875	anti	noun, adjective	/ˈænti/
+876	association	noun	/əˌsəʊsɪˈeɪʃən/
+877	beat	noun, verb	/biːt/
+878	capital	noun, adjective	/ˈkæpɪtəl/
+879	committee	noun	/kəˈmɪti/
+880	conference	noun	/ˈkɒnfrəns/
+881	difference	noun	/ˈdɪfrəns/
+882	double	noun, verb	/ˈdʌbəl/
+883	expect	verb	/ɪkˈspekt/
+884	gas	noun, verb	/ɡæs/
+885	island	noun	/ˈaɪlənd/
+886	normal	noun, adjective	/ˈnɔːməl/
+887	population	noun	/ˌpɒpjʊˈleɪʃən/
+888	potential	noun, adjective	/pəˈtenʃəl/
+889	pressure	noun, verb	/ˈpreʃə/
+890	radio	noun, verb	/ˈreɪdɪˌəʊ/
+891	station	noun, verb	/ˈsteɪʃən/
+892	text	noun	/tekst/
+893	treatment	noun	/ˈtriːtmənt/
+894	western	noun, adjective	/ˈwestən/
+895	campaign	noun, verb	/kæmˈpeɪn/
+896	certainly	adverb	/ˈsɜːtənli/
+897	completely	adverb	/kəmˈpliːtli/
+898	content	noun, verb	/kənˈtent/
+899	credit	noun, verb	/ˈkredɪt/
+900	cross	noun, verb	/krɒs/
+901	describe	verb	/dɪˈskraɪb/
+902	female	noun, adjective	/ˈfiːˌmeɪl/
+903	focus	noun, verb	/ˈfəʊkəs/
+904	hi	exclamation	/haɪ/
+905	husband	noun, verb	/ˈhʌzbənd/
+906	ice	noun, verb	/aɪs/
+907	individual	noun, adjective	/ˌɪndɪˈvɪdjʊəl/
+908	interesting	adjective	/ˈɪntrɪstɪŋ/
+909	join	noun, verb	/dʒɔɪn/
+910	leading	noun	/ˈliːdɪŋ/
+911	message	noun, verb	/ˈmesɪdʒ/
+912	mile	noun	/maɪl/
+913	nearly	adverb	/ˈnɪəli/
+914	particular	noun, adjective	/pəˈtɪkjʊlə/
+915	previous	adjective	/ˈpriːvɪəs/
+916	quickly	adverb	/ˈkwɪkli/
+917	region	noun	/ˈriːdʒən/
+918	section	noun, verb	/ˈsekʃən/
+919	sort	noun, verb	/sɔːt/
+920	speed	noun, verb	/spiːd/
+921	travel	noun, verb	/ˈtrævəl/
+922	contact	noun, verb	/kənˈtækt/
+923	drop	noun, verb	/drɒp/
+924	fair	noun, verb	/feə/
+925	link	noun, verb	/lɪŋk/
+926	positive	noun, adjective	/ˈpɒzɪtɪv/
+927	throughout	adverb	/θruːˈaʊt/
+928	tour	noun, verb	/tʊə/
+929	welcome	noun, verb	/ˈwelkəm/
+930	absolutely	adverb	/ˌæbsəˈluːtli/
+931	additional	adjective	/əˈdɪʃnəl/
+932	beyond	preposition	/bɪˈjɒnd/
+933	condition	noun, verb	/kənˈdɪʃən/
+934	extra	noun, adjective	/ˈekstrə/
+935	immediately	adverb	/ɪˈmiːdɪətli/
+936	nature	noun	/ˈneɪtʃə/
+937	quick	noun, adjective	/kwɪk/
+938	sell	noun, verb	/sel/
+939	significant	adjective	/sɪɡˈnɪfɪkənt/
+940	unless	conjunction	/ʌnˈles/
+941	agree	verb	/əˈɡriː/
+942	computer	noun	/kəmˈpjuːtə/
+943	construction	noun	/kənˈstrʌkʃən/
+944	episode	noun	/ˈepɪˌsəʊd/
+945	favourite	noun, adjective	/ˈfeɪvərɪt/
+946	income	noun	/ˈɪnˌkʌm/
+947	justice	noun	/ˈdʒʌstɪs/
+948	manager	noun	/ˈmænɪdʒə/
+949	movement	noun	/ˈmuːvmənt/
+950	photo	noun	/ˈfəʊˌtəʊ/
+951	safety	noun	/ˈseɪfti/
+952	scene	noun	/siːn/
+953	statement	noun	/ˈsteɪtmənt/
+954	ability	noun	/əˈbɪlɪti/
+955	announce	verb	/əˈnaʊns/
+956	coach	noun, verb	/kəʊtʃ/
+957	collection	noun	/kəˈlekʃən/
+958	definitely	adverb	/ˈdefɪnɪtli/
+959	Friday	noun	/ˈfraɪdi/
+960	heavy	noun, adjective	/ˈhevi/
+961	knowledge	noun	/ˈnɒlɪdʒ/
+962	particularly	adverb	/pəˈtɪkjʊləli/
+963	search	noun, verb	/sɜːtʃ/
+964	subject	noun, verb	/səbˈdʒekt/
+965	wide	noun, adjective	/waɪd/
+966	wow	exclamation	/waʊ/
+967	author	noun, verb	/ˈɔːθə/
+968	claim	noun, verb	/kleɪm/
+969	develop	verb	/dɪˈveləp/
+970	fear	noun, verb	/fɪə/
+971	fit	noun, verb	/fɪt/
+972	generally	adverb	/ˈdʒenrəli/
+973	global	adjective	/ˈɡləʊbəl/
+974	hotel	noun	/həʊˈtel/
+975	interested	adjective	/ˈɪntrɪstɪd/
+976	judge	noun, verb	/dʒʌdʒ/
+977	lady	noun	/ˈleɪdi/
+978	leader	noun	/ˈliːdə/
+979	letter	noun, verb	/ˈletə/
+980	material	noun, adjective	/məˈtɪərɪəl/
+981	nobody	pronoun	/ˈnəʊbədi/
+982	opportunity	noun	/ˌɒpəˈtjuːnɪti/
+983	plus	noun, adjective	/plʌs/
+984	regular	noun, adjective	/ˈreɡjʊlə/
+985	secretary	noun	/ˈsekrɪtəri/
+986	unit	noun	/ˈjuːnɪt/
+987	worker	noun	/ˈwɜːkə/
+988	annual	noun, adjective	/ˈænjʊəl/
+989	anymore	adverb	/ˌenɪˈmɔː/
+990	bar	verb	/bɑː/
+991	battle	noun, verb	/ˈbætəl/
+992	brain	noun, verb	/breɪn/
+993	contract	noun, verb	/kənˈtrækt/
+994	degree	noun	/dɪˈɡriː/
+995	feature	noun, verb	/ˈfiːtʃə/
+996	finish	noun, verb	/ˈfɪnɪʃ/
+997	floor	noun, verb	/flɔː/
+998	grow	verb	/ɡrəʊ/
+999	hurt	noun, verb	/hɜːt/
+1000	image	noun, verb	/ˈɪmɪdʒ/
+1001	insurance	noun	/ɪnˈʃɔːrəns/
+1002	majority	noun, adjective	/məˈdʒɒrɪti/
+1003	opinion	noun	/əˈpɪnjən/
+1004	physical	noun, adjective	/ˈfɪzɪkəl/
+1005	pro	noun	/prəʊ/
+1006	reach	noun, verb	/riːtʃ/
+1007	seriously	adverb	/ˈsɪərɪəsli/
+1008	sport	noun, verb	/spɔːt/
+1009	successful	adjective	/səkˈsesfəl/
+1010	active	noun, adjective	/ˈæktɪv/
+1011	administration	noun	/ədˌmɪnɪˈstreɪʃən/
+1012	approach	noun, verb	/əˈprəʊtʃ/
+1013	cancer	noun	/ˈkænsə/
+1014	civil	adjective	/ˈsɪvəl/
+1015	defence	noun	/dɪˈfens/
+1016	direction	noun	/daɪˈrekʃən/
+1017	independent	noun, adjective	/ˌɪndɪˈpendənt/
+1018	master	noun, verb	/ˈmɑːstə/
+1019	none	pronoun	/nʌn/
+1020	ship	noun, verb	/ʃɪp/
+1021	stock	noun, verb	/stɒk/
+1022	trump	noun, verb	/trʌmp/
+1023	weekend	noun, verb	/ˈwiːˌkend/
+1024	wonder	noun, verb	/ˈwʌndə/
+1025	awesome	adjective	/ˈɔːsəm/
+1026	band	noun, verb	/bænd/
+1027	cash	noun, verb	/kæʃ/
+1028	clearly	adverb	/ˈklɪəli/
+1029	commercial	noun, adjective	/kəˈmɜːʃəl/
+1030	compare	verb	/kəmˈpeə/
+1031	effort	noun	/ˈefət/
+1032	imagine	verb	/ɪˈmædʒɪn/
+1033	impact	noun, verb	/ˈɪmpækt/
+1034	lack	noun, verb	/læk/
+1035	multiple	noun, adjective	/ˈmʌltɪpəl/
+1036	operation	noun	/ˌɒpəˈreɪʃən/
+1037	organisation	noun	/ˌɔːɡənaɪˈzeɪʃən/
+1038	protect	verb	/prəˈtekt/
+1039	secret	noun, adjective	/ˈsiːkrɪt/
+1040	senior	noun, adjective	/ˈsiːnjə/
+1041	spring	noun, verb	/sprɪŋ/
+1042	Sunday	noun	/ˈsʌndi/
+1043	wear	noun, verb	/weə/
+1044	activity	noun	/ækˈtɪvɪti/
+1045	address	noun, verb	/əˈdres/
+1046	analysis	noun	/əˈnælɪsɪs/
+1047	anyway	adverb	/ˈenɪˌweɪ/
+1048	choose	verb	/tʃuːz/
+1049	commission	noun, verb	/kəˈmɪʃən/
+1050	competition	noun	/ˌkɒmpɪˈtɪʃən/
+1051	detail	noun, verb	/ˈdiːteɪl/
+1052	direct	verb, adjective	/daɪˈrekt/
+1053	dream	noun, verb	/driːm/
+1054	easily	adverb	/ˈiːzɪli/
+1055	grand	noun, adjective	/ɡrænd/
+1056	literally	adverb	/ˈlɪtrəli/
+1057	luck	noun, verb	/lʌk/
+1058	marriage	noun	/ˈmærɪdʒ/
+1059	necessary	noun, adjective	/ˈnesəsəri/
+1060	patient	noun, adjective	/ˈpeɪʃənt/
+1061	resource	noun, verb	/rɪˈsɔːs/
+1062	rich	adjective	/rɪtʃ/
+1063	skin	noun, verb	/skɪn/
+1064	suppose	verb	/səˈpəʊz/
+1065	thus	adverb	/ðʌs/
+1066	touch	noun, verb	/tʌtʃ/
+1067	yesterday	adverb	/ˈjestədi/
+1068	catch	noun, verb	/kætʃ/
+1069	congress	noun, verb	/ˈkɒŋɡres/
+1070	damage	noun, verb	/ˈdæmɪdʒ/
+1071	directly	adverb	/daɪˈrektli/
+1072	disease	noun	/dɪˈziːz/
+1073	doctor	noun, verb	/ˈdɒktə/
+1074	doubt	noun, verb	/daʊt/
+1075	establish	verb	/ɪˈstæblɪʃ/
+1076	gay	noun, adjective	/ɡeɪ/
+1077	glad	adjective	/ɡlæd/
+1078	machine	noun, verb	/məˈʃiːn/
+1079	notice	noun, verb	/ˈnəʊtɪs/
+1080	overall	adjective, adverb	/ˈəʊvərɔːl/
+1081	professor	noun	/prəˈfesə/
+1082	trip	noun, verb	/trɪp/
+1083	associate	noun, verb	/əˈsəʊʃɪˌeɪt/
+1084	basic	adjective	/ˈbeɪsɪk/
+1085	captain	noun, verb	/ˈkæptɪn/
+1086	carry	verb	/ˈkæri/
+1087	effective	adjective	/ɪˈfektɪv/
+1088	explain	verb	/ɪkˈspleɪn/
+1089	fully	adverb	/ˈfʊli/
+1090	highly	adverb	/ˈhaɪli/
+1091	male	noun, adjective	/meɪl/
+1092	plant	noun, verb	/plɑːnt/
+1093	reality	noun	/rɪˈælɪti/
+1094	smith	noun	/smɪθ/
+1095	spot	noun, verb	/spɒt/
+1096	winter	noun, verb	/ˈwɪntə/
+1097	worse	verb	/wɜːs/
+1098	advice	noun	/ədˈvaɪs/
+1099	agreement	noun	/əˈɡriːmənt/
+1100	award	noun, verb	/əˈwɔːd/
+1101	block	noun, verb	/blɒk/
+1102	broken	adjective	/ˈbrəʊkən/
+1103	challenge	noun, verb	/ˈtʃælɪndʒ/
+1104	comment	noun, verb	/ˈkɒment/
+1105	equipment	noun	/ɪˈkwɪpmənt/
+1106	eventually	adverb	/ɪˈventʃʊəli/
+1107	holy	adjective	/ˈhəʊli/
+1108	nation	noun	/ˈneɪʃən/
+1109	otherwise	adverb	/ˈʌðəˌwaɪz/
+1110	primary	noun, adjective	/ˈpraɪməri/
+1111	purpose	noun, verb	/ˈpɜːpəs/
+1112	responsible	noun	/rɪˈspɒnsɪbəl/
+1113	shop	noun, verb	/ʃɒp/
+1114	sick	noun, adjective	/sɪk/
+1115	theory	noun	/ˈθɪəri/
+1116	agency	noun	/ˈeɪdʒənsi/
+1117	avoid	verb	/əˈvɔɪd/
+1118	camera	noun	/ˈkæmrə/
+1119	cell	noun	/sel/
+1120	coast	noun, verb	/kəʊst/
+1121	economy	noun, adjective	/ɪˈkɒnəmi/
+1122	environment	noun	/ɪnˈvaɪrənmənt/
+1123	executive	noun, adjective	/ɪɡˈzekjʊtɪv/
+1124	hall	noun	/hɔːl/
+1125	mass	noun, verb	/mæs/
+1126	mission	noun	/ˈmɪʃən/
+1127	politics	noun	/ˈpɒlɪˌtɪks/
+1128	pop	noun, verb	/pɒp/
+1129	produce	noun, verb	/prəˈdjuːs/
+1130	Saturday	noun	/ˈsætədi/
+1131	status	noun	/ˈsteɪtəs/
+1132	therefore	adverb	/ˈðeəˌfɔː/
+1133	trial	noun, verb	/traɪl/
+1134	truly	adverb	/ˈtruːli/
+1135	weather	noun, verb	/ˈweðə/
+1136	application	noun	/ˌæplɪˈkeɪʃən/
+1137	coffee	noun	/ˈkɒfi/
+1138	complex	noun, verb	/kəmˈpleks/
+1139	division	noun	/dɪˈvɪʒən/
+1140	flight	noun	/flaɪt/
+1141	freedom	noun	/ˈfriːdəm/
+1142	google	verb	/ˈɡuːɡəl/
+1143	heat	noun, verb	/hiːt/
+1144	interview	noun, verb	/ˈɪntəˌvjuː/
+1145	library	noun	/ˈlaɪbrəri/
+1146	locate	verb	/ˈləʊˌkeɪt/
+1147	location	noun	/ləʊˈkeɪʃən/
+1148	queen	noun, verb	/kwiːn/
+1149	accept	verb	/əkˈsept/
+1150	actual	adjective	/ˈæktʃʊəl/
+1151	appear	verb	/əˈpɪə/
+1152	attempt	noun, verb	/əˈtempt/
+1153	broke	adjective	/brəʊk/
+1154	channel	noun, verb	/ˈtʃænəl/
+1155	distance	noun, verb	/ˈdɪstəns/
+1156	exchange	noun, verb	/ɪksˈtʃeɪndʒ/
+1157	fat	noun, verb	/fæt/
+1158	fell	noun, verb	/fel/
+1159	glass	noun, verb	/ɡlɑːs/
+1160	mobile	noun, adjective	/ˈməʊbaɪl/
+1161	powerful	adjective	/ˈpaʊəfəl/
+1162	prior	noun, adjective	/ˈpraɪə/
+1163	protection	noun	/prəˈtekʃən/
+1164	religious	noun, adjective	/rɪˈlɪdʒəs/
+1165	ride	noun, verb	/raɪd/
+1166	royal	noun, adjective	/ˈrɔɪəl/
+1167	screen	noun, verb	/skriːn/
+1168	serve	noun, verb	/sɜːv/
+1169	species	noun	/ˈspiːʃiz/
+1170	speech	noun	/spiːtʃ/
+1171	traffic	noun, verb	/ˈtræfɪk/
+1172	whom	pronoun	/huːm/
+1173	wonderful	adjective	/ˈwʌndəfəl/
+1174	airport	noun	/ˈeəˌpɔːt/
+1175	animal	noun, adjective	/ˈænɪməl/
+1176	benefit	noun, verb	/ˈbenɪfɪt/
+1177	bottom	noun, verb	/ˈbɒtəm/
+1178	demand	noun, verb	/dɪˈmɑːnd/
+1179	engine	noun	/ˈendʒɪn/
+1180	everybody	pronoun	/ˈevrɪˌbɒdi/
+1181	famous	adjective	/ˈfeɪməs/
+1182	investment	noun	/ɪnˈvestmənt/
+1183	lie	noun, verb	/laɪ/
+1184	partner	noun, verb	/ˈpɑːtnə/
+1185	raise	noun, verb	/reɪz/
+1186	solution	noun	/səˈluːʃən/
+1187	southern	adjective	/ˈsʌðən/
+1188	square	noun, verb	/skweə/
+1189	structure	noun, verb	/ˈstrʌktʃə/
+1190	traditional	adjective	/trəˈdɪʃənəl/
+1191	twice	number	/twaɪs/
+1192	worry	noun, verb	/ˈwʌri/
+1193	brand	noun, verb	/brænd/
+1194	cent	noun	/sent/
+1195	count	noun, verb	/kaʊnt/
+1196	critical	adjective	/ˈkrɪtɪkəl/
+1197	digital	adjective	/ˈdɪdʒɪtəl/
+1198	fourth	noun	/fɔːθ/
+1199	fresh	adjective	/freʃ/
+1200	lake	noun, verb	/leɪk/
+1201	mental	adjective	/ˈmentəl/
+1202	mention	noun, verb	/ˈmenʃən/
+1203	mostly	adverb	/ˈməʊstli/
+1204	owner	noun	/ˈəʊnə/
+1205	previously	adverb	/ˈpriːvɪəsli/
+1206	realise	verb	/ˈrɪəˌlaɪz/
+1207	remain	verb	/rɪˈmeɪn/
+1208	scale	noun, verb	/skeɪl/
+1209	score	noun, verb	/skɔː/
+1210	separate	verb, adjective	/ˈseprɪt/
+1211	smart	noun, verb	/smɑːt/
+1212	surface	noun, verb	/ˈsɜːfɪs/
+1213	throw	noun, verb	/θrəʊ/
+1214	tom	noun	/tɒm/
+1215	totally	adverb	/ˈtəʊtəli/
+1216	twitter	noun, verb	/ˈtwɪtə/
+1217	wed	verb	/wed/
+1218	budget	noun, verb	/ˈbʌdʒɪt/
+1219	click	noun, verb	/klɪk/
+1220	estate	noun	/ɪˈsteɪt/
+1221	fail	noun, verb	/feɪl/
+1222	faith	noun	/feɪθ/
+1223	fashion	noun, verb	/ˈfæʃən/
+1224	fund	noun, verb	/fʌnd/
+1225	generation	noun	/ˌdʒenəˈreɪʃən/
+1226	hill	noun	/hɪl/
+1227	jack	noun, verb	/dʒæk/
+1228	metal	noun, verb	/ˈmetəl/
+1229	profile	noun, verb	/ˈprəʊˌfaɪl/
+1230	pull	noun, verb	/pʊl/
+1231	push	noun, verb	/pʊʃ/
+1232	rose	noun	/rəʊz/
+1233	seat	noun, verb	/siːt/
+1234	target	noun, verb	/ˈtɑːɡɪt/
+1235	village	noun	/ˈvɪlɪdʒ/
+1236	agent	noun	/ˈeɪdʒənt/
+1237	apply	verb	/əˈplaɪ/
+1238	authority	noun	/ɔːˈθɒrɪti/
+1239	basis	noun	/ˈbeɪsɪs/
+1240	dude	noun	/duːd/
+1241	employee	noun	/emˈplɔɪi/
+1242	enter	verb	/ˈentə/
+1243	ex	noun	/eks/
+1244	foundation	noun	/faʊnˈdeɪʃən/
+1245	gain	noun, verb	/ɡeɪn/
+1246	memory	noun	/ˈmeməri/
+1247	prime	noun, verb	/praɪm/
+1248	ring	noun, verb	/rɪŋ/
+1249	rise	noun, verb	/raɪz/
+1250	silver	noun, verb	/ˈsɪlvə/
+1251	soul	noun, adjective	/səʊl/
+1252	spread	noun, verb	/spred/
+1253	supply	noun, verb	/səˈplaɪ/
+1254	waste	noun, verb	/weɪst/
+1255	weird	adjective	/wɪəd/
+1256	adult	noun, adjective	/əˈdʌlt/
+1257	apparently	adverb	/əˈpeərəntli/
+1258	artist	noun	/ˈɑːtɪst/
+1259	chairman	noun	/ˈtʃeəmən/
+1260	edition	noun	/ɪˈdɪʃən/
+1261	engineer	noun, verb	/ˌendʒɪˈnɪə/
+1262	grade	noun, verb	/ɡreɪd/
+1263	healthy	adjective	/ˈhelθi/
+1264	institute	noun, verb	/ˈɪnstɪˌtjuːt/
+1265	method	noun	/ˈmeθəd/
+1266	mike	noun, verb	/maɪk/
+1267	Monday	noun	/ˈmʌndi/
+1268	obviously	adverb	/ˈɒbvɪəsli/
+1269	option	noun, verb	/ˈɒpʃən/
+1270	remains	noun	/rɪˈmeɪnz/
+1271	senate	noun	/ˈsenɪt/
+1272	somebody	pronoun	/ˈsʌmbədi/
+1273	stone	noun, verb	/stəʊn/
+1274	strength	noun	/streŋθ/
+1275	user	noun	/ˈjuːzə/
+1276	wild	noun, adjective	/waɪld/
+1277	winner	noun	/ˈwɪnə/
+1278	arrive	verb	/əˈraɪv/
+1279	camp	noun, verb	/kæmp/
+1280	cast	noun, verb	/kɑːst/
+1281	christ	noun	/kraɪst/
+1282	correct	verb, adjective	/kəˈrekt/
+1283	dangerous	adjective	/ˈdeɪndʒərəs/
+1284	extremely	adverb	/ɪkˈstriːmli/
+1285	firm	noun, verb	/fɜːm/
+1286	handle	noun, verb	/ˈhændəl/
+1287	improve	verb	/ɪmˈpruːv/
+1288	indeed	adverb	/ɪnˈdiːd/
+1289	negative	noun, verb	/ˈneɡətɪv/
+1290	prevent	verb	/prɪˈvent/
+1291	remove	verb	/rɪˈmuːv/
+1292	spirit	noun, verb	/ˈspɪrɪt/
+1293	television	noun	/ˈtelɪˌvɪʒən/
+1294	till	preposition	/tɪl/
+1295	trouble	noun, verb	/ˈtrʌbəl/
+1296	advantage	noun, verb	/ədˈvɑːntɪdʒ/
+1297	apart	adjective, adverb	/əˈpɑːt/
+1298	aware	adjective	/əˈweə/
+1299	customer	noun	/ˈkʌstəmə/
+1300	dollar	noun	/ˈdɒlə/
+1301	eastern	adjective	/ˈiːstən/
+1302	fifth	noun	/fɪfθ/
+1303	function	noun, verb	/ˈfʌŋkʃən/
+1304	gift	noun, verb	/ɡɪft/
+1305	herself	pronoun	/hɜːˈself/
+1306	impossible	adjective	/ɪmˈpɒsɪbəl/
+1307	influence	noun, verb	/ˈɪnflʊəns/
+1308	item	noun, adverb	/ˈaɪtəm/
+1309	nor	conjunction	/nɔː/
+1310	progress	noun, verb	/ˈprəʊˌɡres/
+1311	proud	adjective, adverb	/praʊd/
+1312	shoot	noun, verb	/ʃuːt/
+1313	shut	verb	/ʃʌt/
+1314	van	noun	/væn/
+1315	wood	noun, verb	/wʊd/
+1316	background	noun, verb	/ˈbækˌɡraʊnd/
+1317	birth	noun	/bɜːθ/
+1318	bridge	noun, verb	/brɪdʒ/
+1319	concept	noun	/ˈkɒnsept/
+1320	copy	noun, verb	/ˈkɒpi/
+1321	dear	noun, adjective	/dɪə/
+1322	host	noun, verb	/həʊst/
+1323	journal	noun, verb	/ˈdʒɜːnəl/
+1324	labour	noun, verb	/ˈleɪbə/
+1325	leadership	noun	/ˈliːdəˌʃɪp/
+1326	length	noun	/leŋθ/
+1327	lucky	adjective	/ˈlʌki/
+1328	neither	determiner	/ˈnaɪðə/
+1329	onto	preposition	/ˈɒntuː/
+1330	possibly	adverb	/ˈpɒsɪbli/
+1331	prove	verb	/pruːv/
+1332	rare	adjective	/reə/
+1333	skill	noun, verb	/skɪl/
+1334	software	noun	/ˈsɒfˌweə/
+1335	thousand	number	/ˈθaʊzənd/
+1336	tough	noun, verb	/tʌf/
+1337	alive	adjective	/əˈlaɪv/
+1338	balance	noun, verb	/ˈbæləns/
+1339	birthday	noun	/ˈbɜːθˌdeɪ/
+1340	boss	noun, verb	/bɒs/
+1341	connection	noun	/kəˈnekʃən/
+1342	dress	noun, verb	/dres/
+1343	fellow	noun, adjective	/ˈfeləʊ/
+1344	magic	noun, adjective	/ˈmædʒɪk/
+1345	manage	verb	/ˈmænɪdʒ/
+1346	map	noun, verb	/mæp/
+1347	net	noun, verb	/net/
+1348	request	noun, verb	/rɪˈkwest/
+1349	stick	noun, verb	/stɪk/
+1350	vehicle	noun	/ˈviːɪkəl/
+1351	volume	noun, verb	/ˈvɒljuːm/
+1352	wake	noun, verb	/weɪk/
+1353	aid	noun, verb	/eɪd/
+1354	beauty	noun	/ˈbjuːti/
+1355	billion	number	/ˈbɪljən/
+1356	busy	verb, adjective	/ˈbɪzi/
+1357	concern	noun, verb	/kənˈsɜːn/
+1358	conversation	noun	/ˌkɒnvəˈseɪʃən/
+1359	corner	noun, verb	/ˈkɔːnə/
+1360	cultural	adjective	/ˈkʌltʃərəl/
+1361	driver	noun	/ˈdraɪvə/
+1362	existing	adjective	/ɪɡˈzɪstɪŋ/
+1363	farm	noun, verb	/fɑːm/
+1364	file	noun, verb	/faɪl/
+1365	fix	noun, verb	/fɪks/
+1366	fly	noun, verb	/flaɪ/
+1367	frank	noun, verb	/fræŋk/
+1368	guide	noun, verb	/ɡaɪd/
+1369	investigation	noun	/ɪnˌvestɪˈɡeɪʃən/
+1370	operate	verb	/ˈɒpəˌreɪt/
+1371	responsibility	noun	/rɪˌspɒnsɪˈbɪlɪti/
+1372	roll	noun, verb	/rəʊl/
+1373	slightly	adverb	/ˈslaɪtli/
+1374	suggest	verb	/səˈdʒest/
+1375	surprise	noun, verb	/səˈpraɪz/
+1376	technical	adjective	/ˈteknɪkəl/
+1377	treat	noun, verb	/triːt/
+1378	unique	adjective	/juːˈniːk/
+1379	variety	noun	/vəˈraɪəti/
+1380	yours	pronoun	/jʊəz/
+1381	youth	noun	/juːθ/
+1382	appreciate	verb	/əˈpriːʃɪˌeɪt/
+1383	discover	verb	/dɪˈskʌvə/
+1384	dry	verb, adjective	/draɪ/
+1385	edge	noun, verb	/edʒ/
+1386	evil	noun, adjective	/ˈiːvəl/
+1387	excited	adjective	/ɪkˈsaɪtɪd/
+1388	forever	adverb	/fəˈrevə/
+1389	injury	noun	/ˈɪndʒəri/
+1390	iron	noun, verb	/ˈaɪən/
+1391	lovely	noun, adjective	/ˈlʌvli/
+1392	mad	adjective	/mæd/
+1393	magazine	noun	/ˈmæɡəˌziːn/
+1394	martin	noun	/ˈmɑːtɪn/
+1395	parliament	noun	/ˈpɑːləmənt/
+1396	prepare	verb	/prɪˈpeə/
+1397	reference	noun, verb	/ˈrefrəns/
+1398	religion	noun	/rɪˈlɪdʒən/
+1399	somewhere	adverb	/ˈsʌmˌweə/
+1400	strategy	noun	/ˈstrætɪdʒi/
+1401	web	noun, verb	/web/
+1402	audience	noun	/ˈɔːdɪəns/
+1403	bay	noun, verb	/beɪ/
+1404	closer	noun	/ˈkləʊsə/
+1405	core	noun, verb	/kɔː/
+1406	democratic	adjective	/ˌdeməˈkrætɪk/
+1407	description	noun	/dɪˈskrɪpʃən/
+1408	excellent	adjective	/ˈeksələnt/
+1409	exist	verb	/ɪɡˈzɪst/
+1410	guard	noun, verb	/ɡɑːd/
+1411	honest	adjective	/ˈɒnɪst/
+1412	lee	noun, adjective	/liː/
+1413	medicine	noun	/ˈmedɪsɪn/
+1414	mountain	noun	/ˈmaʊntɪn/
+1415	nuclear	adjective	/ˈnjuːklɪə/
+1416	port	noun, verb	/pɔːt/
+1417	presence	noun	/ˈprezəns/
+1418	reaction	noun	/rɪˈækʃən/
+1419	reduce	verb	/rɪˈdjuːs/
+1420	solid	noun, adjective	/ˈsɒlɪd/
+1421	stress	noun, verb	/stres/
+1422	taste	noun, verb	/teɪst/
+1423	victory	noun	/ˈvɪktri/
+1424	afternoon	noun, adjective	/ˌɑːftəˈnuːn/
+1425	assistant	noun	/əˈsɪstənt/
+1426	Britain	noun	/ˈbrɪtən/
+1427	citizen	noun	/ˈsɪtɪzən/
+1428	classic	noun, adjective	/ˈklæsɪk/
+1429	clothes	noun	/kləʊz/
+1430	electric	adjective	/ɪˈlektrɪk/
+1431	emergency	noun	/ɪˈmɜːdʒənsi/
+1432	entirely	adverb	/ɪnˈtaɪəli/
+1433	failure	noun	/ˈfeɪljə/
+1434	festival	noun	/ˈfestɪvəl/
+1435	flat	noun, adjective	/flæt/
+1436	fuel	noun, verb	/ˈfjuːəl/
+1437	harry	verb	/ˈhæri/
+1438	ill	noun, adjective	/ɪl/
+1439	initial	noun, verb	/ɪˈnɪʃəl/
+1440	introduce	verb	/ˌɪntrəˈdjuːs/
+1441	kick	noun, verb	/kɪk/
+1442	mail	noun, verb	/meɪl/
+1443	massive	adjective	/ˈmæsɪv/
+1444	pair	noun, verb	/peə/
+1445	plenty	noun, adverb	/ˈplenti/
+1446	prince	noun	/prɪns/
+1447	proper	adjective	/ˈprɒpə/
+1448	quarter	noun, verb	/ˈkwɔːtə/
+1449	regional	noun, adjective	/ˈriːdʒənəl/
+1450	session	noun	/ˈseʃən/
+1451	shape	noun, verb	/ʃeɪp/
+1452	teach	verb	/tiːtʃ/
+1453	transfer	noun, verb	/trænsˈfɜː/
+1454	upper	noun, adjective	/ˈʌpə/
+1455	useful	adjective	/ˈjuːsfəl/
+1456	valley	noun	/ˈvæli/
+1457	willing	adjective	/ˈwɪlɪŋ/
+1458	zone	noun, verb	/zəʊn/
+1459	accident	noun	/ˈæksɪdənt/
+1460	advanced	adjective	/ədˈvɑːnst/
+1461	alternative	noun, adjective	/ɔːlˈtɜːnətɪv/
+1462	anywhere	adverb	/ˈenɪˌweə/
+1463	bear	noun, verb	/beə/
+1464	capacity	noun	/kəˈpæsɪti/
+1465	cheap	adjective	/tʃiːp/
+1466	climate	noun	/ˈklaɪmɪt/
+1467	discussion	noun	/dɪˈskʌʃən/
+1468	duty	noun	/ˈdjuːti/
+1469	fantastic	adjective	/fænˈtæstɪk/
+1470	feeling	noun, adjective	/ˈfiːlɪŋ/
+1471	governor	noun	/ˈɡʌvənə/
+1472	hundred	number	/ˈhʌndrəd/
+1473	industrial	noun, adjective	/ɪnˈdʌstrɪəl/
+1474	joint	noun, verb	/dʒɔɪnt/
+1475	mix	noun, verb	/mɪks/
+1476	museum	noun	/mjuːˈzɪəm/
+1477	path	noun	/pɑːθ/
+1478	promise	noun, verb	/ˈprɒmɪs/
+1479	propose	verb	/prəˈpəʊz/
+1480	purchase	noun, verb	/ˈpɜːtʃɪs/
+1481	steel	noun, verb	/stiːl/
+1482	terrible	adjective	/ˈterɪbəl/
+1483	vice	noun	/vaɪs/
+1484	warm	noun, verb	/wɔːm/
+1485	afraid	adjective	/əˈfreɪd/
+1486	border	noun, verb	/ˈbɔːdə/
+1487	command	noun, verb	/kəˈmɑːnd/
+1488	crew	noun, verb	/kruː/
+1489	crowd	noun, verb	/kraʊd/
+1490	element	noun	/ˈelɪmənt/
+1491	enemy	noun	/ˈenəmi/
+1492	ensure	verb	/enˈʃɔː/
+1493	environmental	adjective	/ɪnˌvaɪrənˈmentəl/
+1494	fill	noun, verb	/fɪl/
+1495	forest	noun, verb	/ˈfɒrɪst/
+1496	intelligence	noun	/ɪnˈtelɪdʒəns/
+1497	intend	verb	/ɪnˈtend/
+1498	limit	noun, verb	/ˈlɪmɪt/
+1499	ocean	noun	/ˈəʊʃən/
+1500	profit	noun, verb	/ˈprɒfɪt/
+1501	proof	noun, verb	/pruːf/
+1502	republican	noun, adjective	/rɪˈpʌblɪkən/
+1503	soldier	noun, verb	/ˈsəʊldʒə/
+1504	suit	noun, verb	/suːt/
+1505	appearance	noun	/əˈpɪərəns/
+1506	attorney	noun	/əˈtɜːni/
+1507	behaviour	noun	/bɪˈheɪvjə/
+1508	building	noun	/ˈbɪldɪŋ/
+1509	debt	noun	/det/
+1510	domestic	noun, adjective	/dəˈmestɪk/
+1511	expensive	adjective	/ɪkˈspensɪv/
+1512	historical	adjective	/hɪˈstɒrɪkəl/
+1513	honestly	adverb	/ˈɒnɪstli/
+1514	honour	noun, verb	/ˈɒnə/
+1515	launch	noun, verb	/lɔːntʃ/
+1516	minimum	noun, adjective	/ˈmɪnɪməm/
+1517	native	noun, adjective	/ˈneɪtɪv/
+1518	originally	adverb	/əˈrɪdʒnəli/
+1519	ray	noun, verb	/reɪ/
+1520	suddenly	adverb	/ˈsʌdənli/
+1521	supreme	adjective	/səˈpriːm/
+1522	survey	noun, verb	/səˈveɪ/
+1523	update	noun, verb	/ˈʌpˌdeɪt/
+1524	writer	noun	/ˈraɪtə/
+1525	ancient	noun, adjective	/ˈeɪnʃənt/
+1526	combine	noun, verb	/ˈkɒmbaɪn/
+1527	communication	noun	/kəˌmjuːnɪˈkeɪʃən/
+1528	connect	verb	/kəˈnekt/
+1529	contain	verb	/kənˈteɪn/
+1530	download	noun, verb	/ˈdaʊnˌləʊd/
+1531	email	noun, verb	/ˈiːmeɪl/
+1532	exercise	noun, verb	/ˈeksəˌsaɪz/
+1533	express	noun, verb	/ɪkˈspres/
+1534	flow	noun, verb	/fləʊ/
+1535	girlfriend	noun	/ˈɡɜːlˌfrend/
+1536	hero	noun	/ˈhɪərəʊ/
+1537	illegal	noun, adjective	/ɪˈliːɡəl/
+1538	increasing	adjective	/ɪnˈkriːsɪŋ/
+1539	joke	noun, verb	/dʒəʊk/
+1540	loan	noun, verb	/ləʊn/
+1541	perform	verb	/pəˈfɔːm/
+1542	planet	noun	/ˈplænɪt/
+1543	restaurant	noun	/ˈreˌstrɒnt/
+1544	select	verb	/sɪˈlekt/
+1545	soft	adjective	/sɒft/
+1546	stuck	noun, adjective	/stʌk/
+1547	sugar	noun, verb	/ˈʃʊɡə/
+1548	surprised	noun	/səˈpraɪzd/
+1549	transport	noun, verb	/trænˈspɔːt/
+1550	appeal	noun, verb	/əˈpiːl/
+1551	appropriate	verb, adjective	/əˈprəʊprɪət/
+1552	confirm	verb	/kənˈfɜːm/
+1553	device	noun	/dɪˈvaɪs/
+1554	drama	noun	/ˈdrɑːmə/
+1555	entry	noun	/ˈentri/
+1556	era	noun	/ˈɪərə/
+1557	factor	noun, verb	/ˈfæktə/
+1558	feed	noun, verb	/fiːd/
+1559	golden	adjective	/ˈɡəʊldən/
+1560	grant	noun, verb	/ɡrɑːnt/
+1561	lawyer	noun	/ˈlɔɪə/
+1562	measure	noun, verb	/ˈmeʒə/
+1563	mistake	noun, verb	/mɪˈsteɪk/
+1564	Ms	noun	/mɪz/
+1565	platform	noun	/ˈplætˌfɔːm/
+1566	pool	noun, verb	/puːl/
+1567	regard	noun, verb	/rɪˈɡɑːd/
+1568	relation	noun	/rɪˈleɪʃən/
+1569	route	noun, verb	/ruːt/
+1570	schedule	noun, verb	/ˈʃedʒuːl/
+1571	scientific	adjective	/ˌsaɪənˈtɪfɪk/
+1572	shoe	noun, verb	/ʃuː/
+1573	squad	noun	/skwɒd/
+1574	angry	adjective	/ˈæŋɡri/
+1575	candidate	noun, verb	/ˈkændɪdɪt/
+1576	comfortable	adjective	/ˈkʌmftəbəl/
+1577	discuss	verb	/dɪˈskʌs/
+1578	emotional	adjective	/ɪˈməʊʃənəl/
+1579	everywhere	adverb	/ˈevrɪˌweə/
+1580	facility	noun	/fəˈsɪlɪti/
+1581	fox	noun, verb	/fɒks/
+1582	hole	noun, verb	/həʊl/
+1583	holiday	noun, verb	/ˈhɒlɪˌdeɪ/
+1584	internal	noun, adjective	/ɪnˈtɜːnəl/
+1585	jersey	noun	/ˈdʒɜːzi/
+1586	laugh	noun, verb	/lɑːf/
+1587	liberal	noun, adjective	/ˈlɪbrəl/
+1588	pack	noun, verb	/pæk/
+1589	payment	noun	/ˈpeɪmənt/
+1590	relatively	adverb	/ˈrelətɪvli/
+1591	sector	noun, verb	/ˈsektə/
+1592	snow	noun, verb	/snəʊ/
+1593	storm	noun, verb	/stɔːm/
+1594	strike	noun, verb	/straɪk/
+1595	studio	noun	/sˈtjuːdɪˌəʊ/
+1596	sub	noun, verb	/sʌb/
+1597	weak	adjective	/wiːk/
+1598	actor	noun	/ˈæktə/
+1599	advance	noun, verb	/ədˈvɑːns/
+1600	apartment	noun	/əˈpɑːtmənt/
+1601	chain	noun, verb	/tʃeɪn/
+1602	chapter	noun	/ˈtʃæptə/
+1603	commit	verb	/kəˈmɪt/
+1604	confidence	noun	/ˈkɒnfɪdəns/
+1605	cook	noun, verb	/kʊk/
+1606	cute	adjective	/kjuːt/
+1607	equal	noun, verb	/ˈiːkwəl/
+1608	fake	noun, verb	/feɪk/
+1609	finance	noun, verb	/ˈfaɪˌnæns/
+1610	identity	noun	/aɪˈdentɪti/
+1611	journey	noun, verb	/ˈdʒɜːni/
+1612	maintain	verb	/meɪnˈteɪn/
+1613	numerous	adjective	/ˈnjuːmərəs/
+1614	quiet	noun, verb	/ˈkwaɪət/
+1615	reveal	verb	/rɪˈviːl/
+1616	specifically	adverb	/spɪˈsɪfɪkli/
+1617	split	noun, verb	/splɪt/
+1618	task	noun, verb	/tɑːsk/
+1619	twenty	number	/ˈtwenti/
+1620	urban	adjective	/ˈɜːbən/
+1621	affect	noun, verb	/əˈfekt/
+1622	aircraft	noun	/ˈeəˌkrɑːft/
+1623	approve	verb	/əˈpruːv/
+1624	approximately	adverb	/əˈprɒksɪmətli/
+1625	argument	noun	/ˈɑːɡjʊmənt/
+1626	arrest	noun, verb	/əˈrest/
+1627	conflict	noun, verb	/ˈkɒnflɪkt/
+1628	corporate	adjective	/ˈkɔːprɪt/
+1629	debate	noun, verb	/dɪˈbeɪt/
+1630	determine	verb	/dɪˈtɜːmɪn/
+1631	distribution	noun	/ˌdɪstrɪˈbjuːʃən/
+1632	document	noun, verb	/ˈdɒkjʊment/
+1633	escape	noun, verb	/ɪˈskeɪp/
+1634	extend	verb	/ɪkˈstend/
+1635	fault	noun, verb	/fɔːlt/
+1636	friendly	adjective	/ˈfrendli/
+1637	lay	noun, verb	/leɪ/
+1638	phase	noun, verb	/feɪz/
+1639	properly	adverb	/ˈprɒpəli/
+1640	pure	adjective	/pjʊə/
+1641	requirement	noun	/rɪˈkwaɪəmənt/
+1642	resident	noun, adjective	/ˈrezɪdənt/
+1643	revenue	noun	/ˈrevəˌnjuː/
+1644	secure	verb, adjective	/sɪˈkjʊə/
+1645	smile	noun, verb	/smaɪl/
+1646	strange	adjective	/streɪndʒ/
+1647	talent	noun	/ˈtælənt/
+1648	temperature	noun	/ˈtemprətʃə/
+1649	troop	noun, verb	/truːp/
+1650	truck	noun, verb	/trʌk/
+1651	ah	noun	/ɑː/
+1652	basically	adverb	/ˈbeɪsɪkli/
+1653	besides	adverb	/bɪˈsaɪdz/
+1654	blame	noun, verb	/bleɪm/
+1655	bob	noun, verb	/bɒb/
+1656	bowl	noun, verb	/bəʊl/
+1657	chicken	noun, verb	/ˈtʃɪkən/
+1658	collect	noun, verb	/kəˈlekt/
+1659	context	noun	/ˈkɒntekst/
+1660	coverage	noun	/ˈkʌvrɪdʒ/
+1661	display	noun, verb	/dɪˈspleɪ/
+1662	elect	noun, verb	/ɪˈlekt/
+1663	experienced	adjective	/ɪkˈspɪərɪənst/
+1664	false	adjective	/fɔːls/
+1665	identify	verb	/aɪˈdentɪˌfaɪ/
+1666	incredible	adjective	/ɪnˈkredɪbəl/
+1667	inspire	verb	/ɪnˈspaɪə/
+1668	meat	noun	/miːt/
+1669	ministry	noun	/ˈmɪnɪstri/
+1670	mode	noun	/məʊd/
+1671	neck	noun, verb	/nek/
+1672	novel	noun, adjective	/ˈnɒvəl/
+1673	obvious	adjective	/ˈɒbvɪəs/
+1674	shirt	noun	/ʃɜːt/
+1675	slowly	adverb	/ˈsləʊli/
+1676	stadium	noun	/ˈsteɪdɪəm/
+1677	surgery	noun	/ˈsɜːdʒəri/
+1678	Tuesday	noun	/ˈtjuːzdi/
+1679	vision	noun, verb	/ˈvɪʒən/
+1680	whenever	adverb	/weˈnevə/
+1681	worried	adjective	/ˈwʌrid/
+1682	zero	number	/ˈzɪərəʊ/
+1683	champion	noun, verb	/ˈtʃæmpɪən/
+1684	cream	noun, verb	/kriːm/
+1685	crisis	noun	/ˈkraɪsɪs/
+1686	deliver	verb	/dɪˈlɪvə/
+1687	editor	noun	/ˈedɪtə/
+1688	estimate	noun, verb	/ˈestɪmɪt/
+1689	giant	noun, adjective	/ˈdʒaɪənt/
+1690	jail	noun, verb	/dʒeɪl/
+1691	kingdom	noun	/ˈkɪŋdəm/
+1692	literature	noun	/ˈlɪtərətʃə/
+1693	mayor	noun	/meə/
+1694	minor	noun, verb	/ˈmaɪnə/
+1695	opposite	noun, adjective	/ˈɒpəzɪt/
+1696	ourselves	pronoun	/ˌaʊəˈselvz/
+1697	selection	noun	/sɪˈlekʃən/
+1698	signal	noun, verb	/ˈsɪɡnəl/
+1699	stream	noun, verb	/striːm/
+1700	struggle	noun, verb	/ˈstrʌɡəl/
+1701	theme	noun	/θiːm/
+1702	Thursday	noun	/ˈθɜːzdi/
+1703	tiny	adjective	/ˈtaɪni/
+1704	typically	adverb	/ˈtɪpɪkli/
+1705	unfortunately	adverb	/ʌnˈfɔːtʃənɪtli/
+1706	usual	adjective	/ˈjuːʒʊəl/
+1707	wave	noun, verb	/weɪv/
+1708	assembly	noun	/əˈsembli/
+1709	bright	adjective	/braɪt/
+1710	capable	adjective	/ˈkeɪpəbəl/
+1711	combination	noun	/ˌkɒmbɪˈneɪʃən/
+1712	conservative	noun, adjective	/kənˈsɜːvətɪv/
+1713	desire	noun, verb	/dɪˈzaɪə/
+1714	destroy	verb	/dɪˈstrɔɪ/
+1715	draft	noun, verb	/drɑːft/
+1716	essential	noun, adjective	/ɪˈsenʃəl/
+1717	familiar	noun, adjective	/fəˈmɪlɪə/
+1718	guilty	adjective	/ˈɡɪlti/
+1719	largely	adverb	/ˈlɑːdʒli/
+1720	medium	noun, adjective	/ˈmiːdɪəm/
+1721	perfectly	adverb	/ˈpɜːfɪktli/
+1722	recommend	verb	/ˌrekəˈmend/
+1723	refer	verb	/rɪˈfɜː/
+1724	relevant	adjective	/ˈrelɪvənt/
+1725	seek	verb	/siːk/
+1726	solo	noun, verb	/ˈsəʊˌləʊ/
+1727	spoke	noun	/spəʊk/
+1728	ticket	noun, verb	/ˈtɪkɪt/
+1729	unable	adjective	/ʌˈneɪbəl/
+1730	upset	noun, verb	/ʌpˈset/
+1731	wing	noun, verb	/wɪŋ/
+1732	creative	noun, adjective	/kriːˈeɪtɪv/
+1733	cycle	noun, verb	/ˈsaɪkəl/
+1734	don	noun, verb	/dɒn/
+1735	educational	adjective	/ˌedjʊˈkeɪʃənəl/
+1736	entertainment	noun	/ˌentəˈteɪnmənt/
+1737	extreme	noun, adjective	/ɪkˈstriːm/
+1738	hang	verb	/hæŋ/
+1739	mainly	adverb	/ˈmeɪnli/
+1740	maximum	noun, adjective	/ˈmæksɪməm/
+1741	newspaper	noun	/ˈnjuːzˌpeɪpə/
+1742	paint	noun, verb	/peɪnt/
+1743	republic	noun	/rɪˈpʌblɪk/
+1744	reserve	noun, verb	/rɪˈzɜːv/
+1745	row	noun, verb	/rəʊ/
+1746	salt	noun, verb	/sɒlt/
+1747	scare	noun, verb	/skeə/
+1748	switch	noun, verb	/swɪtʃ/
+1749	territory	noun	/ˈterɪtəri/
+1750	threat	noun	/θret/
+1751	appoint	verb	/əˈpɔɪnt/
+1752	aside	noun, adverb	/əˈsaɪd/
+1753	assistance	noun	/əˈsɪstəns/
+1754	bell	noun, verb	/bel/
+1755	blow	noun, verb	/bləʊ/
+1756	bond	noun, verb	/bɒnd/
+1757	boyfriend	noun	/ˈbɔɪˌfrend/
+1758	careful	adjective	/ˈkeəfəl/
+1759	circumstance	noun	/ˈsɜːkəmˌstɑːns/
+1760	corporation	noun	/ˌkɔːpəˈreɪʃən/
+1761	cry	noun, verb	/kraɪ/
+1762	danger	noun	/ˈdeɪndʒə/
+1763	delivery	noun	/dɪˈlɪvəri/
+1764	deserve	verb	/dɪˈzɜːv/
+1765	empty	verb, adjective	/ˈempti/
+1766	folk	noun, adjective	/fəʊk/
+1767	gender	noun, verb	/ˈdʒendə/
+1768	instance	noun, verb	/ˈɪnstəns/
+1769	motion	noun, verb	/ˈməʊʃən/
+1770	nick	noun, verb	/nɪk/
+1771	pacific	adjective	/pəˈsɪfɪk/
+1772	prise	noun, verb	/praɪz/
+1773	reasonable	adjective	/ˈriːznəbəl/
+1774	register	noun, verb	/ˈredʒɪstə/
+1775	resolution	noun	/ˌrezəˈluːʃən/
+1776	rural	noun, adjective	/ˈrʊərəl/
+1777	tool	noun, verb	/tuːl/
+1778	typical	adjective	/ˈtɪpɪkəl/
+1779	universe	noun	/ˈjuːnɪˌvɜːs/
+1780	warn	verb	/wɔːn/
+1781	Wednesday	noun	/ˈwenzdi/
+1782	admit	verb	/ədˈmɪt/
+1783	attitude	noun	/ˈætɪˌtjuːd/
+1784	branch	noun, verb	/brɑːntʃ/
+1785	conduct	noun, verb	/kənˈdʌkt/
+1786	decade	noun	/ˈdekeɪd/
+1787	dedicated	adjective	/ˈdedɪkeɪtɪd/
+1788	definition	noun	/ˌdefɪˈnɪʃən/
+1789	favour	noun, verb	/ˈfeɪvə/
+1790	flag	noun, verb	/flæɡ/
+1791	frame	noun, verb	/freɪm/
+1792	guest	noun, verb	/ɡest/
+1793	heaven	noun	/ˈhevən/
+1794	independence	noun	/ˌɪndɪˈpendəns/
+1795	institution	noun	/ˌɪnstɪˈtjuːʃən/
+1796	load	noun, verb	/ləʊd/
+1797	plot	noun, verb	/plɒt/
+1798	possibility	noun	/ˌpɒsɪˈbɪlɪti/
+1799	random	adjective	/ˈrændəm/
+1800	recovery	noun	/rɪˈkʌvri/
+1801	rent	noun, verb	/rent/
+1802	replace	verb	/rɪˈpleɪs/
+1803	represent	verb	/ˌreprɪˈzent/
+1804	senator	noun	/ˈsenətə/
+1805	sentence	noun, verb	/ˈsentəns/
+1806	tip	noun, verb	/tɪp/
+1807	academic	noun, adjective	/ˌækəˈdemɪk/
+1808	academy	noun	/əˈkædəmi/
+1809	accurate	adjective	/ˈækjʊrɪt/
+1810	achieve	verb	/əˈtʃiːv/
+1811	afford	verb	/əˈfɔːd/
+1812	assume	verb	/əˈsjuːm/
+1813	bottle	noun, verb	/ˈbɒtəl/
+1814	bunch	noun, verb	/bʌntʃ/
+1815	category	noun	/ˈkætɪɡəri/
+1816	chat	noun, verb	/tʃæt/
+1817	cheese	noun	/tʃiːz/
+1818	chemical	noun, adjective	/ˈkemɪkəl/
+1819	competitive	adjective	/kəmˈpetɪtɪv/
+1820	diet	noun, verb	/ˈdaɪət/
+1821	index	noun, verb	/ˈɪndeks/
+1822	lane	noun	/leɪn/
+1823	mess	noun, verb	/mes/
+1824	navy	noun	/ˈneɪvi/
+1825	normally	adverb	/ˈnɔːmli/
+1826	occur	verb	/əˈkɜː/
+1827	opposition	noun	/ˌɒpəˈzɪʃən/
+1828	permanent	noun, adjective	/ˈpɜːmənənt/
+1829	personally	adverb	/ˈpɜːsənli/
+1830	pleasure	noun, verb	/ˈpleʒə/
+1831	prefer	verb	/prɪˈfɜː/
+1832	representative	noun, adjective	/ˌreprɪˈzentətɪv/
+1833	scheme	noun, verb	/skiːm/
+1834	shift	noun, verb	/ʃɪft/
+1835	storage	noun	/ˈstɒrɪdʒ/
+1836	tank	noun, verb	/tæŋk/
+1837	tend	verb	/tend/
+1838	tight	adjective, adverb	/taɪt/
+1839	transportation	noun	/ˌtrænspəˈteɪʃən/
+1840	ultimately	adverb	/ˈʌltɪmɪtli/
+1841	unlike	adjective	/ʌnˈlaɪk/
+1842	weekly	noun, adjective	/ˈwiːkli/
+1843	yard	noun, verb	/jɑːd/
+1844	anybody	pronoun	/ˈenɪˌbɒdi/
+1845	asset	noun	/ˈæˌset/
+1846	basketball	noun	/ˈbɑːskɪtˌbɔːl/
+1847	button	noun, verb	/ˈbʌtən/
+1848	combat	noun, verb	/ˈkɒmˌbæt/
+1849	constitution	noun	/ˌkɒnstɪˈtjuːʃən/
+1850	consumer	noun	/kənˈsjuːmə/
+1851	counter	noun, verb	/ˈkaʊntə/
+1852	creation	noun	/kriːˈeɪʃən/
+1853	crown	noun, verb	/kraʊn/
+1854	define	verb	/dɪˈfaɪn/
+1855	depend	verb	/dɪˈpend/
+1856	depression	noun	/dɪˈpreʃən/
+1857	employment	noun	/emˈplɔɪmənt/
+1858	exclusive	noun, adjective	/ɪksˈkluːsɪv/
+1859	excuse	noun, verb	/ɪksˈkjuːs/
+1860	expert	noun, adjective	/ˈekspɜːt/
+1861	frequently	adverb	/ˈfriːkwəntli/
+1862	golf	noun, verb	/ɡɒlf/
+1863	grace	noun, verb	/ɡreɪs/
+1864	hopefully	adverb	/ˈhəʊpfəli/
+1865	importance	noun	/ɪmˈpɔːtəns/
+1866	latter	noun, adjective	/ˈlætə/
+1867	manufacture	noun, verb	/ˌmænjʊˈfæktʃə/
+1868	object	noun, verb	/əbˈdʒekt/
+1869	pattern	noun, verb	/ˈpætən/
+1870	personnel	noun	/ˌpɜːsəˈnel/
+1871	perspective	noun	/pəˈspektɪv/
+1872	premier	noun, verb	/ˈpremɪə/
+1873	promote	verb	/prəˈməʊt/
+1874	revolution	noun	/ˌrevəˈluːʃən/
+1875	severe	adjective	/səˈvɪə/
+1876	tournament	noun	/ˈtɔːnəmənt/
+1877	turkey	noun	/ˈtɜːki/
+1878	victim	noun	/ˈvɪktɪm/
+1879	attend	verb	/əˈtend/
+1880	ban	noun, verb	/bæn/
+1881	brilliant	noun, adjective	/ˈbrɪljənt/
+1882	carbon	noun	/ˈkɑːbən/
+1883	catholic	adjective	/ˈkæθlɪk/
+1884	circle	noun, verb	/ˈsɜːkəl/
+1885	concert	noun	/ˈkɒnsət/
+1886	crash	noun, verb	/kræʃ/
+1887	declare	verb	/dɪˈkleə/
+1888	depth	noun	/depθ/
+1889	deputy	noun	/ˈdepjʊti/
+1890	earn	verb	/ɜːn/
+1891	electronic	adjective	/ɪˌlekˈtrɒnɪk/
+1892	error	noun	/ˈerə/
+1893	existence	noun	/eɡˈzɪstəns/
+1894	expression	noun	/ɪkˈspreʃən/
+1895	factory	noun	/ˈfæktəri/
+1896	interior	noun, adjective	/ɪnˈtɪərɪə/
+1897	joy	noun	/dʒɔɪ/
+1898	legislation	noun	/ˌledʒɪˈsleɪʃən/
+1899	maintenance	noun	/ˈmeɪntnəns/
+1900	manner	noun	/ˈmænə/
+1901	mate	noun, verb	/meɪt/
+1902	matt	adjective	/mæt/
+1903	nearby	adjective	/ˈnɪəˌbaɪ/
+1904	noise	noun, verb	/nɔɪz/
+1905	origin	noun	/ˈɒrɪdʒɪn/
+1906	panel	noun, verb	/ˈpænəl/
+1907	personality	noun	/ˌpɜːsəˈnælɪti/
+1908	plate	noun, verb	/pleɪt/
+1909	relief	noun	/rɪˈliːf/
+1910	resistance	noun	/rɪˈzɪstəns/
+1911	retail	noun, verb	/ˈriːˌteɪl/
+1912	roof	noun, verb	/ruːf/
+1913	shame	noun, verb	/ʃeɪm/
+1914	somewhat	adverb	/ˌsʌmˈwɒt/
+1915	surely	adverb	/ˈʃɔːli/
+1916	absolute	noun, adjective	/ˈæbsəˌluːt/
+1917	advertise	verb	/ˈædvəˌtaɪz/
+1918	baseball	noun	/ˈbeɪsˌbɔːl/
+1919	cable	noun, verb	/ˈkeɪbəl/
+1920	calm	noun, verb	/kɑːm/
+1921	championship	noun	/ˈtʃæmpɪənˌʃɪp/
+1922	client	noun	/ˈklaɪənt/
+1923	constant	noun, adjective	/ˈkɒnstənt/
+1924	democrat	noun	/ˈdeməˌkræt/
+1925	driven	adjective	/ˈdrɪvən/
+1926	dumb	adjective	/dʌm/
+1927	exciting	adjective	/ɪkˈsaɪtɪŋ/
+1928	expansion	noun	/ɪkˈspænʃən/
+1929	heavily	adverb	/ˈhevɪli/
+1930	hide	noun, verb	/haɪd/
+1931	incident	noun, adjective	/ˈɪnsɪdənt/
+1932	politician	noun	/ˌpɒlɪˈtɪʃən/
+1933	print	noun, verb	/prɪnt/
+1934	quit	noun, verb	/kwɪt/
+1935	refuse	noun, verb	/rɪˈfjuːz/
+1936	sight	noun, verb	/saɪt/
+1937	significantly	adverb	/sɪɡˈnɪfɪkəntli/
+1938	wet	noun, verb	/wet/
+1939	widely	adverb	/ˈwaɪdli/
+1940	worldwide	adjective, adverb	/ˈwɜːldwaɪd/
+1941	anniversary	noun	/ˌænɪˈvɜːsəri/
+1942	attractive	adjective	/əˈtræktɪv/
+1943	broad	noun, adjective	/brɔːd/
+1944	burn	noun, verb	/bɜːn/
+1945	closely	adverb	/ˈkləʊsli/
+1946	constantly	adverb	/ˈkɒnstəntli/
+1947	contest	noun, verb	/ˈkɒntest/
+1948	drawn	adjective	/drɔːn/
+1949	fee	noun, verb	/fiː/
+1950	hardly	adverb	/ˈhɑːdli/
+1951	hat	noun	/hæt/
+1952	height	noun	/haɪt/
+1953	invite	verb	/ɪnˈvaɪt/
+1954	loud	adjective, adverb	/laʊd/
+1955	marine	noun, adjective	/məˈriːn/
+1956	motor	noun, verb	/ˈməʊtə/
+1957	officially	adverb	/əˈfɪʃəli/
+1958	peak	noun, verb	/piːk/
+1959	portion	noun, verb	/ˈpɔːʃən/
+1960	pound	noun, verb	/paʊnd/
+1961	princess	noun	/ˈprɪnses/
+1962	protein	noun	/ˈprəʊˌtiːn/
+1963	raw	adjective	/rɔː/
+1964	reform	noun, verb	/rɪˈfɔːm/
+1965	respond	verb	/rɪˈspɒnd/
+1966	retirement	noun	/rɪˈtaɪəmənt/
+1967	sample	noun, verb	/ˈsæmpəl/
+1968	secondary	noun, adjective	/ˈsekəndəri/
+1969	solar	adjective	/ˈsəʊlə/
+1970	somehow	adverb	/ˈsʌmˌhaʊ/
+1971	suffer	verb	/ˈsʌfə/
+1972	ultimate	adjective	/ˈʌltɪmɪt/
+1973	unknown	noun, adjective	/ʌnˈnəʊn/
+1974	attach	verb	/əˈtætʃ/
+1975	automatically	adverb	/ˌɔːtəˈmætɪkli/
+1976	battery	noun	/ˈbætəri/
+1977	blind	noun, verb	/blaɪnd/
+1978	breath	noun	/breθ/
+1979	brief	noun, verb	/briːf/
+1980	chest	noun	/tʃest/
+1981	debut	noun, verb	/ˈdeɪbjuː/
+1982	engage	verb	/ɪnˈɡeɪdʒ/
+1983	external	noun, adjective	/ɪkˈstɜːnəl/
+1984	fantasy	noun, verb	/ˈfæntəsi/
+1985	grab	noun, verb	/ɡræb/
+1986	immediate	adjective	/ɪˈmiːdɪət/
+1987	introduction	noun	/ˌɪntrəˈdʌkʃən/
+1988	licence	noun, verb	/ˈlaɪsəns/
+1989	pilot	noun, verb	/ˈpaɪlət/
+1990	presidential	adjective	/ˌprezɪˈdenʃəl/
+1991	principal	noun, adjective	/ˈprɪnsɪpəl/
+1992	recognise	verb	/ˈrekəɡˌnaɪz/
+1993	regularly	adverb	/ˈreɡjʊləli/
+1994	singer	noun	/ˈsɪŋə/
+1995	steam	noun, verb	/stiːm/
+1996	survive	verb	/səˈvaɪv/
+1997	theatre	noun	/ˈθɪətə/
+1998	therapy	noun	/ˈθerəpi/
+1999	witness	noun, verb	/ˈwɪtnɪs/
+2000	adopt	verb	/əˈdɒpt/
+2001	aim	noun, verb	/eɪm/
+2002	campus	noun	/ˈkæmpəs/
+2003	cap	noun, verb	/kæp/
+2004	childhood	noun	/ˈtʃaɪldˌhʊd/
+2005	clinical	noun, adjective	/ˈklɪnɪkəl/
+2006	comedy	noun	/ˈkɒmədi/
+2007	commander	noun	/kəˈmɑːndə/
+2008	comparison	noun	/kəmˈpærɪsən/
+2009	defeat	noun, verb	/dɪˈfiːt/
+2010	democracy	noun	/dɪˈmɒkrəsi/
+2011	detailed	adjective	/ˈdiːteɪld/
+2012	entitle	verb	/enˈtaɪtəl/
+2013	exact	verb, adjective	/ɪɡˈzækt/
+2014	expose	noun, verb	/ɪkˈspəʊz/
+2015	injure	verb	/ˈɪndʒə/
+2016	lock	noun, verb	/lɒk/
+2017	musical	noun, adjective	/ˈmjuːzɪkəl/
+2018	oppose	verb	/əˈpəʊz/
+2019	organise	verb	/ˈɔːɡəˌnaɪz/
+2020	plastic	noun, adjective	/ˈplæstɪk/
+2021	quote	noun, verb	/kwəʊt/
+2022	semi	noun	/ˈsemi/
+2023	suspect	noun, verb	/səˈspekt/
+2024	swear	verb	/sweə/
+2025	technique	noun	/tekˈniːk/
+2026	tie	noun, verb	/taɪ/
+2027	trend	noun, verb	/trend/
+2028	valuable	noun, adjective	/ˈvæljʊbəl/
+2029	wealth	noun	/welθ/
+2030	wise	verb, adjective	/waɪz/
+2031	approval	noun	/əˈpruːvəl/
+2032	aspect	noun	/ˈæˌspekt/
+2033	convention	noun	/kənˈvenʃən/
+2034	equivalent	noun, adjective	/ɪˈkwɪvələnt/
+2035	fairly	adverb	/ˈfeəli/
+2036	ford	noun, verb	/fɔːd/
+2037	gang	noun, verb	/ɡæŋ/
+2038	graduate	noun, verb	/ˈɡrædjʊˌeɪt/
+2039	inner	adjective	/ˈɪnə/
+2040	lift	noun, verb	/lɪft/
+2041	miller	noun	/ˈmɪlə/
+2042	monthly	noun, adjective	/ˈmʌnθli/
+2043	neighbourhood	noun	/ˈneɪbəˌhʊd/
+2044	outstanding	adjective	/ˌaʊtˈstændɪŋ/
+2045	permission	noun	/pəˈmɪʃən/
+2046	regulation	noun	/ˌreɡjʊˈleɪʃən/
+2047	reply	noun, verb	/rɪˈplaɪ/
+2048	rid	verb	/rɪd/
+2049	scientist	noun	/ˈsaɪəntɪst/
+2050	shoulder	noun, verb	/ˈʃəʊldə/
+2051	shower	noun, verb	/ˈʃaʊə/
+2052	tower	noun, verb	/ˈtaʊə/
+2053	tradition	noun	/trəˈdɪʃən/
+2054	visual	noun, adjective	/ˈvɪʒʊəl/
+2055	wheel	noun, verb	/wiːl/
+2056	appointment	noun	/əˈpɔɪntmənt/
+2057	barely	adverb	/ˈbeəli/
+2058	bush	noun	/bʊʃ/
+2059	cabinet	noun	/ˈkæbɪnɪt/
+2060	celebrate	verb	/ˈseləˌbreɪt/
+2061	chocolate	noun, adjective	/ˈtʃɒkələt/
+2062	coal	noun	/kəʊl/
+2063	contemporary	noun, adjective	/kənˈtempərəri/
+2064	criticism	noun	/ˈkrɪtɪˌsɪzəm/
+2065	effectively	adverb	/ɪˈfektɪvli/
+2066	extensive	adjective	/ɪkˈstensɪv/
+2067	formation	noun	/fɔːˈmeɪʃən/
+2068	highway	noun	/ˈhaɪˌweɪ/
+2069	historic	adjective	/hɪˈstɒrɪk/
+2070	hunt	noun, verb	/hʌnt/
+2071	improvement	noun	/ɪmˈpruːvmənt/
+2072	inch	noun, verb	/ɪntʃ/
+2073	initially	adverb	/ɪˈnɪʃəli/
+2074	junior	noun, adjective	/ˈdʒuːnjə/
+2075	jury	noun	/ˈdʒʊəri/
+2076	monster	noun	/ˈmɒnstə/
+2077	obtain	verb	/əbˈteɪn/
+2078	philosophy	noun	/fɪˈlɒsəfi/
+2079	pride	noun, verb	/praɪd/
+2080	repeat	noun, verb	/rɪˈpiːt/
+2081	rough	verb, adjective	/rʌf/
+2082	settlement	noun	/ˈsetəlmənt/
+2083	smell	noun, verb	/smel/
+2084	speaker	noun	/ˈspiːkə/
+2085	surround	verb	/səˈraʊnd/
+2086	tone	noun, verb	/təʊn/
+2087	topic	noun	/ˈtɒpɪk/
+2088	universal	noun, adjective	/ˌjuːnɪˈvɜːsəl/
+2089	vast	adjective	/vɑːst/
+2090	visitor	noun	/ˈvɪzɪtə/
+2091	auto	noun	/ˈɔːtəʊ/
+2092	consistent	adjective	/kənˈsɪstənt/
+2093	grey	noun, verb	/ɡreɪ/
+2094	guitar	noun	/ɡɪˈtɑː/
+2095	ignore	verb	/ɪɡˈnɔː/
+2096	meal	noun, verb	/miːl/
+2097	meanwhile	adverb	/ˈmiːnˌwaɪl/
+2098	meeting	noun	/ˈmiːtɪŋ/
+2099	naturally	adverb	/ˈnætʃrəli/
+2100	necessarily	adverb	/ˌnesəˈserɪli/
+2101	pant	noun, verb	/pænt/
+2102	partnership	noun	/ˈpɑːtnəˌʃɪp/
+2103	percentage	noun	/pəˈsentɪdʒ/
+2104	pocket	noun, verb	/ˈpɒkɪt/
+2105	practical	noun, adjective	/ˈpræktɪkəl/
+2106	primarily	adverb	/ˈpraɪmərɪli/
+2107	regardless	adjective, adverb	/rɪˈɡɑːdlɪs/
+2108	relative	noun, adjective	/ˈrelətɪv/
+2109	rescue	noun, verb	/ˈreskjuː/
+2110	rush	noun, verb	/rʌʃ/
+2111	sharp	noun, adjective	/ʃɑːp/
+2112	soccer	noun	/ˈsɒkə/
+2113	stable	noun, verb	/ˈsteɪbəl/
+2114	symptom	noun	/ˈsɪmptəm/
+2115	temporary	noun, adjective	/ˈtempərəri/
+2116	trick	noun, verb	/trɪk/
+2117	audio	adjective	/ˈɔːdɪˌəʊ/
+2118	bone	noun, verb	/bəʊn/
+2119	chamber	noun	/ˈtʃeɪmbə/
+2120	chart	noun, verb	/tʃɑːt/
+2121	circuit	noun	/ˈsɜːkɪt/
+2122	clothe	verb	/kləʊð/
+2123	complicated	adjective	/ˈkɒmplɪˌkeɪtɪd/
+2124	confused	adjective	/kənˈfjuːzd/
+2125	consequence	noun	/ˈkɒnsɪkwəns/
+2126	defend	verb	/dɪˈfend/
+2127	divide	verb	/dɪˈvaɪd/
+2128	everyday	adjective	/ˌevrɪˈdeɪ/
+2129	extent	noun	/ɪkˈstent/
+2130	format	noun, verb	/ˈfɔːˌmæt/
+2131	gap	noun, verb	/ɡæp/
+2132	gate	noun, verb	/ɡeɪt/
+2133	harm	noun, verb	/hɑːm/
+2134	healthcare	noun	/ˈhelθˌkeə/
+2135	household	noun	/ˈhaʊsˌhəʊld/
+2136	immigration	noun	/ˌɪmɪˈɡreɪʃən/
+2137	impressive	adjective	/ɪmˈpresɪv/
+2138	lesson	noun	/ˈlesən/
+2139	membership	noun	/ˈmembəˌʃɪp/
+2140	mirror	noun, verb	/ˈmɪrə/
+2141	mount	noun, verb	/maʊnt/
+2142	proposal	noun	/prəˈpəʊzəl/
+2143	province	noun	/ˈprɒvɪns/
+2144	recognition	noun	/ˌrekəɡˈnɪʃən/
+2145	reputation	noun	/ˌrepjʊˈteɪʃən/
+2146	shortly	adverb	/ˈʃɔːtli/
+2147	strongly	adverb	/ˈstrɒŋli/
+2148	tear	noun, verb	/tɪə/
+2149	thin	verb, adjective	/θɪn/
+2150	accuse	verb	/əˈkjuːz/
+2151	adventure	noun, verb	/ədˈventʃə/
+2152	argue	verb	/ˈɑːɡjuː/
+2153	assessment	noun	/əˈsesmənt/
+2154	atmosphere	noun	/ˈætməsˌfɪə/
+2155	awful	adjective	/ˈɔːfəl/
+2156	bedroom	noun	/ˈbeˌdruːm/
+2157	belief	noun	/bɪˈliːf/
+2158	bound	noun, verb	/baʊnd/
+2159	carefully	adverb	/ˈkeəfəli/
+2160	contrast	noun, verb	/kənˈtrɑːst/
+2161	elsewhere	adverb	/ˈelˌsweə/
+2162	extension	noun	/ɪkˈstenʃən/
+2163	founder	noun, verb	/ˈfaʊndə/
+2164	gear	noun, verb	/ɡɪə/
+2165	hip	noun, adjective	/hɪp/
+2166	infrastructure	noun	/ˌɪnfrəˈstrʌktʃə/
+2167	loose	verb, adjective	/luːs/
+2168	moral	noun, adjective	/ˈmɒrəl/
+2169	offensive	noun, adjective	/əˈfensɪv/
+2170	pa	adverb	/pɑː/
+2171	package	noun, verb	/ˈpækɪdʒ/
+2172	poverty	noun	/ˈpɒvəti/
+2173	qualified	adjective	/ˈkwɒlɪˌfaɪd/
+2174	railway	noun	/ˈreɪlˌweɪ/
+2175	ridiculous	adjective	/rɪˈdɪkjʊləs/
+2176	sensitive	noun, adjective	/ˈsensɪtɪv/
+2177	server	noun	/ˈsɜːvə/
+2178	shock	noun, verb	/ʃɒk/
+2179	silence	noun, verb	/ˈsaɪləns/
+2180	superior	noun, adjective	/suːˈpɪərɪə/
+2181	supporter	noun	/səˈpɔːtə/
+2182	thick	noun, adjective	/θɪk/
+2183	ton	noun	/tʌn/
+2184	transition	noun, verb	/trænˈzɪʃən/
+2185	voter	noun	/ˈvəʊtə/
+2186	acid	noun, adjective	/ˈæsɪd/
+2187	actress	noun	/ˈæktrɪs/
+2188	administrative	adjective	/ədˈmɪnɪstrətɪv/
+2189	alongside	adverb	/əˈlɒŋˌsaɪd/
+2190	angel	noun	/ˈeɪndʒəl/
+2191	anxiety	noun	/æŋˈzaɪəti/
+2192	bonus	noun	/ˈbəʊnəs/
+2193	castle	noun, verb	/ˈkɑːsəl/
+2194	charity	noun	/ˈtʃærɪti/
+2195	curious	adjective	/ˈkjʊərɪəs/
+2196	discovery	noun	/dɪˈskʌvri/
+2197	duke	noun	/djuːk/
+2198	encourage	verb	/enˈkʌrɪdʒ/
+2199	enforcement	noun	/ɪnˈfɔːsmənt/
+2200	flash	noun, verb	/flæʃ/
+2201	formal	adjective	/ˈfɔːməl/
+2202	formula	noun, adjective	/ˈfɔːmjʊlə/
+2203	fort	noun	/fɔːt/
+2204	gray	noun, verb	/ɡreɪ/
+2205	gross	noun, verb	/ɡrəʊs/
+2206	inform	verb	/ɪnˈfɔːm/
+2207	innocent	noun, adjective	/ˈɪnəsənt/
+2208	math	noun	/mæθ/
+2209	mystery	noun	/ˈmɪstəri/
+2210	palace	noun	/ˈpælɪs/
+2211	penalty	noun	/ˈpenəlti/
+2212	pet	noun, verb	/pet/
+2213	photography	noun	/fəˈtɒɡrəfi/
+2214	protest	noun, verb	/ˈprəʊtest/
+2215	publication	noun	/ˌpʌblɪˈkeɪʃən/
+2216	respectively	adverb	/rɪˈspektɪvli/
+2217	silent	adjective	/ˈsaɪlənt/
+2218	successfully	adverb	/səkˈsesfəli/
+2219	temple	noun	/ˈtempəl/
+2220	trail	noun, verb	/treɪl/
+2221	uncle	noun	/ˈʌŋkəl/
+2222	unusual	adjective	/ʌˈnjuːʒʊəl/
+2223	arrival	noun	/əˈraɪvəl/
+2224	assault	noun, verb	/əˈsɔːlt/
+2225	awareness	noun	/əˈweənɪs/
+2226	badly	adverb	/ˈbædli/
+2227	bath	noun, verb	/bɑːθ/
+2228	capture	noun, verb	/ˈkæptʃə/
+2229	chase	noun, verb	/tʃeɪs/
+2230	component	noun	/kəmˈpəʊnənt/
+2231	concrete	noun, verb	/kəŋˈkriːt/
+2232	deeply	adverb	/ˈdiːpli/
+2233	expectation	noun	/ˌekspekˈteɪʃən/
+2234	explanation	noun	/ˌekspləˈneɪʃən/
+2235	exposure	noun	/ɪkˈspəʊʒə/
+2236	fiction	noun	/ˈfɪkʃən/
+2237	guarantee	noun, verb	/ˌɡærənˈtiː/
+2238	happiness	noun	/ˈhæpɪnɪs/
+2239	horrible	adjective	/ˈhɒrɪbəl/
+2240	ideal	noun, adjective	/aɪˈdɪəl/
+2241	jimmy	noun, verb	/ˈdʒɪmi/
+2242	legend	noun	/ˈledʒənd/
+2243	lieutenant	noun	/lefˈtenənt/
+2244	mini	noun, adjective	/ˈmɪni/
+2245	mood	noun	/muːd/
+2246	muscle	noun, verb	/ˈmʌsəl/
+2247	passion	noun	/ˈpæʃən/
+2248	pleased	adjective	/pliːzd/
+2249	procedure	noun	/prəˈsiːdʒə/
+2250	producer	noun	/prəˈdjuːsə/
+2251	rank	noun, verb	/ræŋk/
+2252	replacement	noun	/rɪˈpleɪsmənt/
+2253	retire	verb	/rɪˈtaɪə/
+2254	sand	noun, verb	/sænd/
+2255	savings	noun	/ˈseɪvɪŋz/
+2256	settle	verb	/ˈsetəl/
+2257	shadow	noun, verb	/ˈʃæˌdəʊ/
+2258	tag	noun, verb	/tæɡ/
+2259	tape	noun, verb	/teɪp/
+2260	thread	noun, verb	/θred/
+2261	wage	noun, verb	/weɪdʒ/
+2262	avenue	noun	/ˈævɪˌnjuː/
+2263	boring	adjective	/ˈbɔːrɪŋ/
+2264	clock	noun, verb	/klɒk/
+2265	commissioner	noun	/kəˈmɪʃənə/
+2266	commitment	noun	/kəˈmɪtmənt/
+2267	confident	adjective	/ˈkɒnfɪdənt/
+2268	custom	noun, adjective	/ˈkʌstəm/
+2269	deny	verb	/dɪˈnaɪ/
+2270	electricity	noun	/ɪˌlekˈtrɪsɪti/
+2271	farmer	noun	/ˈfɑːmə/
+2272	gym	noun	/dʒɪm/
+2273	helpful	adjective	/ˈhelpfəl/
+2274	horror	noun	/ˈhɒrə/
+2275	label	noun, verb	/ˈleɪbəl/
+2276	output	noun, verb	/ˈaʊtˌpʊt/
+2277	pitch	noun, verb	/pɪtʃ/
+2278	pizza	noun	/ˈpiːtsə/
+2279	plain	noun, adjective	/pleɪn/
+2280	rear	noun, verb	/rɪə/
+2281	romantic	noun, adjective	/rəˈmæntɪk/
+2282	strategic	adjective	/strəˈtiːdʒɪk/
+2283	swim	noun, verb	/swɪm/
+2284	welfare	noun	/ˈwelˌfeə/
+2285	wire	noun, verb	/ˈwaɪə/
+2286	afterwards	adverb	/ˈɑːftəwədz/
+2287	alright	adjective, adverb	/ˌɔːlˈraɪt/
+2288	android	noun, adjective	/ˈændrɔɪd/
+2289	anger	noun, verb	/ˈæŋɡə/
+2290	architecture	noun	/ˈɑːkɪˌtektʃə/
+2291	assist	verb	/əˈsɪst/
+2292	behalf	noun	/bɪˈhɑːf/
+2293	belt	noun, verb	/belt/
+2294	ceremony	noun	/ˈserɪməni/
+2295	comic	noun, adjective	/ˈkɒmɪk/
+2296	designer	noun, adjective	/dɪˈzaɪnə/
+2297	diamond	noun	/ˈdaɪəmənd/
+2298	disappointed	adjective	/ˌdɪsəˈpɔɪntɪd/
+2299	economics	noun	/ˌiːkəˈnɒmɪks/
+2300	efficient	adjective	/ɪˈfɪʃənt/
+2301	electrical	adjective	/ɪˈlektrɪkəl/
+2302	employ	verb	/ɪmˈplɔɪ/
+2303	essentially	adverb	/ɪˈsenʃəli/
+2304	establishment	noun	/ɪˈstæblɪʃmənt/
+2305	ghost	noun, verb	/ɡəʊst/
+2306	hockey	noun	/ˈhɒki/
+2307	kit	noun	/kɪt/
+2308	nervous	adjective	/ˈnɜːvəs/
+2309	newly	adverb	/ˈnjuːli/
+2310	odd	adjective	/ɒd/
+2311	ordinary	adjective	/ˈɔːdɪnəri/
+2312	participate	verb	/pɑːˈtɪsɪˌpeɪt/
+2313	prayer	noun	/preə/
+2314	principle	noun	/ˈprɪnsɪpəl/
+2315	racist	noun, adjective	/ˈreɪsɪst/
+2316	rarely	adverb	/ˈreəli/
+2317	soil	noun, verb	/sɔɪl/
+2318	solve	verb	/sɒlv/
+2319	stomach	noun, verb	/ˈstʌmək/
+2320	suck	verb	/sʌk/
+2321	trash	noun, verb	/træʃ/
+2322	ugly	adjective	/ˈʌɡli/
+2323	virus	noun	/ˈvaɪrəs/
+2324	walker	noun	/ˈwɔːkə/
+2325	whoever	noun	/huːˈevə/
+2326	boost	noun, verb	/buːst/
+2327	bureau	noun	/ˈbjʊərəʊ/
+2328	colonel	noun	/ˈkɜːnəl/
+2329	comfort	noun, verb	/ˈkʌmfət/
+2330	cousin	noun	/ˈkʌzən/
+2331	crack	noun, verb	/kræk/
+2332	deck	noun, verb	/dek/
+2333	dragon	noun	/ˈdræɡən/
+2334	dramatic	adjective	/drəˈmætɪk/
+2335	dust	noun, verb	/dʌst/
+2336	evolution	noun	/ˌiːvəˈluːʃən/
+2337	hire	noun, verb	/ˈhaɪə/
+2338	illness	noun	/ˈɪlnɪs/
+2339	inspiration	noun	/ˌɪnspɪˈreɪʃən/
+2340	knife	noun, verb	/naɪf/
+2341	lately	adverb	/ˈleɪtli/
+2342	memorial	noun, adjective	/mɪˈmɔːrɪəl/
+2343	minority	noun	/maɪˈnɒrɪti/
+2344	priority	noun	/praɪˈɒrɪti/
+2345	promotion	noun	/prəˈməʊʃən/
+2346	rail	noun, verb	/reɪl/
+2347	reader	noun	/ˈriːdə/
+2348	remote	adjective	/rɪˈməʊt/
+2349	repair	noun, verb	/rɪˈpeə/
+2350	root	noun, verb	/ruːt/
+2351	saint	noun	/seɪnt/
+2352	steal	noun, verb	/stiːl/
+2353	telephone	noun, verb	/ˈtelɪˌfəʊn/
+2354	abandon	noun, verb	/əˈbændən/
+2355	acquire	verb	/əˈkwaɪə/
+2356	alliance	noun	/əˈlaɪəns/
+2357	annoying	noun	/əˈnɔɪɪŋ/
+2358	bid	noun, verb	/bɪd/
+2359	buddy	noun, verb	/ˈbʌdi/
+2360	bury	verb	/ˈberi/
+2361	butter	noun, verb	/ˈbʌtə/
+2362	conclusion	noun	/kənˈkluːʒən/
+2363	congratulations	noun	/kənˌɡrætʃəˈleɪʃənz/
+2364	convince	verb	/kənˈvɪns/
+2365	crystal	noun	/ˈkrɪstəl/
+2366	dean	noun, verb	/diːn/
+2367	decent	adjective	/ˈdiːsənt/
+2368	decline	noun, verb	/dɪˈklaɪn/
+2369	delay	noun, verb	/dɪˈleɪ/
+2370	desert	noun, verb	/dɪˈzɜːt/
+2371	downtown	noun, adjective	/ˈdaʊnˌtaʊn/
+2372	elite	noun, adjective	/ɪˈliːt/
+2373	forth	adverb	/fɔːθ/
+2374	hop	noun, verb	/hɒp/
+2375	insane	noun, adjective	/ɪnˈseɪn/
+2376	install	verb	/ɪnˈstɔːl/
+2377	layer	noun, verb	/ˈleɪə/
+2378	marry	verb	/ˈmæri/
+2379	nowhere	adverb	/ˈnəʊˌweə/
+2380	nurse	noun, verb	/nɜːs/
+2381	organic	noun, adjective	/ˌɔːˈɡænɪk/
+2382	ownership	noun	/ˈəʊnəˌʃɪp/
+2383	participant	noun	/pɑːˈtɪsɪpənt/
+2384	poetry	noun	/ˈpəʊɪtri/
+2385	pot	noun, verb	/pɒt/
+2386	pray	verb, adverb	/preɪ/
+2387	recall	noun, verb	/rɪˈkɔːl/
+2388	sake	noun	/seɪk/
+2389	sheet	noun, verb	/ʃiːt/
+2390	smooth	verb, adjective	/smuːð/
+2391	spiritual	noun, adjective	/ˈspɪrɪtʃjʊəl/
+2392	string	noun, verb	/strɪŋ/
+2393	sudden	adjective	/ˈsʌdən/
+2394	vacation	noun, verb	/veɪˈkeɪʃən/
+2395	abroad	adverb	/əˈbrɔːd/
+2396	assign	verb	/əˈsaɪn/
+2397	bench	noun	/bentʃ/
+2398	bother	noun, verb	/ˈbɒðə/
+2399	broadcast	noun, verb	/ˈbrɔːdˌkɑːst/
+2400	bye	exclamation	/baɪ/
+2401	compete	verb	/kəmˈpiːt/
+2402	consist	verb	/kənˈsɪst/
+2403	contribute	verb	/kənˈtrɪbjuːt/
+2404	cricket	noun	/ˈkrɪkɪt/
+2405	critic	noun	/ˈkrɪtɪk/
+2406	disaster	noun	/dɪˈzɑːstə/
+2407	entrance	noun, verb	/ˈentrəns/
+2408	equally	adverb	/ˈiːkwəli/
+2409	fallen	noun, adjective	/ˈfɔːlən/
+2410	fitness	noun	/ˈfɪtnɪs/
+2411	friendship	noun	/ˈfrenʃɪp/
+2412	idiot	noun	/ˈɪdɪət/
+2413	intense	adjective	/ɪnˈtens/
+2414	lifetime	noun	/ˈlaɪfˌtaɪm/
+2415	liquid	noun, adjective	/ˈlɪkwɪd/
+2416	makeup	noun	/ˈmeɪˌkʌp/
+2417	medal	noun	/ˈmedəl/
+2418	mortgage	noun, verb	/ˈmɔːɡɪdʒ/
+2419	narrative	noun, adjective	/ˈnærətɪv/
+2420	narrow	verb, adjective	/ˈnærəʊ/
+2421	observe	verb	/əbˈzɜːv/
+2422	occasionally	adverb	/əˈkeɪʒnəli/
+2423	pan	verb	/pæn/
+2424	physics	noun	/ˈfɪzɪks/
+2425	potentially	adverb	/pəˈtenʃəli/
+2426	reduction	noun	/rɪˈdʌkʃən/
+2427	reflect	verb	/rɪˈflekt/
+2428	researcher	noun	/rɪˈsɜːtʃə/
+2429	shell	noun, verb	/ʃel/
+2430	silly	noun, adjective	/ˈsɪli/
+2431	subsequent	adjective	/ˈsʌbsɪkwənt/
+2432	translation	noun	/ˌtrænˈsleɪʃən/
+2433	visible	noun	/ˈvɪzɪbəl/
+2434	yep	adverb	/jep/
+2435	amendment	noun	/əˈmendmənt/
+2436	angle	noun, verb	/ˈæŋɡəl/
+2437	belong	verb	/bɪˈlɒŋ/
+2438	bishop	noun	/ˈbɪʃəp/
+2439	commonly	adverb	/ˈkɒmənli/
+2440	defensive	adjective	/dɪˈfensɪv/
+2441	efficiency	noun	/ɪˈfɪʃənsi/
+2442	enterprise	noun	/ˈentəˌpraɪz/
+2443	experiment	noun, verb	/ɪkˈsperɪmənt/
+2444	finding	noun	/ˈfaɪndɪŋ/
+2445	forum	noun	/ˈfɔːrəm/
+2446	grass	noun, verb	/ɡrɑːs/
+2447	hence	adverb	/hens/
+2448	increasingly	adverb	/ɪnˈkriːsɪŋli/
+2449	incredibly	adverb	/ɪnˈkredɪbli/
+2450	jay	noun	/dʒeɪ/
+2451	journalist	noun	/ˈdʒɜːnəlɪst/
+2452	mill	noun, verb	/mɪl/
+2453	occasion	noun, verb	/əˈkeɪʒən/
+2454	oxford	noun	/ˈɒksfəd/
+2455	pace	noun, verb	/peɪs/
+2456	passenger	noun	/ˈpæsəndʒə/
+2457	pope	noun	/pəʊp/
+2458	possession	noun	/pəˈzeʃən/
+2459	rapid	noun, adjective	/ˈræpɪd/
+2460	spin	noun, verb	/spɪn/
+2461	suitable	adjective	/ˈsuːtəbəl/
+2462	thirty	number	/ˈθɜːti/
+2463	valid	adjective	/ˈvælɪd/
+2464	vital	adjective	/ˈvaɪtəl/
+2465	agriculture	noun	/ˈæɡrɪˌkʌltʃə/
+2466	allege	verb	/əˈledʒ/
+2467	commerce	noun	/ˈkɒmɜːs/
+2468	creek	noun	/kriːk/
+2469	currency	noun	/ˈkʌrənsi/
+2470	emotion	noun	/ɪˈməʊʃən/
+2471	exhibition	noun	/ˌeksɪˈbɪʃən/
+2472	fraud	noun	/frɔːd/
+2473	funeral	noun	/ˈfjuːnərəl/
+2474	genuine	adjective	/ˈdʒenjʊɪn/
+2475	honey	noun	/ˈhʌni/
+2476	hook	noun, verb	/hʊk/
+2477	hunter	noun	/ˈhʌntə/
+2478	instruction	noun	/ɪnˈstrʌkʃən/
+2479	legacy	noun	/ˈleɡəsi/
+2480	log	verb	/lɒɡ/
+2481	merely	adverb	/ˈmɪəli/
+2482	monitor	noun, verb	/ˈmɒnɪtə/
+2483	prisoner	noun	/ˈprɪznə/
+2484	ratio	noun, verb	/ˈreɪʃɪˌəʊ/
+2485	regret	noun, verb	/rɪˈɡret/
+2486	reject	noun, verb	/rɪˈdʒekt/
+2487	remind	verb	/rɪˈmaɪnd/
+2488	resort	noun, verb	/rɪˈzɔːt/
+2489	reverse	noun, verb	/rɪˈvɜːs/
+2490	routine	noun, adjective	/ruːˈtiːn/
+2491	scary	adjective	/ˈskeəri/
+2492	seed	noun, verb	/siːd/
+2493	sin	noun, verb	/sɪn/
+2494	spell	noun, verb	/spel/
+2495	summary	noun, adjective	/ˈsʌməri/
+2496	survival	noun	/səˈvaɪvəl/
+2497	sword	noun	/sɔːd/
+2498	tongue	noun, verb	/tʌŋ/
+2499	ward	noun, verb	/wɔːd/
+2500	achievement	noun	/əˈtʃiːvmənt/
+2501	asleep	adjective	/əˈsliːp/
+2502	automatic	noun, adjective	/ˌɔːtəˈmætɪk/
+2503	coat	noun, verb	/kəʊt/
+2504	comprehensive	adjective	/ˌkɒmprɪˈhensɪv/
+2505	consent	noun, verb	/kənˈsent/
+2506	daddy	noun	/ˈdædi/
+2507	destruction	noun	/dɪˈstrʌkʃən/
+2508	drove	noun	/drəʊv/
+2509	extraordinary	adjective	/ɪkˈstrɔːdɪnəri/
+2510	fate	noun, verb	/feɪt/
+2511	frequency	noun	/ˈfriːkwənsi/
+2512	gene	noun	/dʒiːn/
+2513	glory	noun, verb	/ˈɡlɒri/
+2514	headquarters	noun	/ˌhedˈkwɔːtəz/
+2515	heritage	noun	/ˈherɪtɪdʒ/
+2516	initiative	noun, adjective	/ɪˈnɪʃətɪv/
+2517	landscape	noun, verb	/ˈlænˌskeɪp/
+2518	logic	noun	/ˈlɒdʒɪk/
+2519	objective	noun, adjective	/əbˈdʒektɪv/
+2520	privacy	noun	/ˈpraɪvəsi/
+2521	residence	noun	/ˈrezɪdəns/
+2522	roughly	adverb	/ˈrʌfli/
+2523	salary	noun, verb	/ˈsæləri/
+2524	script	noun, verb	/skrɪpt/
+2525	strip	noun, verb	/strɪp/
+2526	threaten	verb	/ˈθretən/
+2527	tube	noun	/tjuːb/
+2528	ambassador	noun	/æmˈbæsədə/
+2529	breast	noun, verb	/brest/
+2530	cant	noun, verb	/kænt/
+2531	chemistry	noun	/ˈkemɪstri/
+2532	conclude	verb	/kənˈkluːd/
+2533	consumption	noun	/kənˈsʌmʃən/
+2534	corruption	noun	/kəˈrʌpʃən/
+2535	cotton	noun	/ˈkɒtən/
+2536	discount	noun, verb	/ˈdɪskaʊnt/
+2537	dozen	noun	/ˈdʌzən/
+2538	epic	noun, adjective	/ˈepɪk/
+2539	exception	noun	/ɪkˈsepʃən/
+2540	exit	noun, verb	/ˈeɡzɪt/
+2541	expand	verb	/ɪkˈspænd/
+2542	fancy	noun, verb	/ˈfænsi/
+2543	gorgeous	adjective	/ˈɡɔːdʒəs/
+2544	grateful	adjective	/ˈɡreɪtfəl/
+2545	impression	noun	/ɪmˈpreʃən/
+2546	indicate	verb	/ˈɪndɪˌkeɪt/
+2547	input	noun, verb	/ˈɪnˌpʊt/
+2548	knock	noun, verb	/nɒk/
+2549	leather	noun, verb	/ˈleðə/
+2550	lip	noun, verb	/lɪp/
+2551	luxury	noun	/ˈlʌkʃəri/
+2552	lyric	noun, adjective	/ˈlɪrɪk/
+2553	manufacturer	noun	/ˌmænjʊˈfæktʃərə/
+2554	ought	verb	/ɔːt/
+2555	outcome	noun	/ˈaʊtˌkʌm/
+2556	poll	noun, verb	/pəʊl/
+2557	removal	noun	/rɪˈmuːvəl/
+2558	reporter	noun	/rɪˈpɔːtə/
+2559	rob	verb	/rɒb/
+2560	scream	noun, verb	/skriːm/
+2561	sequence	noun, verb	/ˈsiːkwəns/
+2562	stretch	noun, verb	/stretʃ/
+2563	tennis	noun	/ˈtenɪs/
+2564	twelve	number	/twelv/
+2565	virgin	noun, adjective	/ˈvɜːdʒɪn/
+2566	wolf	noun, verb	/wʊlf/
+2567	absence	noun	/ˈæbsəns/
+2568	agricultural	adjective	/ˌæɡrɪˈkʌltʃərəl/
+2569	athlete	noun	/ˈæθˌliːt/
+2570	bull	noun, verb	/bʊl/
+2571	commonwealth	noun	/ˈkɒmənˌwelθ/
+2572	contribution	noun	/ˌkɒntrɪˈbjuːʃən/
+2573	delicious	adjective	/dɪˈlɪʃəs/
+2574	ease	noun, verb	/iːz/
+2575	fame	noun, verb	/feɪm/
+2576	flood	noun, verb	/flʌd/
+2577	generate	verb	/ˈdʒenəˌreɪt/
+2578	genetic	adjective	/dʒəˈnetɪk/
+2579	impress	noun, verb	/ɪmˈpres/
+2580	instant	noun, adjective	/ˈɪnstənt/
+2581	investor	noun	/ɪnˈvestə/
+2582	liberty	noun	/ˈlɪbəti/
+2583	photograph	noun, verb	/ˈfəʊtəˌɡrɑːf/
+2584	progressive	noun, adjective	/prəˈɡresɪv/
+2585	punishment	noun	/ˈpʌnɪʃmənt/
+2586	rally	noun, verb	/ˈræli/
+2587	rapidly	adverb	/ˈræpɪdli/
+2588	representation	noun	/ˌreprɪzenˈteɪʃən/
+2589	sum	noun, verb	/sʌm/
+2590	swing	noun, verb	/swɪŋ/
+2591	tail	noun, verb	/teɪl/
+2592	twin	noun, verb	/twɪn/
+2593	upcoming	adjective	/ˈʌpˌkʌmɪŋ/
+2594	veteran	noun	/ˈvetərən/
+2595	alert	noun, verb	/əˈlɜːt/
+2596	arena	noun	/əˈriːnə/
+2597	billy	noun	/ˈbɪli/
+2598	boom	noun, verb	/buːm/
+2599	boot	noun, verb	/buːt/
+2600	brave	noun, verb	/breɪv/
+2601	column	noun	/ˈkɒləm/
+2602	compensation	noun	/ˌkɒmpənˈseɪʃən/
+2603	composition	noun	/ˌkɒmpəˈzɪʃən/
+2604	conservation	noun	/ˌkɒnsəˈveɪʃən/
+2605	constitutional	noun, adjective	/ˌkɒnstɪˈtjuːʃənəl/
+2606	density	noun	/ˈdensɪti/
+2607	difficulty	noun	/ˈdɪfɪkəlti/
+2608	elementary	adjective	/ˌelɪˈmentəri/
+2609	ethnic	noun, adjective	/ˈeθnɪk/
+2610	expense	noun	/ɪkˈspens/
+2611	fleet	noun, adjective	/fliːt/
+2612	foster	verb, adjective	/ˈfɒstə/
+2613	fundamental	noun, adjective	/ˌfʌndəˈmentəl/
+2614	genius	noun	/ˈdʒiːnjəs/
+2615	greatly	adverb	/ˈɡreɪtli/
+2616	guidance	noun	/ˈɡaɪdəns/
+2617	infection	noun	/ɪnˈfekʃən/
+2618	intention	noun	/ɪnˈtenʃən/
+2619	knee	noun, verb	/niː/
+2620	mechanical	adjective	/mɪˈkænɪkəl/
+2621	participation	noun	/pɑːˌtɪsɪˈpeɪʃən/
+2622	precious	adjective	/ˈpreʃəs/
+2623	premium	noun	/ˈpriːmɪəm/
+2624	pretend	verb, adjective	/prɪˈtend/
+2625	priest	noun	/priːst/
+2626	prominent	noun, adjective	/ˈprɒmɪnənt/
+2627	radical	noun, adjective	/ˈrædɪkəl/
+2628	residential	adjective	/ˌrezɪˈdenʃəl/
+2629	reward	noun, verb	/rɪˈwɔːd/
+2630	robin	noun	/ˈrɒbɪn/
+2631	satellite	noun, adjective	/ˈsætəˌlaɪt/
+2632	shake	noun, verb	/ʃeɪk/
+2633	shore	noun, verb	/ʃɔː/
+2634	substantial	adjective	/səbˈstænʃəl/
+2635	teen	noun, adjective	/tiːn/
+2636	transmission	noun	/ˌtrænˈsmɪʃən/
+2637	trap	noun, verb	/træp/
+2638	uniform	noun, verb	/ˈjuːnɪˌfɔːm/
+2639	wildlife	noun	/ˈwaɪldˌlaɪf/
+2640	wooden	adjective	/ˈwʊdən/
+2641	aggressive	noun, adjective	/əˈɡresɪv/
+2642	apparent	adjective	/əˈpeərənt/
+2643	bang	noun, verb	/bæŋ/
+2644	blast	noun, verb	/blɑːst/
+2645	communist	noun, adjective	/ˈkɒmjʊnɪst/
+2646	complaint	noun	/kəmˈpleɪnt/
+2647	courage	noun	/ˈkʌrɪdʒ/
+2648	cure	noun, verb	/kjʊə/
+2649	desperate	adjective	/ˈdesprɪt/
+2650	diversity	noun	/daɪˈvɜːsɪti/
+2651	faculty	noun	/ˈfækəlti/
+2652	feedback	noun	/ˈfiːdˌbæk/
+2653	fighter	noun	/ˈfaɪtə/
+2654	frozen	adjective	/ˈfrəʊzən/
+2655	humanity	noun	/hjuːˈmænɪti/
+2656	innovation	noun	/ˌɪnəˈveɪʃən/
+2657	instrument	noun, verb	/ˈɪnstrəmənt/
+2658	invest	verb	/ɪnˈvest/
+2659	jacket	noun, verb	/ˈdʒækɪt/
+2660	legislative	adjective	/ˈledʒɪslətɪv/
+2661	manual	noun, adjective	/ˈmænjʊəl/
+2662	occupy	verb	/ˈɒkjʊˌpaɪ/
+2663	ongoing	adjective	/ˈɒnˌɡəʊɪŋ/
+2664	operator	noun	/ˈɒpəˌreɪtə/
+2665	painful	adjective	/ˈpeɪnfəl/
+2666	preparation	noun	/ˌprepəˈreɪʃən/
+2667	punch	noun, verb	/pʌntʃ/
+2668	railroad	noun, verb	/ˈreɪlˌrəʊd/
+2669	registration	noun	/ˌredʒɪˈstreɪʃən/
+2670	rick	noun, verb	/rɪk/
+2671	romance	noun	/ˈrəʊmæns/
+2672	submit	verb	/səbˈmɪt/
+2673	sufficient	adjective	/səˈfɪʃənt/
+2674	suspend	verb	/səˈspend/
+2675	tissue	noun	/ˈtɪʃuː/
+2676	trailer	noun	/ˈtreɪlə/
+2677	underground	noun, adjective	/ˈʌndəˌɡraʊnd/
+2678	virtual	adjective	/ˈvɜːtʃʊəl/
+2679	wounded	noun	/ˈwuːndɪd/
+2680	announcement	noun	/əˈnaʊnsmənt/
+2681	arrange	verb	/əˈreɪndʒ/
+2682	arsenal	noun	/ˈɑːsənəl/
+2683	attract	verb	/əˈtrækt/
+2684	biological	adjective	/baɪəˈlɒdʒɪkəl/
+2685	bite	noun, verb	/baɪt/
+2686	chip	noun, verb	/tʃɪp/
+2687	dare	noun, verb	/deə/
+2688	database	noun	/ˈdeɪtəˌbeɪs/
+2689	discrimination	noun	/dɪˌskrɪmɪˈneɪʃən/
+2690	disorder	noun, verb	/dɪˈsɔːdə/
+2691	distribute	verb	/dɪˈstrɪbjuːt/
+2692	documentary	noun, adjective	/ˌdɒkjʊˈmentəri/
+2693	domain	noun	/dəˈmeɪn/
+2694	dynamic	adjective	/daɪˈnæmɪk/
+2695	edit	verb	/ˈedɪt/
+2696	engagement	noun	/ɪnˈɡeɪdʒmənt/
+2697	explore	verb	/ɪkˈsplɔː/
+2698	footage	noun	/ˈfʊtɪdʒ/
+2699	grave	noun, adjective	/ɡreɪv/
+2700	implementation	noun	/ˌɪmplɪmenˈteɪʃən/
+2701	investigate	verb	/ɪnˈvestɪˌɡeɪt/
+2702	jazz	noun, verb	/dʒæz/
+2703	laboratory	noun	/ləˈbɒrətəri/
+2704	literary	adjective	/ˈlɪtərəri/
+2705	mask	noun, verb	/mɑːsk/
+2706	midnight	noun	/ˈmɪdˌnaɪt/
+2707	mouse	noun	/maʊs/
+2708	piano	noun, adjective	/pɪˈænəʊ/
+2709	praise	noun, verb	/preɪz/
+2710	presentation	noun	/ˌprezənˈteɪʃən/
+2711	psychology	noun	/saɪˈkɒlədʒi/
+2712	restriction	noun	/rɪˈstrɪkʃən/
+2713	rocket	noun, verb	/ˈrɒkɪt/
+2714	ruin	noun, verb	/ˈruːɪn/
+2715	slave	noun, verb	/sleɪv/
+2716	stability	noun	/stəˈbɪlɪti/
+2717	steady	noun, verb	/ˈstedi/
+2718	symbol	noun	/ˈsɪmbəl/
+2719	terminal	noun, adjective	/ˈtɜːmɪnəl/
+2720	toilet	noun	/ˈtɔɪlɪt/
+2721	treaty	noun	/ˈtriːti/
+2722	triple	verb, adjective	/ˈtrɪpəl/
+2723	unlikely	adjective	/ʌnˈlaɪkli/
+2724	agenda	noun	/əˈdʒendə/
+2725	bat	noun, verb	/bæt/
+2726	bow	noun, verb	/bəʊ/
+2727	calendar	noun, verb	/ˈkælɪndə/
+2728	cape	noun	/keɪp/
+2729	collective	noun, adjective	/kəˈlektɪv/
+2730	cooperation	noun	/kəʊˌɒpəˈreɪʃən/
+2731	craft	noun, verb	/krɑːft/
+2732	darkness	noun	/ˈdɑːknɪs/
+2733	enable	verb	/eˈneɪbəl/
+2734	equity	noun	/ˈekwɪti/
+2735	fortune	noun	/ˈfɔːtʃən/
+2736	hardware	noun	/ˈhɑːˌdweə/
+2737	intellectual	noun, adjective	/ˌɪntəˈlektʃʊəl/
+2738	involvement	noun	/ɪnˈvɒlvmənt/
+2739	nut	noun, verb	/nʌt/
+2740	partly	adverb	/ˈpɑːtli/
+2741	petition	noun, verb	/pɪˈtɪʃən/
+2742	phrase	noun, verb	/freɪz/
+2743	physically	adverb	/ˈfɪzɪkli/
+2744	racial	adjective	/ˈreɪʃəl/
+2745	regime	noun	/reɪˈʒiːm/
+2746	sauce	noun	/sɔːs/
+2747	seal	noun, verb	/siːl/
+2748	shield	noun, verb	/ʃiːld/
+2749	similarly	adverb	/ˈsɪmɪləli/
+2750	slide	noun, verb	/slaɪd/
+2751	stem	noun, verb	/stem/
+2752	summit	noun	/ˈsʌmɪt/
+2753	talented	adjective	/ˈtæləntɪd/
+2754	throat	noun	/θrəʊt/
+2755	warrior	noun	/ˈwɒrɪə/
+2756	wisdom	noun	/ˈwɪzdəm/
+2757	alien	noun, adjective	/ˈeɪlɪən/
+2758	awkward	adjective	/ˈɔːkwəd/
+2759	beast	noun	/biːst/
+2760	beef	noun, verb	/biːf/
+2761	candy	noun, verb	/ˈkændi/
+2762	carrier	noun	/ˈkærɪə/
+2763	celebration	noun	/ˌseləˈbreɪʃən/
+2764	celebrity	noun	/səˈlebrɪti/
+2765	certificate	noun, verb	/səˈtɪfɪkɪt/
+2766	cite	verb	/saɪt/
+2767	clay	noun	/kleɪ/
+2768	colleague	noun	/ˈkɒliːɡ/
+2769	construct	noun, verb	/ˈkɒnstrʌkt/
+2770	default	noun, verb	/ˈdiːfɔːlt/
+2771	derive	verb	/dəˈraɪv/
+2772	dialogue	noun, verb	/ˈdaɪəˌlɒɡ/
+2773	disable	verb	/dɪˈseɪbəl/
+2774	distinct	adjective	/dɪˈstɪŋkt/
+2775	drag	noun, verb	/dræɡ/
+2776	educate	verb	/ˈedjʊˌkeɪt/
+2777	eligible	noun, adjective	/ˈelɪdʒɪbəl/
+2778	execution	noun	/ˌeksɪˈkjuːʃən/
+2779	fifty	number	/ˈfɪfti/
+2780	follower	noun	/ˈfɒləʊə/
+2781	fool	noun, verb	/fuːl/
+2782	framework	noun	/ˈfreɪmˌwɜːk/
+2783	franchise	noun, verb	/ˈfrænˌtʃaɪz/
+2784	furniture	noun	/ˈfɜːnɪtʃə/
+2785	integrate	verb	/ˈɪntɪˌɡreɪt/
+2786	intelligent	adjective	/ɪnˈtelɪdʒənt/
+2787	interaction	noun	/ˌɪntəˈrækʃən/
+2788	jet	noun, verb	/dʒet/
+2789	lifestyle	noun	/ˈlaɪfˌstaɪl/
+2790	loop	noun, verb	/luːp/
+2791	mall	noun	/mɔːl/
+2792	overseas	adjective, adverb	/əʊvəˈsiːz/
+2793	polish	noun, verb	/ˈpɒlɪʃ/
+2794	recommendation	noun	/ˌrekəmənˈdeɪʃən/
+2795	recover	verb	/rɪˈkʌvə/
+2796	relax	verb	/rɪˈlæks/
+2797	reliable	adjective	/rɪˈlaɪəbəl/
+2798	rely	verb	/rɪˈlaɪ/
+2799	remarkable	adjective	/rɪˈmɑːkəbəl/
+2800	sacrifice	noun, verb	/ˈsækrɪˌfaɪs/
+2801	sole	noun, verb	/səʊl/
+2802	succeed	verb	/səkˈsiːd/
+2803	tale	noun	/teɪl/
+2804	volunteer	noun, verb	/ˌvɒlənˈtɪə/
+2805	worship	noun, verb	/ˈwɜːʃɪp/
+2806	worthy	noun, adjective	/ˈwɜːði/
+2807	alarm	noun, verb	/əˈlɑːm/
+2808	bass	noun	/bæs/
+2809	breathe	verb	/briːð/
+2810	butt	noun, verb	/bʌt/
+2811	characteristic	noun, adjective	/ˌkærɪktəˈrɪstɪk/
+2812	collaboration	noun	/kəˌlæbəˈreɪʃən/
+2813	con	noun, verb	/kɒn/
+2814	consideration	noun	/kənˌsɪdəˈreɪʃən/
+2815	crucial	adjective	/ˈkruːʃəl/
+2816	dependent	noun, adjective	/dɪˈpendənt/
+2817	dual	noun, adjective	/ˈdjuːəl/
+2818	equip	verb	/ɪˈkwɪp/
+2819	experimental	noun, adjective	/ɪkˌsperɪˈmentəl/
+2820	filter	noun, verb	/ˈfɪltə/
+2821	galaxy	noun	/ˈɡæləksi/
+2822	globe	noun	/ɡləʊb/
+2823	gulf	noun	/ɡʌlf/
+2824	highlight	noun, verb	/ˈhaɪˌlaɪt/
+2825	intent	noun, adjective	/ɪnˈtent/
+2826	judgment	noun	/ˈdʒʌdʒmənt/
+2827	knight	noun, verb	/naɪt/
+2828	logo	noun	/ˈləʊɡəʊ/
+2829	mature	verb, adjective	/məˈtʃʊə/
+2830	odds	noun	/ɒdz/
+2831	peaceful	adjective	/ˈpiːsfəl/
+2832	photographer	noun	/fəˈtɒɡrəfə/
+2833	pin	noun, verb	/pɪn/
+2834	prevention	noun	/prɪˈvenʃən/
+2835	publicly	adverb	/ˈpʌblɪkli/
+2836	pump	noun, verb	/pʌmp/
+2837	revenge	noun, verb	/rɪˈvendʒ/
+2838	satisfied	noun	/ˈsætɪsˌfaɪd/
+2839	slip	noun, verb	/slɪp/
+2840	spare	noun, verb	/speə/
+2841	specialist	noun, adjective	/ˈspeʃəlɪst/
+2842	stranger	noun	/ˈstreɪndʒə/
+2843	surprising	adjective	/səˈpraɪzɪŋ/
+2844	tap	noun, verb	/tæp/
+2845	tourism	noun	/ˈtʊəˌrɪzəm/
+2846	acceptable	adjective	/əkˈseptəbəl/
+2847	ally	noun, verb	/əˈlaɪ/
+2848	auction	noun, verb	/ˈɔːkʃən/
+2849	chaos	noun	/ˈkeɪɒs/
+2850	compose	verb	/kəmˈpəʊz/
+2851	concentration	noun	/ˌkɒnsənˈtreɪʃən/
+2852	copper	noun, verb	/ˈkɒpə/
+2853	corps	noun	/kɔː/
+2854	dawn	noun, verb	/dɔːn/
+2855	dispute	noun, verb	/dɪsˈpjuːt/
+2856	earnings	noun	/ˈɜːnɪŋz/
+2857	execute	verb	/ˈeksɪˌkjuːt/
+2858	frequent	verb, adjective	/ˈfriːkwənt/
+2859	gather	noun, verb	/ˈɡæðə/
+2860	hilarious	adjective	/hɪˈleərɪəs/
+2861	margin	noun	/ˈmɑːdʒɪn/
+2862	mar	verb	/mɑː/
+2863	mechanism	noun	/ˈmekəˌnɪzəm/
+2864	moderate	noun, verb	/ˈmɒdəˌreɪt/
+2865	opera	noun	/ˈɒprə/
+2866	overcome	verb	/ˈəʊvəˌkʌm/
+2867	parallel	noun, verb	/ˈpærəˌlel/
+2868	passage	noun	/ˈpæsɪdʒ/
+2869	pit	noun, verb	/pɪt/
+2870	psychological	adjective	/ˌsaɪkəˈlɒdʒɪkəl/
+2871	quest	noun, verb	/kwest/
+2872	radiation	noun	/ˌreɪdɪˈeɪʃən/
+2873	shocked	noun	/ʃɒkt/
+2874	stroke	noun, verb	/strəʊk/
+2875	stun	verb	/stʌn/
+2876	tune	noun, verb	/tjuːn/
+2877	utility	noun	/juːˈtɪlɪti/
+2878	vessel	noun	/ˈvesəl/
+2879	weed	noun, verb	/wiːd/
+2880	wherever	adverb	/ˌweəˈrevə/
+2881	acquisition	noun	/ˌækwɪˈzɪʃən/
+2882	autumn	noun	/ˈɔːtəm/
+2883	bold	adjective	/bəʊld/
+2884	classical	adjective	/ˈklæsɪkəl/
+2885	classify	verb	/ˈklæsɪˌfaɪ/
+2886	clip	noun, verb	/klɪp/
+2887	coin	noun, verb	/kɔɪn/
+2888	conspiracy	noun	/kənˈspɪrəsi/
+2889	controversy	noun	/ˈkɒntrəˌvɜːsi/
+2890	disappear	verb	/ˌdɪsəˈpɪə/
+2891	encounter	noun, verb	/ɪnˈkaʊntə/
+2892	equality	noun	/ɪˈkwɒlɪti/
+2893	exam	noun	/ɪɡˈzæm/
+2894	examination	noun	/ɪɡˌzæmɪˈneɪʃən/
+2895	federation	noun	/ˌfedəˈreɪʃən/
+2896	fiscal	adjective	/ˈfɪskəl/
+2897	guardian	noun	/ˈɡɑːdɪən/
+2898	homeless	noun, adjective	/ˈhəʊmlɪs/
+2899	intervention	noun	/ˌɪntəˈvenʃən/
+2900	mainstream	noun, verb	/ˈmeɪnˌstriːm/
+2901	menu	noun	/ˈmenjuː/
+2902	mutual	adjective	/ˈmjuːtʃʊəl/
+2903	offence	noun	/əˈfens/
+2904	oral	noun, adjective	/ˈɒrəl/
+2905	panic	noun, verb	/ˈpænɪk/
+2906	pursue	verb	/pəˈsjuː/
+2907	refugee	noun	/ˈrefjuːdʒi/
+2908	rip	noun, verb	/rɪp/
+2909	scope	noun, verb	/skəʊp/
+2910	segment	noun, verb	/ˈseɡmənt/
+2911	spectrum	noun	/ˈspektrəm/
+2912	terror	noun	/ˈterə/
+2913	venture	noun, verb	/ˈventʃə/
+2914	virtually	adverb	/ˈvɜːtʃʊəli/
+2915	warren	noun	/ˈwɒrən/
+2916	accompany	verb	/əˈkʌmpəni/
+2917	arrangement	noun	/əˈreɪndʒmənt/
+2918	boundary	noun	/ˈbaʊndri/
+2919	brick	noun, verb	/brɪk/
+2920	considerable	adjective	/kənˈsɪdərəbəl/
+2921	conventional	adjective	/kənˈvenʃənəl/
+2922	designate	verb, adjective	/ˈdezɪɡˌneɪt/
+2923	emperor	noun	/ˈempərə/
+2924	employer	noun	/emˈplɔɪə/
+2925	enormous	adjective	/ɪˈnɔːməs/
+2926	forgive	verb	/fəˈɡɪv/
+2927	garage	noun, verb	/ˈɡærɑːʒ/
+2928	guideline	noun	/ˈɡaɪdˌlaɪn/
+2929	inquiry	noun	/ɪnˈkwaɪəri/
+2930	inspector	noun	/ɪnˈspektə/
+2931	lonely	adjective	/ˈləʊnli/
+2932	mercy	noun	/ˈmɜːsi/
+2933	nevertheless	adverb	/ˌnevəðəˈles/
+2934	outer	adjective	/ˈaʊtə/
+2935	oxygen	noun	/ˈɒksɪdʒən/
+2936	pipe	noun, verb	/paɪp/
+2937	poem	noun	/ˈpəʊɪm/
+2938	powder	noun, verb	/ˈpaʊdə/
+2939	racism	noun	/ˈreɪˌsɪzəm/
+2940	rating	noun	/ˈreɪtɪŋ/
+2941	rude	adjective	/ruːd/
+2942	screw	noun, verb	/skruː/
+2943	seventh	noun, adjective	/ˈsevənθ/
+2944	shelter	noun, verb	/ˈʃeltə/
+2945	signature	noun	/ˈsɪɡnətʃə/
+2946	spider	noun	/ˈspaɪdə/
+2947	tribute	noun	/ˈtrɪbjuːt/
+2948	trigger	noun, verb	/ˈtrɪɡə/
+2949	vary	verb	/ˈveəri/
+2950	venue	noun	/ˈvenjuː/
+2951	ye	noun	/jiː/
+2952	abortion	noun	/əˈbɔːʃən/
+2953	accuracy	noun	/ˈækjʊrəsi/
+2954	artificial	adjective	/ˌɑːtɪˈfɪʃəl/
+2955	bullet	noun	/ˈbʊlɪt/
+2956	consistently	adverb	/kənˈsɪstəntli/
+2957	conversion	noun	/kənˈvɜːʒən/
+2958	copyright	noun, verb	/ˈkɒpiːˌraɪt/
+2959	deposit	noun, verb	/dɪˈpɒzɪt/
+2960	destination	noun	/ˌdestɪˈneɪʃən/
+2961	dirt	noun	/dɜːt/
+2962	diverse	adjective	/daɪˈvɜːs/
+2963	divine	noun, verb	/dɪˈvaɪn/
+2964	exclusively	adverb	/ɪksˈkluːsɪvli/
+2965	export	noun, verb	/ˈekˌspɔːt/
+2966	formerly	adverb	/ˈfɔːməli/
+2967	functional	noun, adjective	/ˈfʌŋkʃənəl/
+2968	grandfather	noun, verb	/ˈɡrænˌfɑːðə/
+2969	habit	noun	/ˈhæbɪt/
+2970	isolate	noun, verb	/ˈaɪsəˌleɪt/
+2971	jealous	adjective	/ˈdʒeləs/
+2972	lazy	adjective	/ˈleɪzi/
+2973	mama	noun	/məˈmɑː/
+2974	modify	verb	/ˈmɒdɪˌfaɪ/
+2975	municipal	noun, adjective	/mjuːˈnɪsɪpəl/
+2976	naval	adjective	/ˈneɪvəl/
+2977	neighbour	noun, verb	/ˈneɪbə/
+2978	neutral	noun, adjective	/ˈnjuːtrəl/
+2979	noble	noun, adjective	/ˈnəʊbəl/
+2980	pat	noun, verb	/pæt/
+2981	popularity	noun	/ˌpɒpjʊˈlærɪti/
+2982	robot	noun	/ˈrəʊˌbɒt/
+2983	sacred	adjective	/ˈseɪkrɪd/
+2984	spy	noun, verb	/spaɪ/
+2985	suggestion	noun	/səˈdʒestʃən/
+2986	suspension	noun	/səˈspenʃən/
+2987	terry	noun	/ˈteri/
+2988	toxic	noun, adjective	/ˈtɒksɪk/
+2989	treasury	noun	/ˈtreʒəri/
+2990	tunnel	noun, verb	/ˈtʌnəl/
+2991	upgrade	noun, verb	/ˈʌpˌɡreɪd/
+2992	warrant	noun, verb	/ˈwɒrənt/
+2993	wound	noun, verb	/wuːnd/
+2994	actively	adverb	/ˈæktɪvli/
+2995	baker	noun	/ˈbeɪkə/
+2996	bless	verb	/bles/
+2997	brush	noun, verb	/brʌʃ/
+2998	burden	noun, verb	/ˈbɜːdən/
+2999	casual	noun, adjective	/ˈkæʒʊəl/
+3000	charter	noun, verb	/ˈtʃɑːtə/

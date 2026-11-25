@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Language" "ভাষা" %}{% endblock %}{% block page_title %}{% tr "Choose your language" "আপনার ভাষা বেছে নিন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <input id="lang-search" class="w-full !rounded-2xl px-4 py-3 text-lg" placeholder="🔍 {% tr 'Search languages' 'ভাষা খুঁজুন' %}" autocomplete="off">
+  <p class="mt-2 text-sm s-muted">{% tr "You are learning English. This only changes the menus and explanations." "আপনি ইংরেজি শিখছেন। এটি শুধু মেনু ও ব্যাখ্যার ভাষা বদলায়।" %}</p>
+  <div class="mt-4 grid gap-2 sm:grid-cols-2" id="lang-list">
+    {% for code, native, ui in langs %}
+    <a href="{% url 'growth:lang' code %}?next={{ next|urlencode }}" class="lang-row {% if code == current %}is-on{% endif %}" data-q="{{ native|lower }} {{ ui|lower }} {{ code }}" {% if code in rtl %}dir="rtl"{% endif %}>
+      <span class="text-lg font-extrabold">{{ native }}</span><span class="text-sm s-muted">{% if ui != native %}{{ ui }}{% endif %}</span>
+      {% if code == current %}<span class="ms-auto text-emerald-300">✓</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("lang-search").addEventListener("input", function () {
+  var q = this.value.trim().toLowerCase();
+  document.querySelectorAll(".lang-row").forEach(function (r) { r.hidden = q && r.dataset.q.indexOf(q) < 0; });
+});
+</script>
+{% endblock %}

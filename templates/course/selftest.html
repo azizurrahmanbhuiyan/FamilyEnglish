@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load fe_ui static %}
+{% block title %}Self-test · {{ lesson.title }}{% endblock %}
+{% block content %}
+<p class="eyebrow">{{ lesson.emoji }} {{ lesson.get_skill_display }} · <span class="band-{{ lesson.band }} band-pill">{{ lesson.get_band_display }}</span></p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "pen" "ico" %}</span>{% tr "Self-test" "সেলফ-টেস্ট" %}: {{ lesson.title }}</h1>
+<p class="mt-1 text-stone-600">{{ items|length }} {% tr "questions" "প্রশ্ন" %} · {% tr "pass with" "পাস" %} {{ pass_percent }}% · {% tr "You'll see every mistake and its fix at the end." "শেষে প্রতিটি ভুল ও তার সমাধান দেখবেন।" %}</p>
+
+{% if lesson.passage %}
+<section class="mt-5 card p-5">
+  <p class="font-extrabold">{% if listening %}🎧{% else %}📄{% endif %} {{ lesson.passage_title|default:"Text" }}</p>
+  {% if listening %}
+    <p id="passage" class="hidden">{{ lesson.passage }}</p>
+    <div class="mt-3 flex gap-2"><button type="button" class="btn-primary !py-2" data-play-passage="passage">▶ {% tr "Listen" "শুনুন" %}</button><button type="button" class="btn-ghost !py-2" data-stop>■</button></div>
+  {% else %}
+    <p id="passage" class="mt-2 whitespace-pre-line text-lg leading-relaxed">{{ lesson.passage }}</p>
+  {% endif %}
+</section>
+{% endif %}
+
+<form method="post" class="mt-5 space-y-4">{% csrf_token %}
+  {% for c in items %}
+  <article class="qcard" data-mic-box>
+    <div class="flex items-center gap-2"><span class="qnum">{{ c.n }}</span><span class="qtag">{{ c.qt_label }}</span></div>
+    <p class="mt-2 text-lg font-bold">{{ c.q }}</p>
+    {% if c.say %}<button type="button" class="btn-ghost mt-2 !py-1.5 text-sm" data-say="{{ c.say }}">▶ {% tr "Play" "শুনুন" %}</button>{% endif %}
+    {% if c.t == "choose" %}
+      <div class="mt-3 grid gap-2 sm:grid-cols-2">
+        {% for o in c.opts %}<label><input type="radio" class="sr-only" name="a{{ c.i }}" value="{{ o }}" required><span class="opt">{{ o }}</span></label>{% endfor %}
+      </div>
+    {% elif c.t == "type" %}
+      <input class="field mt-3" name="a{{ c.i }}" autocomplete="off" autocapitalize="off" spellcheck="false" required placeholder="{% tr 'Type your answer' 'উত্তর লিখুন' %}">
+    {% elif c.t == "say" %}
+      <div class="mt-3 rounded-xl bg-brand-50 p-3">
+        <p class="font-display text-2xl font-bold text-brand-800">“{{ c.a }}”</p>
+        <div class="mt-2 flex items-center gap-2"><button type="button" class="speak-btn" data-mic>🎤</button><span class="text-sm text-stone-500" data-heard>{% tr "Press 🎤 and read the sentence aloud." "🎤 চেপে বাক্যটি জোরে পড়ুন।" %}</span></div>
+      </div>
+      <input class="field mt-2 !text-base" name="a{{ c.i }}" data-answer required placeholder="{% tr 'What you said appears here (or type it)' 'যা বললেন এখানে আসবে (বা লিখুন)' %}">
+    {% elif c.t == "open" %}
+      <textarea class="field mt-3" rows="4" name="a{{ c.i }}" data-answer required></textarea>
+    {% endif %}
+  </article>
+  {% endfor %}
+  <button class="btn-primary w-full sm:w-auto">{% tr "Finish and see my result" "শেষ করুন ও ফল দেখুন" %}</button>
+</form>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/course.js' %}"></script>{% endblock %}

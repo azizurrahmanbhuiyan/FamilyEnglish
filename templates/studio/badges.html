@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Achievements{% endblock %}{% block page_title %}{% tr "Achievements" "অর্জন" %}{% endblock %}
+{% block content %}
+<a href="{% url 'studio:progress' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Progress" "অগ্রগতি" %}</a>
+<div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+  {% for b in badges %}
+  <div class="s-badge {% if not b.earned %}is-off{% endif %}"><span class="em">{{ b.icon }}</span><b>{% tr b.name b.name_bn %}</b><span>{{ b.desc }}</span>
+    <div class="s-bar is-thin mt-1 w-full {% if b.earned %}is-ok{% endif %}"><i style="width: {{ b.percent }}%"></i></div><span>{{ b.now }}/{{ b.target }}</span></div>
+  {% endfor %}
+</div>
+{% endblock %}

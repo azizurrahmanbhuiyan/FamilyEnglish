@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{{ info.title }}{% endblock %}{% block page_title %}{% tr info.title info.title_bn %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:ielts' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} IELTS</a>
+  <p class="mt-3 text-lg s-sub">{% tr info.desc info.desc_bn %}</p>
+  <p class="s-eyebrow mt-6">{% tr "Course overview" "কোর্সের রূপরেখা" %}</p>
+  <div class="mt-3 grid gap-3">
+    {% for u in units %}
+    <a href="{% url 'studio:ielts_unit' band u.slug %}" class="s-gcard">
+      <span class="s-gicon">{{ u.emoji }}</span>
+      <span class="min-w-0 flex-1"><span class="block s-muted text-sm font-bold">{% tr "UNIT" "ইউনিট" %} {{ u.i }} · Part {{ u.part }}</span>
+        <span class="block truncate text-xl font-extrabold">{% tr u.title u.title_bn %}</span>
+        {% if u.done == u.total %}<span class="text-emerald-300 text-sm font-bold">✓ {{ u.total }} {% tr "lessons" "পাঠ" %}</span>
+        {% else %}<span class="block text-sm s-muted">{{ u.done }}/{{ u.total }} {% tr "lessons completed" "পাঠ শেষ" %}</span><span class="s-bar is-thin mt-1 block"><i style="width: {{ u.percent }}%"></i></span>{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

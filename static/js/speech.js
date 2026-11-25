@@ -5,11 +5,17 @@
   const synth = window.speechSynthesis;
   let voice = null;
 
+  // Best British voices first (Chrome, Edge, Android, iPhone/Mac), then any en-GB voice.
+  const GOOD_GB = ["Google UK English Female", "Google UK English Male", "Microsoft Sonia", "Microsoft Libby",
+                   "Microsoft Ryan", "Microsoft Hazel", "Microsoft George", "Serena", "Daniel", "Kate", "Arthur", "Martha"];
   function pickVoice() {
     if (!synth) return;
     const voices = synth.getVoices();
-    voice = voices.find(v => v.lang === "en-GB") ||
+    const gb = voices.filter(v => (v.lang || "").replace("_", "-").toLowerCase() === "en-gb");
+    voice = GOOD_GB.map(n => gb.find(v => v.name.indexOf(n) === 0)).find(Boolean) || gb[0] ||
             voices.find(v => v.lang && v.lang.startsWith("en")) || null;
+    window.feHasBritishVoice = gb.length > 0;
+    document.querySelectorAll("[data-voice-note]").forEach(el => { el.hidden = gb.length > 0 || !voices.length; });
   }
   if (synth) {
     pickVoice();
@@ -38,3 +44,14 @@
     }
   });
 })();
+
+/* Video clip lists: pick a clip to load it into the player (never autoplays). */
+document.addEventListener("click", function (e) {
+  const b = e.target.closest("[data-clip-src]");
+  if (!b) return;
+  const box = b.closest("[data-clips]");
+  const player = box.querySelector("[data-clip-player]");
+  player.src = b.dataset.clipSrc; player.title = b.dataset.clipTitle;
+  box.querySelectorAll("[data-clip-src]").forEach(x => x.classList.toggle("is-on", x === b));
+  player.scrollIntoView({ block: "nearest", behavior: "smooth" });
+});

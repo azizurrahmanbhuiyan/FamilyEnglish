@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Payment" "পেমেন্ট" %}{% endblock %}
+{% block content %}
+<div class="card mx-auto max-w-md p-8 text-center">
+  {% if p and p.status == "confirmed" %}
+    <p class="text-5xl">🎉</p>
+    <h1 class="mt-3 font-display text-3xl font-bold">{% tr "Payment done!" "পেমেন্ট সম্পন্ন!" %}</h1>
+    <p class="mt-2 text-stone-600">{{ p.get_plan_display }} · {{ p.display_amount }}</p>
+    <p class="mt-1 text-stone-600">{% tr "Your family plan is on until" "আপনার পরিবারের প্ল্যান চালু থাকবে" %} <b>{{ family.paid_until|date:"j M Y" }}</b></p>
+    <a class="btn-primary mt-6 w-full" href="{% url 'core:profiles' %}">{% tr "Start learning" "শেখা শুরু করুন" %}</a>
+  {% elif p and p.status == "pending" %}
+    <p class="text-5xl">⏳</p>
+    <h1 class="mt-3 font-display text-3xl font-bold">{% tr "We are checking your payment" "আপনার পেমেন্ট যাচাই করা হচ্ছে" %}</h1>
+    <p class="mt-2 text-stone-600">{% tr "This usually takes a minute. Your plan switches on by itself — you don't need to pay again." "সাধারণত এক মিনিট লাগে। প্ল্যান নিজে থেকেই চালু হবে — আবার পেমেন্ট করবেন না।" %}</p>
+    <a class="btn-ghost mt-6 w-full" href="{% url 'core:pay_result' %}?t={{ p.transaction_id }}">{% tr "Check again" "আবার দেখুন" %}</a>
+  {% else %}
+    <p class="text-5xl">😕</p>
+    <h1 class="mt-3 font-display text-3xl font-bold">{% tr "The payment did not go through" "পেমেন্ট সম্পন্ন হয়নি" %}</h1>
+    <p class="mt-2 text-stone-600">{% tr "No money was taken for this try. You can try again." "এই চেষ্টায় কোনো টাকা কাটা হয়নি। আবার চেষ্টা করতে পারেন।" %}</p>
+    <a class="btn-primary mt-6 w-full" href="{% url 'core:pay' %}">{% tr "Try again" "আবার চেষ্টা করুন" %}</a>
+  {% endif %}
+</div>
+{% endblock %}

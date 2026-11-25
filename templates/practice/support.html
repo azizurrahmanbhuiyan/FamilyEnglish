@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Support{% endblock %}
+{% block content %}
+<p class="eyebrow">Help</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "chat" "ico" %}</span>Support</h1>
+<p class="mt-1 text-stone-600">Ask us anything — payments, lessons or problems with the website. We reply here within 1–2 days.</p>
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <form method="post" enctype="multipart/form-data" class="card p-5">{% csrf_token %}
+    <label class="font-bold" for="subject">Subject</label>
+    <input id="subject" name="subject" maxlength="120" required class="mt-1 w-full rounded-xl border border-stone-300 px-3 py-2">
+    <label class="mt-3 block font-bold" for="message">Message (English or Bangla)</label>
+    <textarea id="message" name="message" rows="6" maxlength="3000" required class="mt-1 w-full rounded-xl border border-stone-300 px-3 py-2"></textarea>
+    <label class="mt-3 block font-bold" for="attachment">Screenshot (optional)</label>
+    <input id="attachment" type="file" name="attachment" accept="image/png,image/jpeg,image/webp" class="mt-1 block w-full text-sm">
+    <p class="text-xs text-stone-500">PNG, JPG or WEBP, up to {{ max_mb }} MB. Please don't include passwords or card numbers in screenshots.</p>
+    <button class="btn-primary mt-3">Send</button>
+  </form>
+  <section class="card p-5">
+    <h2 class="font-extrabold">Your tickets</h2>
+    <nav class="chip-row mt-2">{% for v, l in tabs %}<a class="chip {% if tab == v %}is-on{% endif %}" href="?tab={{ v }}">{{ l }} ({{ counts|get_item:v }})</a>{% endfor %}</nav>
+    <div class="mt-3 space-y-3">
+      {% for t in tickets %}
+      <div class="rounded-xl border border-stone-100 p-3 text-sm">
+        <div class="flex justify-between"><span class="font-bold">{{ t.subject }}</span>
+          <span class="rounded-full px-2 py-0.5 text-xs font-bold {% if t.status == 'answered' %}bg-emerald-100 text-emerald-800{% elif t.status == 'closed' %}bg-stone-100 text-stone-600{% else %}bg-amber-100 text-amber-800{% endif %}">{{ t.get_status_display }}</span></div>
+        <p class="mt-1 whitespace-pre-line text-stone-600">{{ t.message }}</p>
+        {% if t.attachment %}<a class="mt-1 inline-block text-xs font-bold text-brand-700 underline" href="{% url 'practice:support_file' t.pk %}" target="_blank">📎 Screenshot</a>{% endif %}
+        {% if t.reply %}<p class="mt-2 whitespace-pre-line rounded-lg bg-emerald-50 p-2"><strong>FamilyEnglish:</strong> {{ t.reply }}</p>{% endif %}
+        <p class="mt-1 text-xs text-stone-400">{{ t.created_at|date:"j M Y" }}</p>
+      </div>
+      {% empty %}<p class="text-stone-500">Nothing here.</p>{% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

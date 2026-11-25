@@ -85,3 +85,87 @@ class StudyPlanAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Progress)
+
+
+
+# ------------------------------------------------------------------ short video clips
+from django import forms as _forms
+
+from .clips import fmt_time, parse_time
+from .models import TalkTopic, VideoClip
+
+
+class VideoClipForm(_forms.ModelForm):
+    """Times can be typed as 1:23 or seconds; any YouTube link can be pasted."""
+
+    start = _forms.CharField(help_text="Start, e.g. 1:23", initial="0:00")
+    end = _forms.CharField(help_text="End, e.g. 4:10 (max 5 minutes after the start)")
+
+    class Meta:
+        model = VideoClip
+        fields = ["order", "youtube_id", "start", "end", "title", "channel", "status"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.initial["start"] = fmt_time(self.instance.start)
+            self.initial["end"] = fmt_time(self.instance.end)
+
+    def clean_start(self):
+        return parse_time(self.cleaned_data["start"])
+
+    def clean_end(self):
+        return parse_time(self.cleaned_data["end"])
+
+
+class VideoClipInline(admin.TabularInline):
+    model = VideoClip
+    form = VideoClipForm
+    extra = 1
+    fields = ["order", "youtube_id", "start", "end", "title", "channel", "status"]
+
+
+@admin.register(VideoClip)
+class VideoClipAdmin(admin.ModelAdmin):
+    form = VideoClipForm
+    list_display = ["title", "channel", "for_lesson", "times", "status", "source", "say_line"]
+    list_filter = ["status", "source"]
+    list_editable = ["status"]
+    search_fields = ["title", "channel", "youtube_id"]
+    fields = ["lesson", "course_lesson", "topic", "order", "youtube_id", "start", "end", "title", "channel", "status",
+              "say_line", "say_line_bn", "preview"]
+    readonly_fields = ["preview"]
+    raw_id_fields = ["lesson", "course_lesson", "topic"]
+
+    class Form(VideoClipForm):
+        class Meta(VideoClipForm.Meta):
+            fields = ["lesson", "course_lesson", "topic"] + VideoClipForm.Meta.fields + ["say_line", "say_line_bn"]
+
+    def get_form(self, request, obj=None, **kwargs):
+        kwargs["form"] = self.Form
+        return super().get_form(request, obj, **kwargs)
+
+    @admin.display(description="Lesson")
+    def for_lesson(self, obj):
+        return obj.lesson or obj.course_lesson or obj.topic
+
+    @admin.display(description="Part")
+    def times(self, obj):
+        return f"{obj.start_label}–{obj.end_label} ({obj.length_label})"
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        from django.utils.html import format_html
+        if not obj.pk:
+            return "Save first to preview."
+        return format_html('<iframe width="420" height="236" src="{}" allowfullscreen></iframe>', obj.embed_url)
+
+
+@admin.register(TalkTopic)
+class TalkTopicAdmin(admin.ModelAdmin):
+    list_display = ["title", "group", "order"]
+    list_filter = ["group"]
+    inlines = [VideoClipInline]
+
+
+LessonAdmin.inlines = [VideoClipInline] + list(LessonAdmin.inlines)

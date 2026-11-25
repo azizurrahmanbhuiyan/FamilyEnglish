@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}{{ day.date|date:"l j M" }}{% endblock %}
+{% block content %}
+<a href="{% url 'learning:plan' %}?y={{ day.date.year }}&m={{ day.date.month }}" class="text-sm font-bold text-stone-400 hover:text-brand-600">← {% tr "Study plan" "স্টাডি প্ল্যান" %}</a>
+<div class="mt-3 card mx-auto max-w-2xl p-6">
+  <div class="flex items-start gap-3">
+    <div><h1 class="font-display text-3xl font-bold">{{ day.date|date:"l" }}</h1><p class="text-stone-500">{{ day.date|date:"j F Y" }}</p></div>
+    <div class="ml-auto text-right"><p class="font-display text-2xl font-bold">{{ day.plan.minutes_per_day }} min</p><p class="text-xs text-stone-500">{% tr "estimated" "আনুমানিক" %}</p></div>
+  </div>
+  <div class="mt-5 rounded-2xl bg-stone-50 p-4">
+    <div class="flex items-center gap-3">
+      <span class="icon-tile {% if day.kind == 'review' %}is-sky{% elif day.kind == 'family' %}is-warm{% elif day.topic %}is-rose{% endif %}">{% if day.kind == "review" %}{% icon "repeat" %}{% elif day.kind == "family" %}{% icon "family" %}{% elif day.topic %}{% icon "chat" %}{% elif day.deck %}{% icon "cards" %}{% elif day.course_lesson %}{% icon "compass" %}{% else %}{% icon "letters" %}{% endif %}</span>
+      <div class="min-w-0 flex-1">
+        <p class="text-lg font-extrabold">{{ day.title }}</p>
+        <p class="text-sm text-stone-500">{% if day.course_lesson %}{{ day.course_lesson.get_skill_display }} · {{ day.course_lesson.get_band_display }}{% elif day.lesson %}Level {{ day.lesson.module.level.number }} · {{ day.lesson.get_skill_display }}{% elif day.topic %}{% tr "Talk at home" "বাসায় কথা" %} · {{ day.topic.title_bn }}{% elif day.deck %}{% tr "Word week" "সাপ্তাহিক শব্দ" %} {{ day.deck.week }} · {{ day.deck.words.count }} {% tr "words" "শব্দ" %}{% else %}{{ day.kind|title }}{% endif %}{% if day.stage %} · {{ day.stage }}{% endif %}</p>
+      </div>
+      <span class="rounded-full bg-amber-100 px-3 py-1 text-sm font-extrabold text-amber-800">+{{ day.xp }} XP</span>
+      {% if day.status == "done" %}<span class="text-brand-600">{% icon "check-circle" "ico ico-lg" %}</span>{% endif %}
+    </div>
+    <details class="mt-3 text-sm" open><summary class="font-bold text-brand-700">{% tr "Why this task today?" "আজ কেন এই কাজ?" %}</summary><p class="prose-bn mt-1">{{ why }}</p></details>
+  </div>
+  <div class="mt-4 space-y-2">
+    {% if not is_open %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2" href="{% url 'core:pricing' %}">{% icon "lock" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "This day opens with the family plan (from ৳299 a month)" "এই দিনটি ফ্যামিলি প্ল্যানে খুলবে (মাসে ৳২৯৯ থেকে)" %}</span>{% icon "arrow" "ico ico-sm" %}</a>
+    {% elif day.deck %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'practice:word_week' day.deck.slug %}">{% icon "cards" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "Open the word week: listen, say, spell, write" "সাপ্তাহিক শব্দ খুলুন: শুনুন, বলুন, বানান, লিখুন" %}</span>{% icon "arrow" "ico ico-sm" %}</a>
+      {% if day.kind == "review" and day.status != "done" %}<form method="post" action="{% url 'learning:day_done' day.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn-primary">{% tr "We practised it again" "আমরা আবার অনুশীলন করেছি" %} · +{{ day.xp }} XP</button></form>{% endif %}
+    {% elif day.topic %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'learning:talk_topic' day.topic.slug %}">{% icon "chat" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "Open the talk: words, rhyme and family talks" "কথোপকথন খুলুন: শব্দ, ছড়া ও পারিবারিক কথা" %}</span>{% icon "arrow" "ico ico-sm" %}</a>
+      {% if day.kind == "review" and day.status != "done" %}<form method="post" action="{% url 'learning:day_done' day.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn-primary">{% tr "We practised it again" "আমরা আবার অনুশীলন করেছি" %} · +{{ day.xp }} XP</button></form>{% endif %}
+    {% elif day.course_lesson %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'course:lesson' day.course_lesson.slug %}">{% icon "book" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "Lesson notes (English + বাংলা) and practice" "পাঠের নোট (English + বাংলা) ও অনুশীলন" %}</span>→</a>
+      {% for v in videos %}<a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'course:lesson' day.course_lesson.slug %}#watch">▶ <span class="flex-1 font-bold">{{ v.title }}</span><span class="text-xs text-stone-500">{{ v.length_label }}</span></a>{% endfor %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'course:selftest' day.course_lesson.slug %}">{% icon "test" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "Self-test (marks the day done when you pass)" "সেলফ-টেস্ট (পাস করলে দিনটি শেষ হবে)" %}</span>{% icon "arrow" "ico ico-sm" %}</a>
+    {% elif day.lesson %}
+      <a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'learning:lesson' day.lesson.pk %}">{% icon "book" "ico ico-sm" %} <span class="flex-1 font-bold">{% tr "Open lesson: video, Bangla note, practice" "পাঠ খুলুন: ভিডিও, বাংলা নোট, অনুশীলন" %}</span>→</a>
+      {% for v in videos %}<a class="flex items-center gap-3 rounded-xl border border-stone-100 px-3 py-2 hover:bg-brand-50" href="{% url 'learning:lesson' day.lesson.pk %}#watch">▶ <span class="flex-1 font-bold">{{ v.title }}</span><span class="text-xs text-stone-500">{{ v.length_label }}</span></a>{% endfor %}
+      {% if day.kind == "review" and day.status != "done" %}<form method="post" action="{% url 'learning:day_done' day.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn-primary">{% tr "We practised it again" "আমরা আবার অনুশীলন করেছি" %} · +{{ day.xp }} XP</button></form>{% endif %}
+    {% else %}
+      {% if day.status != "done" %}<form method="post" action="{% url 'learning:day_done' day.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn-primary">{% tr "Mark this day done" "দিনটি সম্পন্ন করুন" %} · +{{ day.xp }} XP</button></form>{% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

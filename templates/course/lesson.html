@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load fe_ui fe static %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block content %}
+<nav class="text-sm font-bold text-stone-400">
+  <a href="{% url 'course:home' %}" class="hover:text-brand-600">{% tr "My course" "আমার কোর্স" %}</a> ›
+  <a href="{% url 'course:skill' lesson.skill %}" class="hover:text-brand-600">{{ lesson.emoji }} {% if lang == "bn" %}{{ lesson.skill_bn }}{% else %}{{ lesson.get_skill_display }}{% endif %}</a> ›
+  <span class="band-{{ lesson.band }} band-pill">{% if lang == "bn" %}{{ lesson.band_bn }}{% else %}{{ lesson.get_band_display }}{% endif %} · {{ lesson.order }}/5</span>
+</nav>
+
+<div class="mt-3 flex flex-wrap items-start gap-4">
+  <div class="min-w-0 flex-1">
+    <h1 class="font-display text-3xl font-bold sm:text-4xl">{{ lesson.title }}</h1>
+    <p class="font-bn text-lg text-stone-500">{{ lesson.title_bn }}</p>
+    <p class="mt-2 font-semibold text-stone-700">🎯 {{ lesson.goal }}</p>
+    <p class="mt-1 text-sm text-stone-500">⏱ {{ lesson.minutes }} min · {% tr "Practice" "অনুশীলন" %} {{ lesson.practice|length }} · {% tr "Self-test" "সেলফ-টেস্ট" %} {{ lesson.selftest|length }} · {% tr "Pass mark" "পাস নম্বর" %} {{ pass_percent }}%</p>
+  </div>
+  <div class="card w-full p-4 sm:w-64">
+    {% if prog.passed %}
+      <p class="text-3xl">{{ prog.stars|stars }}</p>
+      <p class="font-extrabold text-emerald-700">{% tr "Passed" "পাস করেছেন" %} · {{ prog.best_score }}%</p>
+    {% elif prog %}
+      <p class="font-extrabold">{% tr "In progress" "চলছে" %}</p><p class="text-sm text-stone-500">{% tr "Best" "সর্বোচ্চ" %}: {{ prog.best_score }}% · {{ prog.attempts }} {% tr "tries" "বার" %}</p>
+    {% else %}
+      <p class="font-extrabold">{% tr "New lesson" "নতুন পাঠ" %}</p><p class="text-sm text-stone-500">+10 XP {% tr "practice" "অনুশীলন" %} · +30–60 XP {% tr "self-test" "সেলফ-টেস্ট" %}</p>
+    {% endif %}
+    <a href="{% url 'course:selftest' lesson.slug %}" class="btn-ghost mt-3 w-full !py-2 text-sm">📝 {% tr "Go to the self-test" "সেলফ-টেস্টে যান" %}</a>
+  </div>
+</div>
+
+<details class="mt-4 rounded-2xl bg-violet-50 p-3 text-sm"><summary class="font-bold text-violet-800"><span class="mr-1.5 text-brand-600">{% icon "bulb" "ico" %}</span>{% tr "Why this lesson?" "কেন এই পাঠ?" %}</summary><p class="mt-1 prose-bn">{{ why }}</p></details>
+{% if handouts %}<div class="mt-3 flex flex-wrap gap-2">{% for h in handouts %}<a class="btn-ghost !py-1.5 text-sm" href="{% url 'course:handout' h.n %}" target="_blank" rel="noopener">📄 {% tr "Handbook PDF" "হ্যান্ডবুক PDF" %} {{ h.num }}: {% if lang == "bn" %}{{ h.title_bn }}{% else %}{{ h.title }}{% endif %}</a>{% endfor %}<a class="text-sm font-bold text-brand-700 self-center" href="{% url 'course:handbook' %}">{% tr "All 23" "সব ২৩টি" %} →</a></div>{% endif %}
+
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <section class="card p-5 lg:col-span-2">
+    <div class="flex items-center gap-2">
+      <h2 class="font-display text-2xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "book" "ico" %}</span>{% tr "Learn" "শিখুন" %}</h2>
+      <div class="ml-auto inline-flex rounded-full bg-stone-100 p-1 text-sm font-bold" role="tablist">
+        <button type="button" class="rounded-full px-3 py-1 {% if lang != 'bn' %}bg-white shadow{% endif %}" data-note="en">English</button>
+        <button type="button" class="rounded-full px-3 py-1 {% if lang == 'bn' %}bg-white shadow{% endif %}" data-note="bn">বাংলা</button>
+      </div>
+    </div>
+    <div class="mt-3 text-lg leading-relaxed {% if lang == 'bn' %}hidden{% endif %}" data-note-body="en">{{ lesson.note_en }}</div>
+    <div class="prose-bn mt-3 text-lg {% if lang != 'bn' %}hidden{% endif %}" data-note-body="bn">{{ lesson.note_bn }}</div>
+
+    {% if lesson.examples %}
+    <p class="mt-5 font-extrabold">{% tr "Examples" "উদাহরণ" %}</p>
+    <ul class="mt-2 space-y-2">
+      {% for e in lesson.examples %}<li class="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2"><button type="button" class="speak-btn !h-8 !w-8 !text-sm" data-say="{{ e }}">▶</button><span class="font-semibold">{{ e }}</span></li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if lesson.guidance_bn %}
+    <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+      <p class="text-xs font-extrabold uppercase tracking-wide text-amber-700">🇧🇩 {% tr "Guidance for Bangla speakers" "বাংলাভাষীদের জন্য পরামর্শ" %}</p>
+      <p class="prose-bn mt-1">{{ lesson.guidance_bn }}</p>
+    </div>
+    {% endif %}
+
+    {% if lesson.errors %}
+    <p class="mt-5 font-extrabold">⚠️ {% tr "Common mistakes" "সাধারণ ভুল" %}</p>
+    <div class="mt-2 grid gap-2">
+      {% for e in lesson.errors %}<div class="err-card"><p><span class="avoid">{{ e.avoid }}</span> → <span class="use">{{ e.use }}</span></p><p class="text-sm text-stone-600">{{ e.why }}</p></div>{% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <aside class="space-y-4">
+    {% if lesson.passage %}
+    <section class="card p-5">
+      <p class="font-extrabold">{% if listening %}🎧{% else %}📄{% endif %} {{ lesson.passage_title|default:"Text" }}</p>
+      {% if listening %}
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button type="button" class="btn-primary !py-2" data-play-passage="passage">▶ {% tr "Listen" "শুনুন" %}</button>
+          <button type="button" class="btn-ghost !py-2" data-play-passage="passage" data-rate="0.7">🐢 {% tr "Slower" "ধীরে" %}</button>
+          <button type="button" class="btn-ghost !py-2" data-stop>■</button>
+        </div>
+        <details class="mt-3 text-sm"><summary class="font-bold text-stone-500">{% tr "Show the words (after you try)" "লেখা দেখুন (চেষ্টার পরে)" %}</summary><p id="passage" class="mt-2 whitespace-pre-line text-stone-700">{{ lesson.passage }}</p></details>
+      {% else %}
+        <p id="passage" class="mt-2 whitespace-pre-line text-lg leading-relaxed">{{ lesson.passage }}</p>
+        <button type="button" class="btn-ghost mt-3 !py-1.5 text-sm" data-play-passage="passage">🔊 {% tr "Read it to me" "পড়ে শোনাও" %}</button>
+      {% endif %}
+    </section>
+    {% endif %}
+    <section id="watch" class="card scroll-mt-24 p-5">{% include "learning/_clips.html" %}</section>
+    {% if attempts %}
+    <section class="card p-5 text-sm">
+      <p class="font-extrabold">{% tr "Your self-tests" "আপনার সেলফ-টেস্ট" %}</p>
+      <ul class="mt-2 space-y-1">{% for a in attempts %}<li><a class="hover:text-brand-600" href="{% url 'course:result' a.pk %}">{{ a.created_at|date:"j M" }} · {{ a.score }}/{{ a.total }} {% if a.passed %}✅{% else %}🔁{% endif %}</a></li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+  </aside>
+</div>
+
+<section class="mt-8" data-check-url="{% url 'course:check' %}" data-source="practice">
+  {% csrf_token %}
+  <div class="flex flex-wrap items-end gap-3">
+    <div>
+      <h2 class="font-display text-2xl font-bold">✏️ {% tr "Practice" "অনুশীলন" %}</h2>
+      <p class="text-sm text-stone-500">{% tr "Mistakes are shown word by word with the fix and the reason. Try as many times as you like." "প্রতিটি ভুল শব্দে শব্দে দেখানো হবে, সমাধান ও কারণসহ। যতবার খুশি চেষ্টা করুন।" %}</p>
+    </div>
+    <div class="ml-auto w-40"><div class="flex justify-between text-xs font-bold text-stone-500"><span>{% tr "Done" "হয়েছে" %}</span><span id="practice-count"></span></div><div class="band-bar mt-1"><span id="practice-bar" style="width:0;background:#2b6f4f"></span></div></div>
+  </div>
+  <div class="mt-4 grid gap-4 md:grid-cols-2">
+    {% for c in cards %}{% include "course/_card.html" %}{% endfor %}
+  </div>
+  <form method="post" action="{% url 'course:practice_done' lesson.slug %}" class="mt-6 card flex flex-wrap items-center gap-4 p-5">{% csrf_token %}
+    <div class="flex-1"><p class="font-extrabold">📝 {% tr "Self-test" "সেলফ-টেস্ট" %}</p><p class="text-sm text-stone-600">{% tr "Answer every practice question, then take the short self-test. New questions, marked at the end." "সব অনুশীলন শেষ করে ছোট সেলফ-টেস্ট দিন। নতুন প্রশ্ন, শেষে নম্বর।" %}</p></div>
+    <button id="practice-finish" class="btn-primary opacity-50" disabled>{% tr "Finish practice → Self-test" "অনুশীলন শেষ → সেলফ-টেস্ট" %}</button>
+  </form>
+</section>
+
+<div class="mt-6 flex justify-between text-sm font-bold">
+  {% if prev %}<a class="hover:text-brand-600" href="{% url 'course:lesson' prev.slug %}">← {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a class="hover:text-brand-600" href="{% url 'course:lesson' next.slug %}">{{ next.title }} →</a>{% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/course.js' %}"></script>
+<script>
+document.querySelectorAll("[data-note]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-note]").forEach(x => { x.classList.toggle("bg-white", x === b); x.classList.toggle("shadow", x === b); });
+  document.querySelectorAll("[data-note-body]").forEach(d => d.classList.toggle("hidden", d.dataset.noteBody !== b.dataset.note));
+}));
+</script>
+{% endblock %}

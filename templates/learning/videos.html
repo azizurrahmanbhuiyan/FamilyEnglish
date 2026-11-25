@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load fe_ui %}
 {% block title %}Topic videos{% endblock %}
 {% block content %}
 <div class="flex flex-wrap items-end gap-3">
   <div>
     <p class="eyebrow">Learn</p>
-    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">🎬 Topic videos</h1>
+    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "film" "ico" %}</span>Topic videos</h1>
     <p class="mt-1 max-w-2xl text-sm text-stone-500">One short video for every topic, with a voice, pictures and captions. Watch it together, say the words aloud, then do the practice.
       <span class="font-bn">প্রতিটি বিষয়ের জন্য ছোট ভিডিও।</span></p>
   </div>

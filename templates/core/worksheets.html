@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Free phonics worksheets" "ফ্রি ফনিক্স ওয়ার্কশিট" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-4xl">
+  <p class="text-sm font-bold uppercase tracking-wide text-stone-500">{% tr "Free to print · no account needed" "ফ্রি প্রিন্ট · অ্যাকাউন্ট লাগবে না" %}</p>
+  <h1 class="mt-1 font-display text-4xl font-bold">{% tr "Phonics worksheets for children" "শিশুদের জন্য ফনিক্স ওয়ার্কশিট" %}</h1>
+  <p class="mt-2 text-stone-600">{% tr "Five colourful packs, one for each phonics skill, in the order children learn them. Each pack has a short note for parents in English and Bangla. Print them for your own children or your class." "প্রতিটি ফনিক্স দক্ষতার জন্য একটি করে পাঁচটি রঙিন প্যাক, শিশুরা যে ক্রমে শেখে সেই ক্রমে। প্রতিটি প্যাকে ইংরেজি ও বাংলায় অভিভাবকদের জন্য ছোট নির্দেশনা আছে। নিজের সন্তান বা ক্লাসের জন্য প্রিন্ট করুন।" %}</p>
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    {% for w in items %}
+    <div class="card flex flex-col p-6">
+      <p class="text-4xl">{{ w.icon }}</p>
+      <h2 class="mt-2 text-xl font-bold">{{ forloop.counter }}. {% tr w.title w.title_bn %}</h2>
+      <p class="mt-1 flex-1 text-stone-600">{% tr w.desc w.desc %}</p>
+      <a class="btn btn-primary mt-4" href="{{ w.url }}" download>⬇ {% tr "Download PDF" "PDF ডাউনলোড" %}</a>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="card mt-6 p-6">
+    <h2 class="text-xl font-bold">{% tr "Practise the sounds out loud" "জোরে জোরে ধ্বনি অনুশীলন করুন" %}</h2>
+    <p class="mt-1 text-stone-600">{% tr "In FamilyEnglish, children hear each of the 42 sounds, say them back and get a score — free for every family." "FamilyEnglish-এ শিশুরা ৪২টি ধ্বনির প্রতিটি শোনে, নিজে বলে আর স্কোর পায় — সব পরিবারের জন্য ফ্রি।" %}</p>
+    <a class="btn btn-ghost mt-3" href="{% url 'core:signup' %}">{% tr "Start free" "ফ্রি শুরু করুন" %}</a>
+  </div>
+</div>
+{% endblock %}

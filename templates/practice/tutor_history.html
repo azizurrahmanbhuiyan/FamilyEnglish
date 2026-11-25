@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load fe %}
+{% block title %}{{ learner.name }}'s tutor chat{% endblock %}
+{% block content %}
+<a href="{% url 'core:family' %}" class="text-sm font-bold text-stone-500 hover:text-brand-600">← Family</a>
+<h1 class="mt-2 font-display text-3xl font-bold">{{ learner.avatar }} {{ learner.name }}'s tutor chat</h1>
+<p class="text-stone-600">Everything {{ learner.name }} asked the tutor, and the answers.</p>
+<div class="mt-5 card divide-y divide-stone-100">
+  {% for m in chat %}
+  <div class="flex gap-3 p-4 text-sm">
+    <span class="w-24 shrink-0 text-stone-400">{{ m.created_at|date:"j M, H:i" }}</span>
+    <span class="w-16 shrink-0 font-bold">{% if m.role == "user" %}{{ learner.name }}{% else %}Tutor{% endif %}</span>
+    <div class="prose-bn">{{ m.text|md_lite }}</div>
+  </div>
+  {% empty %}<p class="p-4 text-stone-500">No messages yet.</p>{% endfor %}
+</div>
+{% endblock %}

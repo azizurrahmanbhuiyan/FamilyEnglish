@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Your level report{% endblock %}
+{% block content %}
+<p class="eyebrow"><span class="mr-1.5 text-brand-600">{% icon "test" "ico" %}</span>{% tr "AI level test report" "AI লেভেল টেস্ট রিপোর্ট" %} · {{ test.finished_at|date:"j M Y" }}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl">{% tr "Your English today" "আজ আপনার ইংরেজি" %} — {% tr "level" "লেভেল" %} {{ test.overall }}/8</h1>
+
+<section class="mt-5 grid gap-5 lg:grid-cols-5">
+  <div class="card p-5 lg:col-span-3">
+    <div class="space-y-4">
+      {% for r in rows %}
+      <div class="band-{{ r.band }}">
+        <div class="flex items-center gap-2"><span class="text-2xl">{{ r.emoji }}</span><p class="font-extrabold">{% if lang == "bn" %}{{ r.bn }}{% else %}{{ r.name }}{% endif %}</p>
+          {% if r.skill == weakest %}<span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-extrabold text-rose-700">{% tr "focus first" "আগে এটি" %}</span>{% endif %}
+          <span class="ml-auto font-display text-xl font-bold">{{ r.level }}<span class="text-sm text-stone-400">/8</span></span><span class="band-pill">{% if lang == "bn" %}{{ r.band_bn }}{% else %}{{ r.band|title }}{% endif %}</span></div>
+        <div class="band-bar mt-1"><span style="width: {{ r.percent }}%"></span></div>
+        {% with i=r.info %}
+        <p class="mt-1 text-xs text-stone-500">
+          {% if i.total %}{{ i.right }}/{{ i.total }} {% tr "correct" "সঠিক" %}{% if i.advanced_round %} · {% tr "reached the Advanced round" "উচ্চতর রাউন্ডে পৌঁছেছেন" %} 🚀{% endif %}{% endif %}
+          {% if i.words is not None %}{{ i.words }} {% tr "words" "শব্দ" %}{% endif %}{% if i.repeat_accuracy is not None %} · {% tr "repeat accuracy" "পুনরাবৃত্তির নির্ভুলতা" %} {{ i.repeat_accuracy }}%{% endif %}{% if i.linkers is not None %} · {{ i.linkers }} {% tr "linking words" "যোগশব্দ" %}{% endif %}{% if i.ai %} · AI{% endif %}{% if i.typed %} · {% tr "typed" "লিখে দিয়েছেন" %}{% endif %}
+        </p>
+        {% if i.fixes %}<div class="mt-2 grid gap-1">{% for f in i.fixes %}<div class="err-card text-sm"><span class="avoid">{{ f.wrong }}</span> → <span class="use">{{ f.right }}</span>{% if f.why_bn %}<span class="prose-bn block text-stone-600">{{ f.why_bn }}</span>{% endif %}</div>{% endfor %}</div>{% endif %}
+        {% if i.comment_bn %}<p class="prose-bn mt-1 text-sm text-stone-700">💬 {{ i.comment_bn }}</p>{% endif %}
+        {% endwith %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card p-5 lg:col-span-2">
+    <p class="font-extrabold">📋 {% tr "Coach's report" "কোচের রিপোর্ট" %}{% if test.ai_used %} <span class="text-xs text-violet-600">· AI</span>{% endif %}</p>
+    <p class="prose-bn mt-2">{{ test.report.summary_bn }}</p>
+    <p class="mt-2 text-stone-700">{{ test.report.summary_en }}</p>
+    {% if test.report.strengths %}<p class="mt-3 text-sm font-extrabold text-emerald-700">💪 {% tr "Strengths" "শক্তির দিক" %}</p><ul class="list-disc pl-5 text-sm">{% for s in test.report.strengths %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+    {% if test.report.focus %}<p class="mt-3 text-sm font-extrabold text-rose-700">🎯 {% tr "Focus on" "যেদিকে মন দেবেন" %}</p><ul class="list-disc pl-5 text-sm">{% for s in test.report.focus %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+    {% if test.report.tips %}<p class="mt-3 text-sm font-extrabold">🏠 {% tr "At home" "বাড়িতে" %}</p><ul class="prose-bn list-disc pl-5 text-sm">{% for s in test.report.tips %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+</section>
+
+<section class="mt-6 card p-5">
+  <div class="flex flex-wrap items-end gap-3">
+    <div><h2 class="font-display text-2xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "compass" "ico" %}</span>{% tr "Your lessons, in order" "আপনার পাঠ, ক্রম অনুযায়ী" %}</h2>
+      <p class="text-sm text-stone-600">{% tr "Each skill starts at the level the test found. Your weakest skill comes up most often." "প্রতিটি দক্ষতা টেস্টে পাওয়া স্তর থেকে শুরু। সবচেয়ে দুর্বল দক্ষতা বেশি বার আসবে।" %} {{ path_total }} {% tr "lessons" "টি পাঠ" %}.</p></div>
+    <a class="btn-ghost ml-auto !py-2 text-sm" href="{% url 'course:home' %}">{% tr "Open my course" "আমার কোর্স খুলুন" %}</a>
+  </div>
+  <ol class="mt-3 grid gap-2 md:grid-cols-2">
+    {% for l in next_up %}<li><a href="{% url 'course:lesson' l.slug %}" class="flex items-center gap-3 rounded-xl bg-stone-50 px-3 py-2 hover:bg-brand-50"><span class="qnum">{{ forloop.counter }}</span><span class="text-xl">{{ l.emoji }}</span><span class="min-w-0 flex-1 truncate font-bold">{{ l.title }}</span><span class="band-{{ l.band }} band-pill">{{ l.get_band_display }}</span></a></li>{% endfor %}
+  </ol>
+  <form id="plan" method="post" action="{% url 'course:path_plan' %}" class="mt-5 flex flex-wrap items-end gap-3 rounded-2xl bg-violet-50 p-4">{% csrf_token %}
+    <p class="w-full font-extrabold text-violet-800">🗓️ {% tr "Turn this into my daily study plan" "এটি দিয়ে আমার প্রতিদিনের স্টাডি প্ল্যান বানান" %}{% if plan %} <span class="text-xs font-normal text-stone-500">({% tr "replaces the current plan; finished lessons are kept" "বর্তমান প্ল্যান বদলাবে; শেষ করা পাঠ থাকবে" %})</span>{% endif %}</p>
+    <label class="text-sm font-bold">{% tr "Months" "মাস" %}<select name="months" class="field mt-1 !py-1.5">{% for m in months %}<option {% if m == 3 %}selected{% endif %}>{{ m }}</option>{% endfor %}</select></label>
+    <label class="text-sm font-bold">{% tr "Days a week" "সপ্তাহে দিন" %}<select name="days_per_week" class="field mt-1 !py-1.5"><option>3</option><option>4</option><option selected>5</option><option>6</option></select></label>
+    <label class="text-sm font-bold">{% tr "Minutes a day" "দিনে মিনিট" %}<select name="minutes" class="field mt-1 !py-1.5"><option>15</option><option selected>20</option><option>30</option><option>45</option><option>60</option></select></label>
+    <button class="btn-primary">{% tr "Make my plan" "প্ল্যান বানান" %}</button>
+  </form>
+</section>
+{% endblock %}

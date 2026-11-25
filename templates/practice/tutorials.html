@@ -1,0 +1,42 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}How to use FamilyEnglish{% endblock %}
+{% block content %}
+<p class="eyebrow">Help</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "help" "ico" %}</span>How to use FamilyEnglish</h1>
+<p class="mt-1 text-stone-600">{{ count }} short guides — everything in under 30 minutes.</p>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
+  {% if selected %}
+  <section class="card overflow-hidden">
+    {% if selected.youtube_id %}
+    <div class="video-frame"><iframe src="{{ selected.embed_url }}" title="{{ selected.title }}" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    {% else %}
+    <div class="grid aspect-video place-items-center bg-gradient-to-br from-brand-600 to-fuchsia-500 p-6 text-center text-white">
+      <div><p class="text-sm font-bold uppercase tracking-wide opacity-80">Guide {{ selected.order }} of {{ count }}</p>
+        <p class="mt-2 font-display text-3xl font-bold">{{ selected.title }}</p>
+        <p class="mt-1 font-bn text-lg opacity-90">{{ selected.title_bn }}</p></div>
+    </div>
+    {% endif %}
+    <div class="p-6">
+      <p class="text-sm text-stone-500">Guide {{ selected.order }} · {{ selected.group }} · {{ selected.minutes }} min</p>
+      <h2 class="mt-1 font-display text-2xl font-bold">{{ selected.title }}</h2>
+      <p class="mt-1 text-stone-600">{{ selected.summary }}</p>
+      <ol class="prose-bn mt-4 space-y-2">
+        {% for s in selected.step_list %}<li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-50 font-bold text-brand-700">{{ forloop.counter }}</span><span>{{ s }}</span></li>{% endfor %}
+      </ol>
+      {% if selected.link and user.is_authenticated %}<a href="{{ selected.link }}" class="btn-primary mt-5">Try it now →</a>{% endif %}
+    </div>
+  </section>
+  {% endif %}
+  <aside class="card p-4">
+    {% for group, items in groups.items %}
+    <p class="mt-2 px-2 text-xs font-extrabold uppercase tracking-wide text-stone-400">{{ group }}</p>
+    {% for t in items %}
+    <a href="?n={{ t.order }}" class="mt-1 flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-stone-50 {% if selected and t.order == selected.order %}bg-brand-50{% endif %}">
+      <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm font-bold">{{ t.order }}</span>
+      <span class="min-w-0"><span class="block truncate text-sm font-bold">{{ t.title }}</span><span class="text-xs text-stone-500">{{ t.minutes }} min{% if t.youtube_id %} · ▶ video{% endif %}</span></span>
+    </a>
+    {% endfor %}{% endfor %}
+  </aside>
+</div>
+{% endblock %}

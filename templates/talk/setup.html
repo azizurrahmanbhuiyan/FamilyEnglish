@@ -1,0 +1,58 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Set up Talk{% endblock %}{% block page_title %}{% tr "Set up your tutor" "আপনার টিউটর সাজান" %}{% endblock %}
+{% block content %}
+<form method="post" class="mx-auto max-w-3xl grid gap-5">{% csrf_token %}
+  <div>
+    <h1 class="text-3xl font-extrabold">{% tr "Let's get to know you" "আপনাকে একটু জেনে নিই" %}</h1>
+    <p class="s-sub mt-1">{% tr "Your answers shape every talk: the topics, how hard the English is and how your tutor corrects you. You can change them any time." "আপনার উত্তর অনুযায়ী প্রতিটি আলাপ সাজানো হবে: বিষয়, ইংরেজির কঠিনতা আর ভুল ধরার ধরন। যেকোনো সময় বদলাতে পারবেন।" %}</p>
+  </div>
+
+  <section class="s-card is-pad"><h2 class="s-h2">1 · {% tr "What is your English level?" "আপনার ইংরেজির লেভেল কী?" %}</h2>
+    <div class="t-opts mt-3">{% for n, label, label_bn, desc in levels %}
+      <label class="t-opt"><input type="radio" name="level" value="{{ n }}" {% if p.level == n %}checked{% endif %}>
+        <span><b>{{ n }} · {% tr label label_bn %}</b><small>{{ desc }}</small></span></label>{% endfor %}</div></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">2 · {% tr "Why are you learning English?" "কেন ইংরেজি শিখছেন?" %}</h2>
+    <div class="t-chips mt-3">{% for k, em, en, bn in reasons %}
+      <label class="t-chip"><input type="radio" name="reason" value="{{ k }}" {% if p.reason == k %}checked{% endif %}><span>{{ em }} {% tr en bn %}</span></label>{% endfor %}</div></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">3 · {% tr "What is hardest for you?" "আপনার কাছে সবচেয়ে কঠিন কী?" %}</h2>
+    <div class="t-chips mt-3">{% for k, em, en, bn in challenges %}
+      <label class="t-chip"><input type="radio" name="challenge" value="{{ k }}" {% if p.challenge == k %}checked{% endif %}><span>{{ em }} {% tr en bn %}</span></label>{% endfor %}</div></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">4 · {% tr "When should your tutor correct you?" "টিউটর কখন ভুল ধরিয়ে দেবে?" %}</h2>
+    <div class="t-chips mt-3">{% for k, en, bn in corrects %}
+      <label class="t-chip"><input type="radio" name="correct" value="{{ k }}" {% if p.correct == k %}checked{% endif %}><span>{% tr en bn %}</span></label>{% endfor %}</div></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">5 · {% tr "Pick at least 3 topics you enjoy" "পছন্দের অন্তত ৩টি বিষয় বাছুন" %}</h2>
+    <div class="t-chips mt-3">{% for k, em, en, bn in interests %}
+      <label class="t-chip"><input type="checkbox" name="interests" value="{{ k }}" {% if k in p.interests %}checked{% endif %}><span>{{ em }} {% tr en bn %}</span></label>{% endfor %}</div>
+    <p class="mt-2 text-sm s-muted" id="t-int-count"></p></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">6 · {% tr "Your tutor's voice and speed" "টিউটরের কণ্ঠ ও গতি" %}</h2>
+    <div class="t-chips mt-3">{% for k, en, bn, pitch in voices %}
+      <label class="t-chip"><input type="radio" name="voice" value="{{ k }}" data-pitch="{{ pitch }}" {% if p.voice == k %}checked{% endif %}><span>🔈 {% tr en bn %}</span></label>{% endfor %}</div>
+    <div class="t-chips mt-3">{% for v, label in speeds %}
+      <label class="t-chip"><input type="radio" name="speed" value="{{ v }}" {% if p.speed == v %}checked{% endif %}><span>{{ label }}</span></label>{% endfor %}</div>
+    <button type="button" class="s-chip-audio mt-3" id="t-try-voice">🔈 {% tr "Try the voice" "কণ্ঠ শুনে দেখুন" %}</button></section>
+
+  <section class="s-card is-pad"><h2 class="s-h2">7 · {% tr "Daily goal" "দৈনিক লক্ষ্য" %}</h2>
+    <div class="t-chips mt-3">{% for m in goals %}
+      <label class="t-chip"><input type="radio" name="daily_minutes" value="{{ m }}" {% if p.daily_minutes == m %}checked{% endif %}><span>{{ m }} {% tr "min a day" "মিনিট প্রতিদিন" %}</span></label>{% endfor %}</div></section>
+
+  <button class="s-btn is-block">{% tr "Save and start talking" "সংরক্ষণ করে কথা শুরু করুন" %}</button>
+</form>
+{% endblock %}
+{% block scripts %}<script>
+(function () {
+  var boxes = document.querySelectorAll('input[name=interests]'), out = document.getElementById('t-int-count');
+  function count() { var n = 0; boxes.forEach(function (b) { if (b.checked) n++; }); out.textContent = n + ' chosen' + (n < 3 ? ' — choose ' + (3 - n) + ' more' : ''); }
+  boxes.forEach(function (b) { b.addEventListener('change', count); }); count();
+  document.getElementById('t-try-voice').addEventListener('click', function () {
+    var v = document.querySelector('input[name=voice]:checked'), s = document.querySelector('input[name=speed]:checked');
+    var u = new SpeechSynthesisUtterance("Hello! I'm your English tutor. Let's have a chat."); u.lang = 'en-GB';
+    u.pitch = v ? parseFloat(v.dataset.pitch) : 1; u.rate = s ? parseFloat(s.value) : 1;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  });
+})();
+</script>{% endblock %}

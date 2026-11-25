@@ -1,0 +1,47 @@
+{% extends "base.html" %}{% load fe fe_ui %}
+{% block title %}The Phonics Year{% endblock %}{% block page_title %}{% tr "The Phonics Year" "ফনিক্স বছর" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-5xl">
+  <h1 class="font-display text-4xl font-bold">{% tr "The Phonics Year" "ফনিক্স বছর" %}</h1>
+  <p class="mt-1 text-stone-600">{% tr "36 weeks, 5 short lessons a week: from the first sound to reading a story. Every day has a step-by-step guide for parents in Bangla and English, a story to tell, and practice for your child." "৩৬ সপ্তাহ, সপ্তাহে ৫টি ছোট পাঠ: প্রথম ধ্বনি থেকে গল্প পড়া পর্যন্ত। প্রতিদিন অভিভাবকের জন্য বাংলা ও ইংরেজিতে ধাপে ধাপে নির্দেশিকা, বলার মতো গল্প আর শিশুর অনুশীলন।" %}</p>
+  <p class="mt-2 font-bold">{{ current_learner.name }}: {{ done }} / {{ total }} {% tr "lessons done" "পাঠ শেষ" %}</p>
+
+  {% for num, en, bn, weeks in terms %}
+  <h2 class="mt-8 font-display text-2xl font-bold">{% tr en bn %}</h2>
+  <div class="mt-3 grid gap-3 md:grid-cols-2">
+    {% for w in weeks %}
+    <div class="card p-4">
+      <div class="flex items-start gap-3">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl font-bold text-white" style="background: {{ w.m.level.colour }}">{{ w.m.plan.week }}</span>
+        <div class="min-w-0 flex-1">
+          <a href="{% url 'learning:phonics_week' w.m.plan.week %}" class="font-bold hover:text-brand-600">{{ w.m.title }}</a>
+          <p class="text-sm text-stone-500">{{ w.m.plan.goal }}</p>
+        </div>
+        <span class="text-sm font-bold text-stone-500">{{ w.n_done }}/5</span>
+      </div>
+      <div class="mt-3 grid grid-cols-5 gap-1.5">
+        {% for d in w.days %}
+        <a href="{% url 'learning:lesson' d.lesson.pk %}" title="{{ d.lesson.title }}"
+           class="rounded-lg border px-1.5 py-1.5 text-center text-xs font-bold {% if d.done %}border-emerald-300 bg-emerald-50 text-emerald-800{% elif not d.open %}border-stone-200 bg-stone-50 text-stone-400{% else %}border-stone-200 hover:border-brand-400{% endif %}">
+          {{ d.lesson.teacher.day|slice:":3" }}<br>{% if d.done %}{{ d.done.stars|stars }}{% elif not d.open %}🔒{% elif d.lesson.teacher.kind == 'assess1' or d.lesson.teacher.kind == 'assess2' %}📝{% else %}·{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+  <section class="card mt-8 p-5">
+    <h2 class="font-display text-2xl font-bold">📝 {% tr "Check results" "মূল্যায়নের ফল" %}</h2>
+    <p class="text-sm text-stone-500">{% tr "Each check has two parts: write it and read it. Scores appear here for every child in the family." "প্রতিটি মূল্যায়নের দুটি অংশ: লেখা ও পড়া। পরিবারের প্রত্যেক শিশুর স্কোর এখানে দেখা যাবে।" %}</p>
+    <div class="mt-3 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="text-left text-stone-500"><th class="py-2 pr-3">{% tr "Learner" "শিক্ষার্থী" %}</th>{% for c in checks %}<th class="px-2 py-2 text-center">{% tr "Wk" "সপ্তাহ" %} {{ c.module.plan.week }}<br>{% if c.teacher.kind == 'assess1' %}✍️{% else %}📖{% endif %}</th>{% endfor %}</tr></thead>
+        <tbody>{% for row in table %}<tr class="border-t border-stone-100"><td class="py-2 pr-3 font-bold">{{ row.learner.name }}</td>
+          {% for s in row.cells %}<td class="px-2 py-2 text-center {% if s is None %}text-stone-300{% elif s >= 80 %}font-bold text-emerald-700{% elif s >= 50 %}font-bold text-amber-700{% else %}font-bold text-rose-700{% endif %}">{% if s is None %}–{% else %}{{ s }}%{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

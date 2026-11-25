@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Streaks & goals{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Your progress" "আপনার অগ্রগতি" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "flame" "ico" %}</span>{% tr "Streaks, goals and badges" "ধারা, লক্ষ্য ও ব্যাজ" %}</h1>
+
+<section class="mt-6 grid gap-4 md:grid-cols-4">
+  <div class="card grad-fire p-5 text-white">
+    <p class="text-sm font-bold text-orange-100">{% tr "Current streak" "চলমান ধারা" %}</p>
+    <p class="font-display text-5xl font-bold">{{ info.streak }}🔥</p>
+    <p class="text-sm text-orange-50">{% if info.active_today %}{% tr "Today is done!" "আজকের কাজ হয়েছে!" %}{% else %}{% tr "Learn today to keep it going." "ধারা রাখতে আজ শিখুন।" %}{% endif %}</p>
+  </div>
+  <div class="card p-5"><p class="text-sm font-bold text-stone-500">{% tr "Best streak" "সেরা ধারা" %}</p><p class="font-display text-4xl font-bold">{{ info.best }}</p><p class="text-sm text-stone-500">{% tr "days in a row" "দিন টানা" %}</p></div>
+  <div class="card p-5"><p class="text-sm font-bold text-stone-500">🧊 {% tr "Streak freezes" "স্ট্রিক ফ্রিজ" %}</p>
+    <p class="mt-1 text-3xl">{% for _ in freezes %}{% if forloop.counter <= info.freezes_left %}🧊{% else %}<span class="opacity-25">🧊</span>{% endif %}{% endfor %}</p>
+    <p class="text-sm text-stone-500">{{ info.freezes_left }}/3 {% tr "left this month. A missed day uses one automatically." "এই মাসে বাকি। কোনো দিন বাদ গেলে নিজে থেকেই একটি ব্যবহার হয়।" %}</p></div>
+  <div class="card p-5"><p class="text-sm font-bold text-stone-500">🏅 {% tr "Badges" "ব্যাজ" %}</p><p class="font-display text-4xl font-bold">{{ earned }}<span class="text-xl text-stone-400">/{{ badges|length }}</span></p>
+    {% if next_badge %}<p class="text-sm text-stone-500">{% tr "Next" "পরের" %}: {{ next_badge.icon }} {{ next_badge.name }} · {{ next_badge.now }}/{{ next_badge.target }}</p>{% endif %}</div>
+</section>
+
+<section class="mt-6 grid gap-6 lg:grid-cols-3">
+  <div class="card p-5 lg:col-span-2">
+    <h2 class="font-display text-2xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "target" "ico" %}</span>{% tr "Today's goals" "আজকের লক্ষ্য" %}</h2>
+    <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+      {% for g in goals %}<div class="grid place-items-center"><div class="ring" style="--p: {{ g.percent }}"><span>{% if g.done %}✅{% else %}{{ g.now }}/{{ g.target }}{% endif %}</span></div><p class="mt-2 font-bold">{{ g.icon }} {% if lang == "bn" %}{{ g.label_bn }}{% else %}{{ g.label }}{% endif %}</p></div>{% endfor %}
+    </div>
+    <details class="mt-4"><summary class="text-sm font-bold text-brand-700">⚙️ {% tr "Change my daily goals" "দৈনিক লক্ষ্য বদলান" %}</summary>
+      <form method="post" action="{% url 'growth:goals' %}" class="mt-3 flex flex-wrap items-end gap-3 text-sm">{% csrf_token %}
+        <label class="font-bold">XP<input class="field mt-1 !w-24 !py-1.5" type="number" name="xp" min="10" max="500" value="{{ goal.xp }}"></label>
+        <label class="font-bold">{% tr "Questions" "প্রশ্ন" %}<input class="field mt-1 !w-24 !py-1.5" type="number" name="questions" min="1" max="200" value="{{ goal.questions }}"></label>
+        <label class="font-bold">{% tr "Lessons" "পাঠ" %}<input class="field mt-1 !w-24 !py-1.5" type="number" name="lessons" min="1" max="10" value="{{ goal.lessons }}"></label>
+        <button class="btn-primary !py-2">{% tr "Save" "সংরক্ষণ" %}</button>
+      </form>
+    </details>
+  </div>
+  <div class="card p-5">
+    <h2 class="font-display text-xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "calendar" "ico" %}</span>{{ month_name }}</h2>
+    <div class="mt-2 grid grid-cols-7 gap-1 text-center text-xs font-bold text-stone-400"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    {% for week in month %}<div class="mt-1 grid grid-cols-7 gap-1 text-center text-sm">
+      {% for d in week %}<span class="grid h-8 place-items-center rounded-lg {% if not d.in %}opacity-30{% endif %} {% if d.on %}bg-gradient-to-br from-orange-400 to-rose-500 font-bold text-white{% elif d.frozen %}bg-sky-100{% elif d.today %}ring-2 ring-brand-500{% else %}bg-stone-50{% endif %}" title="{{ d.date|date:'j M' }}">{% if d.frozen %}🧊{% else %}{{ d.date.day }}{% endif %}</span>{% endfor %}
+    </div>{% endfor %}
+  </div>
+</section>
+
+<section class="mt-6 card p-5">
+  <h2 class="font-display text-xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "calendar" "ico" %}</span>{% tr "Last 6 months" "গত ৬ মাস" %}</h2>
+  <div class="mt-3 overflow-x-auto"><div class="heat6">{% for week in heat %}{% for d in week %}<span class="{% if d.shade is None %}hn{% else %}h{{ d.shade }}{% endif %}" title="{{ d.date|date:'j M' }}{% if d.xp is not None %}: {{ d.xp }} XP{% endif %}"></span>{% endfor %}{% endfor %}</div></div>
+  <div class="mt-5 grid gap-3 sm:grid-cols-3">
+    {% for key, en, bn, s in summary %}<div class="rounded-2xl bg-stone-50 p-4"><p class="text-sm font-bold text-stone-500">{% if lang == "bn" %}{{ bn }}{% else %}{{ en }}{% endif %}</p><p class="font-display text-2xl font-bold">⚡ {{ s.xp }} XP</p><p class="text-sm text-stone-600">{{ s.days }} {% tr "active days" "সক্রিয় দিন" %} · {{ s.answers }} {% tr "answers" "উত্তর" %}{% if s.accuracy is not None %} · {{ s.accuracy }}% {% tr "right" "সঠিক" %}{% endif %}</p></div>{% endfor %}
+  </div>
+</section>
+
+<section class="mt-6 grid gap-6 lg:grid-cols-2">
+  <div class="card p-5">
+    <h2 class="font-display text-xl font-bold">🥧 {% tr "Practice mix (30 days)" "অনুশীলনের ভাগ (৩০ দিন)" %}</h2>
+    {% for m in mix %}<div class="mt-2"><div class="flex justify-between text-sm font-bold"><span>{{ m.skill|title }}</span><span>{{ m.n }} · {{ m.percent }}%</span></div><div class="band-bar mt-1"><span style="width: {{ m.percent }}%; background: #3a8460"></span></div></div>{% empty %}<p class="mt-2 text-sm text-stone-500">{% tr "Answer some questions to see your mix." "কিছু প্রশ্নের উত্তর দিলে এখানে দেখাবে।" %}</p>{% endfor %}
+  </div>
+  <div class="card p-5">
+    <h2 class="font-display text-xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "chart" "ico" %}</span>{% tr "Self-test score trend" "সেলফ-টেস্টের স্কোর" %}</h2>
+    {% for t in trend %}<div class="mt-3"><div class="flex justify-between text-sm font-bold"><span>{{ t.emoji }} {{ t.skill|title }}</span><span>{% tr "last" "শেষ" %} {{ t.last }}% · {% tr "avg" "গড়" %} {{ t.avg }}%</span></div>
+      <div class="mt-1 flex h-12 items-end gap-1">{% for p in t.points %}<span class="flex-1 rounded-t bg-violet-400" style="height: {{ p }}%" title="{{ p }}%"></span>{% endfor %}</div></div>
+    {% empty %}<p class="mt-2 text-sm text-stone-500">{% tr "Take self-tests to see your trend." "সেলফ-টেস্ট দিলে এখানে দেখাবে।" %}</p>{% endfor %}
+  </div>
+</section>
+
+<section class="mt-6">
+  <h2 class="font-display text-2xl font-bold">🏅 {% tr "Achievements" "অর্জন" %}</h2>
+  <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+    {% for b in badges %}<div class="badge {% if not b.earned %}locked{% endif %}"><p class="text-3xl">{{ b.icon }}</p><p class="mt-1 font-extrabold">{% if lang == "bn" %}{{ b.name_bn }}{% else %}{{ b.name }}{% endif %}</p><p class="text-xs text-stone-500">{{ b.desc }}</p>{% if not b.earned %}<div class="band-bar mt-2"><span style="width: {{ b.percent }}%; background: #f59e0b"></span></div><p class="text-xs text-stone-400">{{ b.now }}/{{ b.target }}</p>{% endif %}</div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

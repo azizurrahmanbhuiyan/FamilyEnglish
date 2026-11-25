@@ -1,0 +1,60 @@
+{% extends "base.html" %}{% load fe fe_ui %}
+{% block title %}Week {{ n }} · Phonics Year{% endblock %}{% block page_title %}{% tr "Phonics Year" "ফনিক্স বছর" %} · {{ n }}{% endblock %}
+{% block content %}
+<style>
+  @media print {
+    .fe-side, .fe-tabbar, header, nav, .no-print { display: none !important; }
+    body { background: #fff !important; color: #111 !important; }
+    .pw-day { break-inside: avoid-page; break-before: page; }
+    .pw-day:first-of-type { break-before: auto; }
+    .card { box-shadow: none !important; border: 1px solid #ccc !important; background: #fff !important; }
+    .card, .card *, h1, p { color: #111 !important; }
+  }
+  .pw-steps li { margin-top: .45rem; }
+</style>
+<div class="mx-auto max-w-4xl">
+  <div class="no-print flex flex-wrap items-center gap-3">
+    <a href="{% url 'learning:phonics_year' %}" class="text-sm font-semibold text-stone-500 hover:text-brand-600">← {% tr "All 36 weeks" "৩৬ সপ্তাহ" %}</a>
+    <span class="ml-auto"></span>
+    {% if prev %}<a class="btn-ghost !py-1.5 text-sm" href="{% url 'learning:phonics_week' prev %}">← {% tr "Week" "সপ্তাহ" %} {{ prev }}</a>{% endif %}
+    {% if next %}<a class="btn-ghost !py-1.5 text-sm" href="{% url 'learning:phonics_week' next %}">{% tr "Week" "সপ্তাহ" %} {{ next }} →</a>{% endif %}
+    <button onclick="window.print()" class="btn-primary !py-1.5 text-sm">🖨️ {% tr "Print the week" "সপ্তাহটি প্রিন্ট করুন" %}</button>
+  </div>
+
+  <p class="mt-4 text-sm font-bold uppercase tracking-wide text-stone-500">{% tr "Phonics Year" "ফনিক্স বছর" %} · {% tr "Term" "টার্ম" %} {{ m.plan.term }}</p>
+  <h1 class="font-display text-4xl font-bold">{{ m.title }}</h1>
+  <p class="mt-2 text-lg">{{ m.plan.goal }}</p>
+
+  <div class="mt-5 grid gap-4 md:grid-cols-2">
+    <section class="card p-5"><h2 class="font-display text-xl font-bold">📅 {% tr "The week at a glance" "এক নজরে সপ্তাহ" %}</h2>
+      <table class="mt-2 w-full text-sm">{% for l, items in lessons %}<tr class="border-t border-stone-100"><td class="py-1.5 pr-3 font-bold">{{ l.teacher.day }}</td><td class="py-1.5">{{ l.title }}</td></tr>{% endfor %}</table>
+      {% if m.plan.tricky %}<p class="mt-3 text-sm"><b>{% tr "Tricky words" "Tricky word" %}:</b> {{ m.plan.tricky|join:", " }}</p>{% endif %}</section>
+    <section class="card p-5"><h2 class="font-display text-xl font-bold">🧰 {% tr "Get ready for the week" "সপ্তাহের প্রস্তুতি" %}</h2>
+      <ul class="mt-2 space-y-1.5 text-sm">{% for p in m.plan.prepare %}<li>☐ {% tr p.0 p.1 %}</li>{% endfor %}</ul></section>
+  </div>
+
+  {% for l, items in lessons %}
+  <section class="card pw-day mt-5 p-5">
+    <div class="flex flex-wrap items-baseline gap-2">
+      <h2 class="font-display text-2xl font-bold">{{ l.teacher.day }}: {{ l.title }}</h2>
+      <span class="text-sm text-stone-500">{{ l.minutes }} min</span>
+      <a href="{% url 'learning:lesson' l.pk %}?view=parent" class="no-print ml-auto text-sm font-bold text-brand-600">{% tr "Open lesson" "পাঠ খুলুন" %} →</a>
+    </div>
+    {% if l.action_hint %}<p class="mt-1"><b>{% tr "Action" "অ্যাকশন" %}:</b> {{ l.action_hint }}</p>{% endif %}
+    {% if lang == 'bn' %}
+    {% if l.teacher.story_bn %}<p class="mt-2 rounded-xl bg-amber-50 p-3 text-stone-800 font-bn"><b>📖 গল্প:</b> {{ l.teacher.story_bn }}</p>{% endif %}
+    <ol class="pw-steps mt-3 list-decimal pl-6 font-bn">{% for s in l.teacher.steps %}<li><b>{{ s.t_bn }}</b> ({{ s.min }} মিনিট): {{ s.do_bn }}</li>{% endfor %}</ol>
+    {% else %}
+    {% if l.teacher.story %}<p class="mt-2 rounded-xl bg-amber-50 p-3 text-stone-800"><b>📖 Story:</b> {{ l.teacher.story }}</p>{% endif %}
+    <ol class="pw-steps mt-3 list-decimal pl-6">{% for s in l.teacher.steps %}<li><b>{{ s.t }}</b> ({{ s.min }} min): {{ s.do }}</li>{% endfor %}</ol>
+    {% endif %}
+    {% if l.teacher.text %}<div class="mt-3 rounded-xl border border-stone-200 p-3"><p class="font-bold">{{ l.teacher.text.title }}</p>{% for line in l.teacher.text.lines %}<p class="mt-1">{{ line }}</p>{% endfor %}</div>{% endif %}
+    {% if l.teacher.kind == 'assess1' or l.teacher.kind == 'assess2' %}
+    <div class="mt-3 rounded-xl border border-stone-200 p-3"><p class="font-bold">📝 {% tr "Check items" "মূল্যায়নের প্রশ্ন" %} ({% if l.teacher.kind == 'assess1' %}{% tr "say each one; your child writes it" "প্রতিটি বলুন; শিশু লিখবে" %}{% else %}{% tr "your child reads and chooses" "শিশু পড়ে বেছে নেবে" %}{% endif %})</p>
+      <ol class="mt-1 list-decimal pl-6">{% for it in items %}<li>{{ it.prompt }}{% if it.choices %} — <span class="text-stone-500">{{ it.choices }}</span>{% endif %} <span class="text-stone-400">(✔ {{ it.answer }})</span></li>{% endfor %}</ol></div>
+    {% endif %}
+    <p class="mt-3 text-sm"><b>🏠 {% tr "Home" "বাসায়" %}:</b> <span class="font-bn">{{ l.home_task_bn }}</span></p>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

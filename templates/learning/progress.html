@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load fe %}
+{% load fe fe_ui %}
 {% block title %}My progress{% endblock %}
 {% block content %}
 <p class="eyebrow">Progress</p>
-<h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">📈 {{ current_learner.name }}'s progress</h1>
+<h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "chart" "ico" %}</span>{{ current_learner.name }}'s progress</h1>
 
 <div class="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
   <div class="stat"><p class="text-xl">⚡</p><p class="stat-num">{{ xp }}</p><p class="stat-label">Total XP</p></div>
@@ -32,10 +32,10 @@
     <div class="flex items-center justify-between">
       <h2 class="font-extrabold text-stone-900">Last 4 weeks</h2>
       <span class="flex items-center gap-1 text-xs text-stone-500">less
-        <span class="inline-block h-3 w-3 rounded bg-[#f0edf6]"></span><span class="inline-block h-3 w-3 rounded bg-[#ddd6fe]"></span><span class="inline-block h-3 w-3 rounded bg-[#a78bfa]"></span><span class="inline-block h-3 w-3 rounded bg-[#7c3aed]"></span> more</span>
+        <span class="inline-block h-3 w-3 rounded bg-[#f1ebdf]"></span><span class="inline-block h-3 w-3 rounded bg-[#bfdccb]"></span><span class="inline-block h-3 w-3 rounded bg-[#5fa27c]"></span><span class="inline-block h-3 w-3 rounded bg-[#2b6f4f]"></span> more</span>
     </div>
     <div class="heat mt-4">
-      {% for d in activity %}<span class="s{{ d.shade }}" title="{{ d.date|date:'D j M' }}: {{ d.n }} lesson{{ d.n|pluralize }}"></span>{% endfor %}
+      {% for d in activity %}<span class="s{{ d.shade }}" title="{{ d.date|date:'D j M' }}: {{ d.n }} activit{{ d.n|pluralize:"y,ies" }}"></span>{% endfor %}
     </div>
     {% if placement %}
     <div class="mt-5 border-t border-stone-100 pt-4">
@@ -54,7 +54,7 @@
 
 <div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
   <section id="leaderboard" class="card scroll-mt-24 p-5">
-    <h2 class="font-extrabold text-stone-900">🏆 Family leaderboard</h2>
+    <h2 class="font-extrabold text-stone-900"><span class="mr-1.5 text-brand-600">{% icon "trophy" "ico" %}</span>Family leaderboard</h2>
     <p class="text-xs text-stone-500">Ranked by XP earned in the last 7 days.</p>
     <div class="mt-4 overflow-x-auto">
       <table class="w-full text-sm">

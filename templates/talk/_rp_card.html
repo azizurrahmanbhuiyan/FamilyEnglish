@@ -1,0 +1,5 @@
+{% load fe_ui %}<form method="post" action="{% url 'talk:go_ref' 'roleplay' r.slug %}">{% csrf_token %}
+  <button class="s-gcard text-left w-full"><span class="s-gicon">{{ r.icon }}</span>
+    <span class="min-w-0 flex-1"><b class="block text-lg">{% tr r.title r.title_bn %}</b><span class="block text-sm s-muted">{{ r.goal }}</span></span>
+    {% if not paid and r.slug not in free %}<span class="s-muted">{% icon "lock" %}</span>{% elif not paid %}<span class="s-pill is-free">Free</span>{% endif %}</button>
+</form>

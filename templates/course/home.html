@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}My course{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Skill course" "দক্ষতার কোর্স" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "compass" "ico" %}</span>{% tr "My course" "আমার কোর্স" %}</h1>
+<p class="mt-1 max-w-3xl text-stone-600">{% tr "Listening, Speaking, Reading, Writing and Grammar — each in Easy, Medium and Advanced. Every lesson has practice with instant mistake feedback and a self-test at the end." "শোনা, বলা, পড়া, লেখা ও ব্যাকরণ — প্রতিটি সহজ, মাঝারি ও উচ্চতর স্তরে। প্রতিটি পাঠে তাৎক্ষণিক ভুল-সংশোধনসহ অনুশীলন আর শেষে সেলফ-টেস্ট।" %}</p>
+
+{% if not test %}
+<section class="mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white sm:p-8">
+  <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">🤖 {% tr "Start here" "এখান থেকে শুরু" %}</p>
+  <h2 class="mt-1 font-display text-3xl font-bold">{% tr "Take the AI level test" "AI লেভেল টেস্ট দিন" %}</h2>
+  <p class="mt-1 max-w-2xl text-violet-50">{% tr "About 20 minutes: listening, reading, grammar, writing and speaking. The AI coach finds your level in each skill and puts your lessons in the best order." "প্রায় ২০ মিনিট: শোনা, পড়া, ব্যাকরণ, লেখা ও বলা। AI কোচ প্রতিটি দক্ষতায় আপনার লেভেল বের করে পাঠগুলো সাজিয়ে দেবে।" %}</p>
+  <a href="{% url 'course:level_test' %}" class="btn-white mt-4">{% if unfinished %}{% tr "Continue the test" "টেস্ট চালিয়ে যান" %}{% else %}{% tr "Start the test" "টেস্ট শুরু করুন" %}{% endif %} →</a>
+</section>
+{% else %}
+<section class="mt-6 grid gap-4 lg:grid-cols-3">
+  <div class="card p-5 lg:col-span-2">
+    <div class="flex items-center gap-2"><h2 class="font-display text-2xl font-bold">▶ {% tr "Up next" "এরপর" %}</h2><span class="ml-auto text-sm text-stone-500">{{ path_total }} {% tr "lessons in your path" "টি পাঠ আপনার পথে" %}</span></div>
+    {% if why %}<p class="prose-bn mt-1 text-sm text-violet-700">💡 {{ why }}</p>{% endif %}
+    <ol class="mt-3 space-y-2">
+      {% for l in next_up %}
+      <li><a href="{% url 'course:lesson' l.slug %}" class="flex items-center gap-3 rounded-2xl border-2 {% if forloop.first %}border-brand-500 bg-brand-50{% else %}border-stone-100{% endif %} px-3 py-2 hover:border-brand-500">
+        <span class="text-2xl">{{ l.emoji }}</span>
+        <span class="min-w-0 flex-1"><span class="block truncate font-extrabold">{{ l.title }}</span><span class="text-xs text-stone-500">{{ l.get_skill_display }} · {{ l.minutes }} min{% if l.prog.practice_done %} · {% tr "practice done" "অনুশীলন শেষ" %}{% endif %}</span></span>
+        <span class="band-{{ l.band }} band-pill">{{ l.get_band_display }}</span>
+      </a></li>
+      {% empty %}<li class="text-stone-600">🎉 {% tr "You have passed every lesson in your path!" "আপনার পথের সব পাঠ পাস করেছেন!" %}</li>{% endfor %}
+    </ol>
+  </div>
+  <div class="card p-5">
+    <p class="font-extrabold">🤖 {% tr "Last AI level test" "সর্বশেষ AI লেভেল টেস্ট" %}</p>
+    <p class="text-sm text-stone-500">{{ test.finished_at|date:"j M Y" }}</p>
+    <a href="{% url 'course:level_result' test.pk %}" class="btn-ghost mt-3 w-full !py-2 text-sm">{% tr "See my report" "রিপোর্ট দেখুন" %}</a>
+    <a href="{% url 'course:level_test' %}" class="btn-ghost mt-2 w-full !py-2 text-sm">{% tr "Take it again" "আবার দিন" %}</a>
+    <hr class="my-4 border-stone-100">
+    <p class="font-extrabold">🗓️ {% tr "Study plan" "স্টাডি প্ল্যান" %}</p>
+    {% if plan and plan.kind == "course" %}<p class="text-sm text-stone-600">{% tr "Your plan follows this course." "আপনার প্ল্যান এই কোর্স অনুসরণ করছে।" %}</p><a class="btn-ghost mt-2 w-full !py-2 text-sm" href="{% url 'learning:plan' %}">{% tr "Open plan" "প্ল্যান খুলুন" %}</a>
+    {% else %}
+    <form method="post" action="{% url 'course:path_plan' %}" class="mt-2 space-y-2 text-sm">{% csrf_token %}
+      <label class="block">{% tr "Months" "মাস" %} <select name="months" class="field !py-1.5"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>6</option><option>9</option><option>12</option></select></label>
+      <label class="block">{% tr "Days a week" "সপ্তাহে দিন" %} <select name="days_per_week" class="field !py-1.5"><option>3</option><option>4</option><option selected>5</option><option>6</option></select></label>
+      <input type="hidden" name="minutes" value="20">
+      <button class="btn-primary w-full !py-2">{% tr "Make my plan from this course" "এই কোর্স দিয়ে প্ল্যান বানান" %}</button>
+    </form>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<h2 class="mt-8 font-display text-2xl font-bold">{% tr "All skills" "সব দক্ষতা" %}</h2>
+<div class="mt-3 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  {% for row in grid %}
+  <a href="{% url 'course:skill' row.skill %}" class="card block p-5 hover:ring-2 hover:ring-brand-200">
+    <div class="flex items-center gap-2"><span class="text-3xl">{{ row.emoji }}</span><div><p class="font-display text-xl font-bold">{% if lang == "bn" %}{{ row.bn }}{% else %}{{ row.name }}{% endif %}</p>{% if row.level is not None %}<p class="text-xs text-stone-500">{% tr "Level" "লেভেল" %} {{ row.level }}/8</p>{% endif %}</div></div>
+    <div class="mt-3 space-y-2">
+      {% for b in row.bands %}
+      <div class="band-{{ b.band }}">
+        <div class="flex justify-between text-xs font-bold"><span>{% if lang == "bn" %}{{ b.bn }}{% else %}{{ b.label }}{% endif %}{% if b.start %} · 📍 {% tr "your start" "শুরু এখানে" %}{% endif %}</span><span>{{ b.passed }}/{{ b.total }}</span></div>
+        <div class="band-bar mt-1"><span style="width: {{ b.percent }}%"></span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </a>
+  {% endfor %}
+  <a href="{% url 'course:weak_spots' %}" class="card block bg-rose-50 p-5 hover:ring-2 hover:ring-rose-200">
+    <p class="text-3xl">🎯</p><p class="font-display text-xl font-bold">{% tr "Weak spots" "দুর্বল দিক" %}</p>
+    <p class="text-sm text-stone-600">{% tr "See which question types you miss most and practise just those." "কোন ধরনের প্রশ্নে বেশি ভুল হয় দেখুন, শুধু সেগুলোই অনুশীলন করুন।" %}</p>
+  </a>
+</div>
+{% endblock %}

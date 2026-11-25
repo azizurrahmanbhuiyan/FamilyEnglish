@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load fe %}
+{% load fe fe_ui static %}
 {% block title %}{{ lesson.title }}{% endblock %}
 {% block content %}
 <div class="flex flex-wrap items-center gap-3">
@@ -14,6 +14,44 @@
 
 <h1 class="mt-3 font-display text-4xl font-bold">{{ lesson.title }}</h1>
 <p class="text-stone-500">{{ lesson.minutes }} minutes · {{ lesson.get_skill_display }}{% if progress %} · done {{ progress.stars|stars }}{% endif %}</p>
+
+{% if view != "kid" and lesson.teacher %}
+<section class="card mt-5 p-5" id="guide" data-lang="{% if lang == 'bn' %}bn{% else %}en{% endif %}">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="font-display text-2xl font-bold">👪 {% tr "Today's guide" "আজকের নির্দেশিকা" %} · {{ lesson.teacher.day }}, {% tr "week" "সপ্তাহ" %} {{ lesson.module.plan.week }}</h2>
+    <div class="ml-auto flex rounded-full border border-stone-200 p-0.5 text-xs font-bold">
+      <button type="button" data-guide="bn" class="rounded-full px-2.5 py-1">বাংলা</button>
+      <button type="button" data-guide="en" class="rounded-full px-2.5 py-1">English</button>
+    </div>
+  </div>
+  <p class="text-stone-600">{{ lesson.module.plan.goal }} · {{ lesson.minutes }} min ·
+    <a class="font-bold text-brand-600" href="{% url 'learning:phonics_week' lesson.module.plan.week %}">{% tr "This week's plan" "এই সপ্তাহের পরিকল্পনা" %} →</a></p>
+  {% if lesson.action_hint %}<p class="mt-2"><b>{% tr "Action" "অ্যাকশন" %}:</b> {{ lesson.action_hint }}</p>{% endif %}
+  <div data-g="en">
+    {% if lesson.teacher.story %}<p class="mt-3 rounded-xl bg-amber-50 p-3 text-stone-800"><b>📖 Tell this story:</b> {{ lesson.teacher.story }}</p>{% endif %}
+    <ol class="mt-3 list-decimal space-y-1.5 pl-6">{% for st in lesson.teacher.steps %}<li><b>{{ st.t }}</b> <span class="text-stone-500">({{ st.min }} min)</span>: {{ st.do }}</li>{% endfor %}</ol>
+  </div>
+  <div data-g="bn" class="font-bn">
+    {% if lesson.teacher.story_bn %}<p class="mt-3 rounded-xl bg-amber-50 p-3 text-stone-800"><b>📖 এই গল্পটি বলুন:</b> {{ lesson.teacher.story_bn }}</p>{% endif %}
+    <ol class="mt-3 list-decimal space-y-1.5 pl-6">{% for st in lesson.teacher.steps %}<li><b>{{ st.t_bn }}</b> <span class="text-stone-500">({{ st.min }} মিনিট)</span>: {{ st.do_bn }}</li>{% endfor %}</ol>
+  </div>
+  {% if lesson.teacher.text %}<div class="mt-3 rounded-xl border border-stone-200 p-3"><p class="font-bold">{{ lesson.teacher.text.title }}</p>{% for line in lesson.teacher.text.lines %}<p class="mt-1">{{ line }}</p>{% endfor %}</div>{% endif %}
+  {% if lesson.teacher.tricky %}<p class="mt-3"><b>{% tr "Tricky words" "Tricky word" %}:</b> {{ lesson.teacher.tricky|join:", " }}</p>{% endif %}
+</section>
+<script>
+(function () {
+  var box = document.getElementById('guide');
+  function show(l) {
+    box.querySelectorAll('[data-g]').forEach(function (d) { d.hidden = d.dataset.g !== l; });
+    box.querySelectorAll('[data-guide]').forEach(function (b) { b.classList.toggle('bg-brand-600', b.dataset.guide === l); b.classList.toggle('text-white', b.dataset.guide === l); });
+    try { localStorage.setItem('fe-guide-lang', l); } catch (e) {}
+  }
+  var saved = null; try { saved = localStorage.getItem('fe-guide-lang'); } catch (e) {}
+  box.querySelectorAll('[data-guide]').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.guide); }); });
+  show(saved || box.dataset.lang);
+})();
+</script>
+{% endif %}
 
 <div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
   <div class="space-y-6">
@@ -45,28 +83,9 @@
         </div>
       </div>
       <p class="mt-2 text-xs text-stone-500">Your device reads the video aloud, so turn the sound on. <span class="font-bn">ভিডিওটি দেখুন, সাথে সাথে জোরে বলুন।</span></p>
+      <form method="post" action="{% url 'learning:video_watched' lesson.pk %}" class="mt-2">{% csrf_token %}<button class="btn-ghost !py-1.5 text-sm">✅ I watched it · +5 XP</button></form>
 
-      {% if videos %}
-      <details class="mt-4 rounded-xl border border-stone-100 bg-stone-50/60 p-3" {% if not view == "kid" %}open{% endif %}>
-        <summary class="cursor-pointer text-sm font-extrabold text-stone-700">📺 More videos from official channels ({{ videos|length }})</summary>
-        {% for v in videos %}
-        <div class="mt-3">
-          {% if v.youtube_id %}
-            <div class="video-frame">
-              <iframe src="{{ v.embed_url }}" title="{{ v.title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
-                      allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-          {% else %}
-            <a href="{{ v.search_url }}" target="_blank" rel="noopener" class="flex items-center gap-4 rounded-2xl border-2 border-dashed border-stone-200 bg-white p-3 hover:border-brand-500">
-              <span class="grid h-12 w-20 shrink-0 place-items-center rounded-xl bg-stone-900 text-xl text-white">▶</span>
-              <span><span class="block font-bold">{{ v.title }}</span><span class="text-sm text-stone-500">Open on the official channel (YouTube)</span></span>
-            </a>
-          {% endif %}
-          <p class="mt-2 text-sm"><strong>{{ v.channel }}</strong> · ~{{ v.minutes }} min{% if v.why_watch_bn %} · <span class="font-bn text-stone-600">{{ v.why_watch_bn }}</span>{% endif %}</p>
-        </div>
-        {% endfor %}
-      </details>
-      {% endif %}
+      <div class="mt-4 rounded-xl border border-stone-100 bg-stone-50/60 p-3">{% include "learning/_clips.html" %}</div>
     </section>
 
     <!-- Step 2: Learn -->
@@ -126,6 +145,32 @@
   </aside>
 </div>
 
+{% load fe_ui %}
+<!-- Talk at home: Me & Sister, Brother, Mamma, Daddy, Grandma, Grandpa -->
+<section id="talk" class="mt-6 card scroll-mt-24 p-5">
+  <div class="flex flex-wrap items-end gap-3">
+    <div>
+      <h2 class="font-display text-2xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "family" "ico" %}</span>{% tr "Talk at home" "বাসায় কথা বলি" %}</h2>
+      <p class="text-sm text-stone-600">{% tr "Two short lines with each family member. The child says the first line, the family member answers. Use them today at home!" "পরিবারের প্রত্যেকের সাথে দুটি ছোট লাইন। শিশু প্রথম লাইন বলবে, পরিবারের সদস্য উত্তর দেবেন। আজই বাসায় ব্যবহার করুন!" %}</p>
+      {% if talk_custom %}<p class="mt-1 text-xs font-bold text-violet-700">✨ {% tr "Your family's AI sentences" "আপনার পরিবারের AI বাক্য" %} · {{ talk_custom.created_at|date:"j M" }} · <a class="underline" href="?talk=original#talk">{% tr "show the original ones" "মূল বাক্যগুলো দেখুন" %}</a></p>
+      {% elif talk_has_custom %}<p class="mt-1 text-xs font-bold text-violet-700"><a class="underline" href="?#talk">✨ {% tr "Show our AI sentences" "আমাদের AI বাক্য দেখুন" %}</a></p>{% endif %}
+    </div>
+    <div class="ml-auto flex flex-wrap gap-2">
+      <button type="button" class="btn-ghost !py-2 text-sm" data-toggle-bn>🇧🇩 {% tr "Hide / show Bangla" "বাংলা লুকান / দেখান" %}</button>
+      {% if ai_on %}<form method="post" action="{% url 'learning:talk_ai' lesson.pk %}">{% csrf_token %}<button class="btn-ghost !py-2 text-sm" onclick="this.disabled=true;this.form.submit();this.textContent='✨ …'">✨ {% tr "Make new sentences with AI" "AI দিয়ে নতুন বাক্য" %}</button></form>{% endif %}
+      <a href="{% url 'learning:talk_hub' %}?level={{ lesson.module.level.number }}" class="btn-ghost !py-2 text-sm">{% tr "All talks by person" "ব্যক্তি অনুযায়ী সব কথা" %} →</a>
+    </div>
+  </div>
+  {% if talk %}
+  <div class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3" data-talk-root>
+    {% with said=talk_said lesson_pk=lesson.pk %}{% for c in talk %}{% include "learning/_talk_card.html" %}{% endfor %}{% endwith %}
+  </div>
+  <p class="mt-3 text-xs text-stone-500">{% tr "Tip: swap roles too — the parent says the child's line and the child answers. Say each talk at a real moment: at the table, before school, at bedtime." "টিপ: ভূমিকা বদলেও বলুন — অভিভাবক শিশুর লাইন বলবেন, শিশু উত্তর দেবে। আসল মুহূর্তে বলুন: খাবার টেবিলে, স্কুলের আগে, ঘুমের সময়।" %}</p>
+  {% else %}
+  <p class="mt-3 text-stone-500">{% tr "No sentences for this lesson yet." "এই পাঠের জন্য এখনো বাক্য নেই।" %}</p>
+  {% endif %}
+</section>
+
 <script id="lesson-data" type="application/json">{"activity": "{{ lesson.activity }}"}</script>
 {{ scenes|json_script:"tv-scenes" }}
 <div id="items" class="hidden">
@@ -136,7 +181,8 @@
 {% endblock %}
 
 {% block scripts %}
-{% load static %}<script src="{% static 'js/topic-video.js' %}"></script>
+<script src="{% static 'js/family-talk.js' %}"></script>
+<script src="{% static 'js/topic-video.js' %}"></script>
 <script>
 (function () {
   function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }

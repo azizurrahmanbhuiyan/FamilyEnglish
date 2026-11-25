@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}What's new{% endblock %}
+{% block content %}
+<h1 class="font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "bell" "ico" %}</span>{% tr "What's new" "নতুন কী এলো" %}</h1>
+<div class="mt-6 space-y-4">
+  {% for c in changes %}
+  <article class="card p-5">
+    <p class="text-sm font-bold text-stone-400">{{ c.date|date:"j F Y" }} · <span class="rounded-full bg-brand-50 px-2 py-0.5 text-brand-700">{{ c.tag }}</span></p>
+    <h2 class="mt-1 font-display text-2xl font-bold">{% if lang == "bn" %}{{ c.title_bn }}{% else %}{{ c.title }}{% endif %}</h2>
+    <ul class="mt-2 list-disc space-y-1 pl-5 text-stone-700">{% for it in c.items %}<li>{{ it }}</li>{% endfor %}</ul>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

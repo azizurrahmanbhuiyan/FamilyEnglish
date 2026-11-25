@@ -18,14 +18,21 @@ def xp_of(progress_rows):
 
 
 def learner_stats(learner):
+    """XP comes from the XP ledger (lessons, course self-tests, flashcards, speaking, writing…)."""
+    from course.models import CourseProgress
+    from growth import engine
+
     rows = list(Progress.objects.filter(learner=learner))
-    week_start = timezone.now() - timedelta(days=7)
+    course = list(CourseProgress.objects.filter(learner=learner, passed=True))
+    t = engine.totals(learner)
+    info = engine.streak_info(learner)
     return {
-        "xp": xp_of(rows),
-        "week_xp": xp_of(p for p in rows if p.completed_at >= week_start),
-        "stars": sum(p.stars for p in rows),
-        "done_count": len(rows),
-        "streak": planner.streak(learner, timezone.localdate()),
+        "xp": t["xp"],
+        "week_xp": t["week_xp"],
+        "stars": sum(p.stars for p in rows) + sum(c.stars for c in course),
+        "done_count": len(rows) + len(course),
+        "streak": info["streak"],
+        "freezes_left": info["freezes_left"],
     }
 
 
@@ -59,16 +66,18 @@ def leaderboard(family):
 
 
 def activity(learner, days=28):
-    """Lessons finished per day for the last `days` days (oldest first)."""
+    """Learning activities per day (lessons, tests, cards, practice) for the last `days` days."""
+    from growth.models import XPEvent
+
     today = timezone.localdate()
     counts = {}
-    for p in Progress.objects.filter(learner=learner,
-                                     completed_at__gte=timezone.now() - timedelta(days=days + 1)):
-        d = timezone.localtime(p.completed_at).date()
+    for t in XPEvent.objects.filter(learner=learner, created_at__gte=timezone.now() - timedelta(days=days + 1)
+                                    ).values_list("created_at", flat=True):
+        d = timezone.localtime(t).date()
         counts[d] = counts.get(d, 0) + 1
     out = []
     for i in range(days - 1, -1, -1):
         d = today - timedelta(days=i)
         n = counts.get(d, 0)
-        out.append({"date": d, "n": n, "shade": 0 if n == 0 else 1 if n == 1 else 2 if n == 2 else 3})
+        out.append({"date": d, "n": n, "shade": 0 if n == 0 else 1 if n <= 2 else 2 if n <= 5 else 3})
     return out

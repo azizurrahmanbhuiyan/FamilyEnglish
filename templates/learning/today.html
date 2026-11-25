@@ -1,45 +1,56 @@
 {% extends "base.html" %}
+{% load fe_ui %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <!-- Greeting -->
 <div class="flex flex-wrap items-end gap-3">
   <div>
     <p class="eyebrow">{% now "l, j F" %}</p>
-    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">Hello, {{ current_learner.name }} {{ current_learner.avatar }}</h1>
-    <p class="text-sm text-stone-500">One short video, a little practice, and a home task. That's today.</p>
+    <h1 class="mt-1 font-display text-3xl font-bold text-stone-900 sm:text-4xl">{% tr "Hello" "হ্যালো" %}, {{ current_learner.name }} {{ current_learner.avatar }}</h1>
+    <p class="text-sm text-stone-500">{% tr "One lesson, a little practice, a self-test and a home task. That's today." "একটি পাঠ, একটু অনুশীলন, একটি সেলফ-টেস্ট আর বাড়ির কাজ — আজ এটুকুই।" %}</p>
   </div>
-  <a href="{% url 'learning:progress' %}" class="ml-auto inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-extrabold text-amber-800">🔥 {{ streak }} day{{ streak|pluralize }} streak</a>
+  <a href="{% url 'growth:streaks' %}" class="ml-auto inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-extrabold text-amber-800">{% icon "flame" "ico ico-sm" %} {{ streak }} {% tr "days in a row" "দিন টানা" %}</a>
 </div>
 
 <!-- Hero -->
 <section class="hero mt-5 p-5 sm:p-7">
-  {% if not placement %}
-    <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">Step 1 of 2</p>
-    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">🧩 First, a short placement test</h2>
-    <p class="mt-1 max-w-xl text-sm text-violet-100">It finds the right level so lessons are not too easy or too hard. It takes about 10 minutes.</p>
-    <div class="mt-4 flex flex-wrap gap-2"><a href="{% url 'learning:placement_start' %}" class="btn-white">Start the test →</a>
-      <a href="{% url 'learning:videos' %}" class="btn-glass">🎬 Browse topic videos</a></div>
+  {% if not placement and not smart %}
+    <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">{% tr "Step 1 of 2" "ধাপ ১ / ২" %}</p>
+    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">{% tr "First, find your level" "প্রথমে লেভেল জেনে নিন" %}</h2>
+    <p class="mt-1 max-w-xl text-sm text-violet-100">{% tr "Listening, reading, grammar, writing and speaking. It finds your level in each skill and orders your lessons." "শোনা, পড়া, ব্যাকরণ, লেখা ও বলা। প্রতিটি দক্ষতায় লেভেল বের করে পাঠ সাজিয়ে দেয়।" %}</p>
+    <div class="mt-4 flex flex-wrap gap-2"><a href="{% url 'course:level_test' %}" class="btn-white">{% tr "Start the level test" "লেভেল টেস্ট শুরু" %} {% icon "arrow" "ico ico-sm" %}</a>
+      <a href="{% url 'learning:placement_start' %}" class="btn-glass">{% icon "seed" "ico ico-sm" %} {% tr "Under 7? Picture test (free)" "৭-এর কম? ছবির টেস্ট (ফ্রি)" %}</a></div>
   {% elif not plan %}
     <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">Step 2 of 2</p>
-    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">🗓️ Make your study plan</h2>
-    <p class="mt-1 max-w-xl text-sm text-violet-100">Your level: {{ placement.overall }}. Choose a finish level and how many months you have.</p>
-    <div class="mt-4 flex flex-wrap gap-2"><a href="{% url 'learning:plan_new' %}" class="btn-white">Make my plan →</a>
-      <a href="{% url 'learning:videos' %}" class="btn-glass">🎬 Browse topic videos</a></div>
+    <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">{% tr "Make your study plan" "স্টাডি প্ল্যান তৈরি করুন" %}</h2>
+    <p class="mt-1 max-w-xl text-sm text-violet-100">{% if smart %}{% tr "Your lessons are ordered from your level test." "লেভেল টেস্ট অনুযায়ী পাঠ সাজানো আছে।" %}{% else %}{% tr "Pick the full course for you: 3 years for children, 2 for school students, 1 for parents who studied." "আপনার পুরো কোর্স বেছে নিন: শিশুদের ৩ বছর, স্কুল শিক্ষার্থীদের ২ বছর, পড়াশোনা করা অভিভাবকদের ১ বছর।" %}{% endif %}</p>
+    <div class="mt-4 flex flex-wrap gap-2">{% if smart %}<a href="{% url 'course:level_result' smart.pk %}#plan" class="btn-white">{% tr "Plan from my test" "টেস্ট থেকে প্ল্যান" %} {% icon "arrow" "ico ico-sm" %}</a>{% endif %}<a href="{% url 'learning:plan_new' %}" class="{% if smart %}btn-glass{% else %}btn-white{% endif %}">{% tr "Choose my full course" "আমার পুরো কোর্স বেছে নিন" %} {% icon "arrow" "ico ico-sm" %}</a></div>
   {% elif mission %}
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
-      <div class="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/15 font-display text-3xl font-bold">{{ featured.thumb|default:"🎯" }}</div>
+      <div class="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/15">{% if mission.kind == "review" %}{% icon "repeat" "ico ico-xl" %}{% elif mission.topic %}{% icon "chat" "ico ico-xl" %}{% elif mission.deck %}{% icon "cards" "ico ico-xl" %}{% elif mission.course_lesson %}{% icon "compass" "ico ico-xl" %}{% else %}{% icon "letters" "ico ico-xl" %}{% endif %}</div>
       <div class="min-w-0 flex-1">
-        <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">🎯 Today's mission · {{ mission.date|date:"D j M" }}</p>
-        <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">{{ mission.lesson.title }}</h2>
-        <p class="text-sm text-violet-100">Level {{ mission.lesson.module.level.number }} · {{ mission.lesson.module.title }} · {{ mission.lesson.minutes }} min</p>
+        <p class="text-xs font-extrabold uppercase tracking-widest text-violet-100">{% tr "Today's lesson" "আজকের পাঠ" %} · {{ mission.date|date:"D j M" }} · +{{ mission.xp }} XP</p>
+        <h2 class="mt-1 font-display text-2xl font-bold sm:text-3xl">{{ mission.title }}</h2>
+        {% if mission.course_lesson %}<p class="text-sm text-violet-100">{{ mission.course_lesson.get_skill_display }} · {{ mission.course_lesson.get_band_display }} · {{ mission.course_lesson.minutes }} min</p>
+        {% elif mission.topic %}<p class="text-sm text-violet-100">{% tr "Talk at home" "বাসায় কথা" %} · {{ mission.topic.title_bn }}</p>
+        {% elif mission.deck %}<p class="text-sm text-violet-100">{% tr "Word week" "সাপ্তাহিক শব্দ" %} {{ mission.deck.week }}</p>
+        {% else %}<p class="text-sm text-violet-100">Level {{ mission.lesson.module.level.number }} · {{ mission.lesson.module.title }} · {{ mission.lesson.minutes }} min</p>{% endif %}
+        {% if why %}<details class="mt-1 text-sm text-violet-50"><summary class="font-bold">{% tr "Why this task today?" "আজ কেন এই কাজ?" %}</summary><p class="prose-bn mt-1">{{ why }}</p></details>{% endif %}
       </div>
       <div class="flex flex-wrap gap-2">
-        <a href="{% url 'learning:lesson' mission.lesson.pk %}#watch" class="btn-white">▶ Watch the video</a>
-        <a href="{% url 'learning:lesson' mission.lesson.pk %}" class="btn-glass">Open lesson</a>
+        {% if mission.kind == "review" or mission.topic or mission.deck %}
+        <a href="{% url 'learning:plan_day' mission.pk %}" class="btn-white">{% icon "play" "ico ico-sm" %} {% tr "Open today's task" "আজকের কাজ খুলুন" %}</a>
+        {% elif mission.course_lesson %}
+        <a href="{% url 'course:lesson' mission.course_lesson.slug %}" class="btn-white">{% icon "play" "ico ico-sm" %} {% tr "Start lesson" "পাঠ শুরু" %}</a>
+        <a href="{% url 'course:selftest' mission.course_lesson.slug %}" class="btn-glass">{% icon "test" "ico ico-sm" %} {% tr "Self-test" "সেলফ-টেস্ট" %}</a>
+        {% else %}
+        <a href="{% url 'learning:lesson' mission.lesson.pk %}#watch" class="btn-white">{% icon "play" "ico ico-sm" %} {% tr "Watch the video" "ভিডিও দেখুন" %}</a>
+        <a href="{% url 'learning:lesson' mission.lesson.pk %}" class="btn-glass">{% tr "Open lesson" "পাঠ খুলুন" %}</a>
+        {% endif %}
       </div>
     </div>
   {% else %}
-    <h2 class="font-display text-2xl font-bold sm:text-3xl">All plan lessons done! 🎉</h2>
+    <h2 class="font-display text-2xl font-bold sm:text-3xl">{% tr "Every lesson in your plan is done. Well done!" "প্ল্যানের সব পাঠ শেষ। খুব ভালো!" %}</h2>
     <p class="mt-1 text-sm text-violet-100">Make a new plan for the next level.</p>
     <div class="mt-4"><a href="{% url 'learning:plan_new' %}" class="btn-white">New plan →</a></div>
   {% endif %}
@@ -47,10 +58,57 @@
 
 <!-- Stats -->
 <div class="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-  <div class="stat"><p class="text-xl">⚡</p><p class="stat-num">{{ xp }}</p><p class="stat-label">Total XP</p></div>
-  <div class="stat"><p class="text-xl">📅</p><p class="stat-num">{{ week_xp }}</p><p class="stat-label">XP this week</p></div>
-  <div class="stat"><p class="text-xl">⭐</p><p class="stat-num">{{ stars }}</p><p class="stat-label">Stars</p></div>
-  <div class="stat"><p class="text-xl">📚</p><p class="stat-num">{{ done_count }}</p><p class="stat-label">Lessons done</p></div>
+  <div class="stat"><span class="icon-tile is-warm">{% icon "bolt" %}</span><p class="stat-num">{{ xp }}</p><p class="stat-label">Total XP</p></div>
+  <div class="stat"><span class="icon-tile">{% icon "calendar" %}</span><p class="stat-num">{{ week_xp }}</p><p class="stat-label">XP this week</p></div>
+  <div class="stat"><span class="icon-tile is-warm">{% icon "star" %}</span><p class="stat-num">{{ stars }}</p><p class="stat-label">Stars</p></div>
+  <div class="stat"><span class="icon-tile is-sky">{% icon "library" %}</span><p class="stat-num">{{ done_count }}</p><p class="stat-label">Lessons done</p></div>
+</div>
+
+<!-- Skill levels, consistency, goals, tip -->
+<div class="mt-5 grid gap-4 lg:grid-cols-3">
+  <section class="card p-5 lg:col-span-2">
+    <div class="flex items-center gap-2"><h3 class="font-extrabold text-stone-900"><span class="mr-1.5 text-brand-600">{% icon "chart" "ico" %}</span>{% tr "Your level by skill" "দক্ষতা অনুযায়ী লেভেল" %}</h3>
+      <span class="ml-auto text-xs text-stone-500">{% if measured %}{% tr "measured" "মাপা হয়েছে" %} {{ measured|date:"j M Y" }}{% else %}{% tr "not measured yet" "এখনো মাপা হয়নি" %}{% endif %}</span></div>
+    <div class="mt-3 grid gap-3 sm:grid-cols-5">
+      {% for s in skill_levels %}<a href="{% url 'course:skill' s.skill %}" class="band-{{ s.band }} rounded-xl bg-stone-50 p-3 hover:bg-white hover:ring-2 hover:ring-brand-200"><p class="text-lg">{{ s.emoji }}</p><p class="text-sm font-extrabold">{{ s.skill|title }}</p><p class="font-display text-2xl font-bold">{{ s.level }}<span class="text-sm text-stone-400">/8</span></p><div class="band-bar"><span style="width: {{ s.percent }}%"></span></div></a>{% endfor %}
+    </div>
+    <div class="mt-4 flex items-center gap-3"><p class="shrink-0 text-xs font-bold text-stone-500">{% tr "Last 14 days" "গত ১৪ দিন" %} · {{ strip_on }}/14</p><div class="strip flex-1">{% for d in strip %}<span class="{% if d.on %}on{% endif %}" title="{{ d.date|date:'D j M' }}"></span>{% endfor %}</div></div>
+    <div class="mt-3 flex flex-wrap gap-2 text-sm"><a href="{% url 'course:level_test' %}" class="chip">{% icon "test" "ico ico-sm" %} {% if smart %}{% tr "Retake level test" "আবার লেভেল টেস্ট" %}{% else %}{% tr "Take the level test" "লেভেল টেস্ট দিন" %}{% endif %}</a><a href="{% url 'course:home' %}" class="chip">{% icon "compass" "ico ico-sm" %} {% tr "My course" "আমার কোর্স" %}</a><a href="{% url 'course:weak_spots' %}" class="chip">{% icon "target" "ico ico-sm" %} {% tr "Weak spots" "দুর্বল দিক" %}</a></div>
+  </section>
+  <section class="space-y-4">
+    <div class="card p-5">
+      <div class="flex items-center"><h3 class="font-extrabold"><span class="mr-1.5 text-brand-600">{% icon "target" "ico" %}</span>{% tr "Today's goals" "আজকের লক্ষ্য" %}</h3><a class="ml-auto text-xs font-bold text-brand-600" href="{% url 'growth:streaks' %}">{% tr "Edit" "বদলান" %}</a></div>
+      <div class="mt-2 space-y-2">{% for g in goals %}<div><div class="flex justify-between text-xs font-bold"><span>{{ g.icon }} {% if lang == "bn" %}{{ g.label_bn }}{% else %}{{ g.label }}{% endif %}</span><span>{% if g.done %}✅{% else %}{{ g.now }}/{{ g.target }}{% endif %}</span></div><div class="band-bar mt-1"><span style="width: {{ g.percent }}%; background: #2b6f4f"></span></div></div>{% endfor %}</div>
+    </div>
+    {% if talk_today %}
+    <div class="card p-5">
+      <div class="flex items-center"><h3 class="font-extrabold"><span class="mr-1.5 text-brand-600">{% icon "family" "ico" %}</span>{% tr "Today's family talk" "আজকের পারিবারিক কথা" %}</h3><a class="ml-auto text-xs font-bold text-brand-600" href="{% url 'learning:talk_hub' %}?tab=person&who={{ talk_today.card.key }}">{% tr "More" "আরও" %} →</a></div>
+      <p class="mt-1 text-xs text-stone-500">{% tr "Me" "আমি" %} &amp; {{ talk_today.card.name }} {{ talk_today.card.emoji }} · {{ talk_today.lesson.title }}</p>
+      <p class="mt-2 rounded-xl bg-violet-50 px-3 py-2 font-bold"><button type="button" class="mr-1" data-say="{{ talk_today.card.me }}">▶</button>🧒 {{ talk_today.card.me }}</p>
+      <p class="mt-1 ml-4 rounded-xl bg-amber-50 px-3 py-2 font-bold"><button type="button" class="mr-1" data-say="{{ talk_today.card.them }}">▶</button>{{ talk_today.card.emoji }} {{ talk_today.card.them }}</p>
+      <p class="mt-1 font-bn text-xs text-stone-500">{{ talk_today.card.me_bn }} — {{ talk_today.card.them_bn }}</p>
+      {% if talk_today.said %}<p class="mt-2 text-sm font-bold text-emerald-700">✅ {% tr "Done today. Well done!" "আজ বলা হয়েছে। সাবাশ!" %}</p>
+      {% else %}<form method="post" action="{% url 'learning:talk_said' talk_today.lesson.pk talk_today.card.key %}" class="mt-2">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn-primary w-full !py-2 text-sm">✅ {% tr "We said it together" "আমরা একসাথে বলেছি" %} · +5 XP</button></form>{% endif %}
+    </div>
+    {% endif %}
+    <div class="card grad-soft p-5">
+      <p class="text-xs font-extrabold uppercase tracking-wide text-violet-700">{% tr "Tip of the day" "আজকের টিপ" %}</p>
+      {% if tip.focus %}<p class="mt-1 text-sm font-bold">{% tr "Focus" "মনোযোগ" %}: {{ tip.focus }}</p>{% endif %}
+      <p class="prose-bn mt-1 text-sm">{{ tip.text }}</p>
+    </div>
+  </section>
+</div>
+
+<!-- Practice tools -->
+<div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+  <a href="{% url 'course:home' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "compass" %}</span><p class="mt-1 text-sm font-extrabold">{% tr "My course" "আমার কোর্স" %}</p><p class="text-xs text-stone-500">{% tr "Easy → Advanced" "সহজ → উচ্চতর" %}</p></a>
+  <a href="{% url 'practice:typing' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile is-sky">{% icon "keyboard" %}</span><p class="mt-1 text-sm font-extrabold">{% tr "Typing" "টাইপিং" %}</p><p class="text-xs text-stone-500">{% tr "Words per minute" "মিনিটে শব্দ" %}</p></a>
+  <a href="{% url 'practice:words' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile is-warm">{% icon "cards" %}</span><p class="mt-1 text-sm font-extrabold">{% tr "Word weeks" "সাপ্তাহিক শব্দ" %}</p><p class="text-xs text-stone-500">{% if nav.due_cards %}{{ nav.due_cards }} due today{% else %}Learn new words{% endif %}</p></a>
+  <a href="{% url 'practice:speaking' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile is-rose">{% icon "mic" %}</span><p class="mt-1 text-sm font-extrabold">Speaking</p><p class="text-xs text-stone-500">Say it, see the score</p></a>
+  <a href="{% url 'practice:tutor' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "chat" %}</span><p class="mt-1 text-sm font-extrabold">Ask Tuntuni</p><p class="text-xs text-stone-500">English or Bangla</p></a>
+  <a href="{% url 'practice:writing' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile is-warm">{% icon "pen" %}</span><p class="mt-1 text-sm font-extrabold">Writing helper</p><p class="text-xs text-stone-500">Corrected, with reasons</p></a>
+  <a href="{% url 'practice:dictation' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile is-sky">{% icon "headphones" %}</span><p class="mt-1 text-sm font-extrabold">Dictation</p><p class="text-xs text-stone-500">Hear and spell</p></a>
+  <a href="{% url 'practice:checks' %}" class="card p-4 text-center hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "check" %}</span><p class="mt-1 text-sm font-extrabold">Level checks</p><p class="text-xs text-stone-500">Test one skill</p></a>
 </div>
 
 <div class="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
@@ -116,19 +174,12 @@
       <ul class="mt-3 space-y-1">
         {% for d in week %}
         <li>
-          {% if d.kind == "lesson" %}
-          <a href="{% url 'learning:lesson' d.lesson.pk %}" class="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-stone-50">
+          <a href="{% url 'learning:plan_day' d.pk %}" class="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-stone-50">
             <span class="w-16 shrink-0 text-xs font-bold text-stone-500">{{ d.date|date:"D j M" }}</span>
-            <span class="truncate font-semibold">{{ d.lesson.title }}</span>
-            <span class="ml-auto shrink-0">{% if d.status == "done" %}✅{% else %}▶{% endif %}</span>
+            <span class="text-stone-400">{% if d.kind == "review" %}{% icon "repeat" "ico ico-sm" %}{% elif d.kind == "family" %}{% icon "family" "ico ico-sm" %}{% elif d.topic %}{% icon "chat" "ico ico-sm" %}{% elif d.deck %}{% icon "cards" "ico ico-sm" %}{% else %}{% icon "book" "ico ico-sm" %}{% endif %}</span>
+            <span class="truncate font-semibold">{% if d.item %}{{ d.title }}{% elif d.kind == "review" %}{% tr "Review day" "রিভিউ দিন" %}{% else %}{% tr "Family English day" "পরিবারের ইংরেজি দিন" %}{% endif %}</span>
+            <span class="ml-auto shrink-0 text-brand-600">{% if d.status == "done" %}{% icon "check-circle" "ico ico-sm" %}{% else %}{% icon "arrow" "ico ico-sm" %}{% endif %}</span>
           </a>
-          {% else %}
-          <div class="flex items-center gap-3 px-2 py-2 text-sm">
-            <span class="w-16 shrink-0 text-xs font-bold text-stone-500">{{ d.date|date:"D j M" }}</span>
-            <span>{% if d.kind == "review" %}🔁 Review day{% else %}🏠 Family English day{% endif %}</span>
-            {% if d.status == "done" %}<span class="ml-auto">✅</span>{% endif %}
-          </div>
-          {% endif %}
         </li>
         {% empty %}<li class="py-2 text-sm text-stone-500">Nothing planned.</li>{% endfor %}
       </ul>
@@ -137,8 +188,8 @@
 
     <section class="card p-5">
       <div class="flex items-center justify-between">
-        <h3 class="font-extrabold text-stone-900">🏆 Family this week</h3>
-        <a href="{% url 'learning:progress' %}#leaderboard" class="text-sm font-bold text-brand-600">All →</a>
+        <h3 class="font-extrabold text-stone-900"><span class="mr-1.5 text-brand-600">{% icon "trophy" "ico" %}</span>Family this week</h3>
+        <a href="{% url 'growth:leaderboard' %}?tab=family" class="text-sm font-bold text-brand-600">All →</a>
       </div>
       <ol class="mt-3 space-y-2">
         {% for r in board %}
@@ -154,8 +205,11 @@
     </section>
 
     <section class="grid gap-3">
-      <a href="{% url 'learning:placement_start' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="text-2xl">🧩</span><span><span class="block text-sm font-extrabold">Re-take the test</span><span class="text-xs text-stone-500">Every 4 weeks is a good rhythm</span></span></a>
-      <a href="{% url 'learning:plan_new' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="text-2xl">🗓️</span><span><span class="block text-sm font-extrabold">Change the plan</span><span class="text-xs text-stone-500">Finished lessons are kept</span></span></a>
+      <a href="{% url 'practice:checks' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "check" %}</span><span><span class="block text-sm font-extrabold">Monthly level check</span><span class="text-xs text-stone-500">Every 4 weeks is a good rhythm</span></span></a>
+      <a href="{% url 'practice:reports' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "chart" %}</span><span><span class="block text-sm font-extrabold">My reports</span><span class="text-xs text-stone-500">Levels, tests, streaks</span></span></a>
+      <a href="{% url 'learning:plan_new' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "calendar" %}</span><span><span class="block text-sm font-extrabold">Change the plan</span><span class="text-xs text-stone-500">Finished lessons are kept</span></span></a>
+      <a href="{% url 'growth:whats_new' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "bell" %}</span><span><span class="block text-sm font-extrabold">{% tr "What's new" "নতুন কী" %}</span><span class="text-xs text-stone-500">{% tr "Full courses, new prices, a warmer look" "পুরো কোর্স, নতুন দাম, নতুন চেহারা" %}</span></span></a>
+      <a href="{% url 'growth:ideas' %}" class="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand-200"><span class="icon-tile">{% icon "bulb" %}</span><span><span class="block text-sm font-extrabold">{% tr "Suggest a feature" "ফিচার প্রস্তাব" %}</span><span class="text-xs text-stone-500">{% tr "Vote for what we build next" "পরের ফিচারে ভোট দিন" %}</span></span></a>
     </section>
   </aside>
 </div>

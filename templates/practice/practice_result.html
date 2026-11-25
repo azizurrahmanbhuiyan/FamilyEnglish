@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ name }} practice result{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <div class="text-center">
+    <p class="pop text-6xl">{% if right == total %}🏆{% elif right >= 7 %}🎉{% else %}💪{% endif %}</p>
+    <h1 class="mt-2 font-display text-4xl font-bold">{{ right }} of {{ total }} right</h1>
+    <p class="text-stone-600">{{ name }} practice</p>
+  </div>
+  <div class="mt-6 space-y-3">
+    {% for r in results %}
+    <div class="card flex items-start gap-3 p-4">
+      <span class="text-2xl">{% if r.ok %}✅{% else %}❌{% endif %}</span>
+      <div>
+        <p class="font-semibold">{% if r.item.lesson.activity == "sound_tap" %}Word: {{ r.item.prompt }}{% else %}{{ r.item.prompt }}{% endif %}</p>
+        {% if not r.ok %}<p class="text-sm text-red-700">Your answer: {{ r.given|default:"—" }}</p>{% endif %}
+        <p class="text-sm text-emerald-700">Right answer: {{ r.item.answer }}</p>
+        <a href="{% url 'learning:lesson' r.item.lesson.pk %}" class="text-xs font-bold text-brand-600">From lesson: {{ r.item.lesson.title }} →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mt-6 flex flex-wrap justify-center gap-3">
+    <a href="{% url 'practice:skill_practice' skill %}" class="btn-primary">Another 10</a>
+    <a href="{% url 'practice:checks' %}" class="btn-ghost">Back</a>
+  </div>
+</div>
+{% endblock %}

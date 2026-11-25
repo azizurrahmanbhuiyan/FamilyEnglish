@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Role-play{% endblock %}{% block page_title %}{% tr "Role-play" "রোল-প্লে" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <a href="{% url 'talk:home' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Talk" "কথা বলুন" %}</a>
+  <h1 class="mt-4 text-3xl font-extrabold">{% tr "Practise real situations" "বাস্তব পরিস্থিতি অনুশীলন" %}</h1>
+  <p class="s-sub">{% tr "Your tutor plays the other person. Speak or type your answers." "টিউটর অন্য মানুষটির ভূমিকা নেবে। আপনি বলে বা লিখে উত্তর দিন।" %}</p>
+  <nav class="s-tabs mt-4">
+    <a href="?t=foryou" class="{% if tab == 'foryou' and not cat %}is-on{% endif %}">{% tr "For you" "আপনার জন্য" %}</a>
+    <a href="?t=popular" class="{% if tab == 'popular' %}is-on{% endif %}">{% tr "Popular" "জনপ্রিয়" %}</a>
+    {% for k, en, bn in categories %}<a href="?t=cat&c={{ k }}" class="{% if cat == k %}is-on{% endif %}">{% tr en bn %}</a>{% endfor %}
+  </nav>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2">{% for r in items %}{% include "talk/_rp_card.html" %}{% endfor %}</div>
+
+  <section class="s-card is-pad mt-8" id="custom">
+    <h2 class="s-h2">✨ {% tr "Create your own role-play" "নিজের রোল-প্লে তৈরি করুন" %}</h2>
+    {% if paid and ai_on %}
+    <p class="s-muted mt-1">{% tr "Describe any situation you want to practise, and who your tutor should be." "যে পরিস্থিতি অনুশীলন করতে চান আর টিউটর কে হবে — লিখুন।" %}</p>
+    <form method="post" action="{% url 'talk:go' 'custom' %}" class="mt-3 grid gap-3">{% csrf_token %}
+      <label class="grid gap-1"><span class="font-bold">{% tr "The situation" "পরিস্থিতি" %}</span>
+        <input name="setting" maxlength="280" required class="t-input" placeholder="e.g. Asking my landlord to fix a leaking tap"></label>
+      <label class="grid gap-1"><span class="font-bold">{% tr "Your tutor plays…" "টিউটর হবে…" %}</span>
+        <input name="persona" maxlength="180" required class="t-input" placeholder="e.g. a busy but friendly landlord"></label>
+      <button class="s-btn">{% tr "Start" "শুরু করুন" %}</button>
+    </form>
+    {% elif not ai_on %}<p class="s-muted mt-1">{% tr "This needs AI, which is not switched on yet." "এর জন্য এআই দরকার, যা এখনও চালু হয়নি।" %}</p>
+    {% else %}<p class="s-muted mt-1">{% tr "Part of the family plan." "ফ্যামিলি প্ল্যানের অংশ।" %} <a class="font-bold text-sky-300" href="{% url 'core:pay' %}">{% tr "Unlock" "খুলুন" %}</a></p>{% endif %}
+  </section>
+</div>
+{% endblock %}

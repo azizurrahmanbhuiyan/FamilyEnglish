@@ -1,0 +1,107 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Word dictation{% endblock %}
+{% block content %}
+<p class="eyebrow">Listening · spelling</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "headphones" "ico" %}</span>Word dictation</h1>
+<p class="mt-1 text-stone-600">Hear a word, type exactly what you hear, and learn its meaning.</p>
+<p class="font-bn text-sm text-stone-500">শুনুন, বানান করে লিখুন, অর্থ শিখুন।</p>
+
+<form method="get" class="mt-6 card p-5">
+  <div class="flex flex-wrap gap-2">
+    <label><input type="radio" class="sr-only" name="mode" value="practice" {% if mode == "practice" %}checked{% endif %}><span class="choice block !py-2">Practice · 10 words</span></label>
+    <label><input type="radio" class="sr-only" name="mode" value="test" {% if mode == "test" %}checked{% endif %}><span class="choice block !py-2">20-mark test · each word plays twice</span></label>
+  </div>
+  <p class="mt-4 font-extrabold">Choose a level</p>
+  <div class="mt-2 grid gap-3 sm:grid-cols-4">
+    <label><input type="radio" class="sr-only" name="level" value="easy" {% if level_name == "easy" %}checked{% endif %}><span class="choice block text-left"><span class="block">Easy</span><span class="text-sm font-normal text-stone-500">Short phonics words (sun, cat, ship)</span></span></label>
+    <label><input type="radio" class="sr-only" name="level" value="medium" {% if level_name == "medium" %}checked{% endif %}><span class="choice block text-left"><span class="block">Medium</span><span class="text-sm font-normal text-stone-500">Blends, long vowels, everyday words</span></span></label>
+    <label><input type="radio" class="sr-only" name="level" value="hard" {% if level_name == "hard" %}checked{% endif %}><span class="choice block text-left"><span class="block">Hard</span><span class="text-sm font-normal text-stone-500">Longer words with tricky spelling</span></span></label>
+    <label><input type="radio" class="sr-only" name="level" value="mixed" {% if level_name == "mixed" %}checked{% endif %}><span class="choice block text-left"><span class="block">Mixed</span><span class="text-sm font-normal text-stone-500">Easy, medium and hard together</span></span></label>
+  </div>
+  <button class="btn-primary mt-4">▶ Start</button>
+  {% if best %}<span class="ml-3 text-sm text-stone-500">Best so far: {{ best.score }}/{{ best.total }} ({{ best.detail }})</span>{% endif %}
+</form>
+
+{% if started %}
+<section id="game" class="mt-6 card p-6">
+  <div class="flex items-center justify-between text-sm font-bold text-stone-500">
+    <span id="counter"></span><span id="tally"></span>
+  </div>
+  <div class="mt-4 flex items-center gap-4">
+    <button type="button" id="play" class="speak-btn !h-16 !w-16 !text-2xl" aria-label="Play the word">▶</button>
+    <form id="answer-form" class="flex flex-1 gap-2">
+      <input id="answer" class="w-full rounded-xl border border-stone-300 px-4 py-3 text-xl" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the word">
+      <button class="btn-ghost">Check</button>
+    </form>
+  </div>
+  <p id="feedback" class="mt-3 min-h-[1.5rem] text-lg"></p>
+  <button type="button" id="next" class="btn-primary mt-2 hidden">Next word →</button>
+</section>
+<form id="save" method="post" action="{% url 'practice:dictation_save' %}" class="hidden">{% csrf_token %}
+  <input type="hidden" name="score" id="save-score"><input type="hidden" name="total" id="save-total">
+  <input type="hidden" name="level" value="{{ level_name }}"><input type="hidden" name="mode" value="{{ mode }}">
+</form>
+<section id="done" class="mt-6 card hidden p-6 text-center">
+  <p class="text-5xl">🏁</p><p id="done-text" class="mt-2 font-display text-3xl font-bold"></p>
+  <ul id="review" class="mx-auto mt-4 max-w-md space-y-1 text-left text-sm"></ul>
+  <button type="button" id="save-btn" class="btn-primary mt-5">Save my score</button>
+</section>
+{{ words|json_script:"words" }}
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if started %}
+<script>
+(function () {
+  const words = JSON.parse(document.getElementById("words").textContent);
+  const TEST = "{{ mode }}" === "test", MAX_PLAYS = 2;
+  let i = 0, right = 0, tries = 0, done = false, plays = 0; const log = [];
+  function play() {
+    if (TEST && plays >= MAX_PLAYS) { $("feedback").textContent = "In the test each word can be played only twice."; return; }
+    plays += 1; window.feSay && window.feSay(words[i].word, 0.7);
+    if (TEST) $("play").title = `${MAX_PLAYS - plays} play(s) left`;
+  }
+  const $ = id => document.getElementById(id);
+  function norm(s) { return (s || "").trim().toLowerCase(); }
+  function show() {
+    tries = 0; done = false; plays = 0;
+    $("counter").textContent = `Word ${i + 1} of ${words.length}`;
+    $("tally").textContent = `✅ ${right}`;
+    $("answer").value = ""; $("answer").focus(); $("feedback").textContent = "";
+    $("next").classList.add("hidden");
+    setTimeout(play, 300);
+  }
+  $("play").onclick = play;
+  $("answer-form").onsubmit = e => {
+    e.preventDefault(); if (done) return; tries += 1;
+    const w = words[i];
+    if (norm($("answer").value) === w.word) {
+      if (tries === 1) right += 1;
+      done = true; log.push([w, true]);
+      $("feedback").textContent = `✔ ${w.emoji || ""} ${w.word} — ${w.bn || ""}`;
+      $("next").classList.remove("hidden");
+    } else if (tries >= 2 || TEST) {
+      done = true; log.push([w, false]);
+      $("feedback").textContent = `The word is “${w.word}” ${w.emoji || ""} — ${w.bn || ""}`;
+      $("next").classList.remove("hidden");
+    } else {
+      $("feedback").textContent = "Not quite — listen again and try once more.";
+    }
+    $("tally").textContent = `✅ ${right}`;
+  };
+  $("next").onclick = () => {
+    i += 1;
+    if (i < words.length) return show();
+    $("game").classList.add("hidden"); $("done").classList.remove("hidden");
+    $("done-text").textContent = `${right} of ${words.length} right first time`;
+    $("review").innerHTML = "";
+    log.forEach(([w, ok]) => { const li = document.createElement("li"); li.textContent = `${ok ? "✅" : "❌"} ${w.word} — ${w.bn || ""}`; $("review").appendChild(li); });
+    $("save-score").value = right; $("save-total").value = words.length;
+  };
+  $("save-btn").onclick = () => $("save").submit();
+  if (words.length) show(); else $("feedback").textContent = "No words at this level yet.";
+})();
+</script>
+{% endif %}
+{% endblock %}

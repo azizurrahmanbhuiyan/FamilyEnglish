@@ -1,45 +1,30 @@
-{% extends "base.html" %}
-{% block title %}Pricing{% endblock %}
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Pricing" "মূল্য" %}{% endblock %}
 {% block content %}
-<div class="text-center">
-  <h1 class="font-display text-4xl font-bold">One plan for the whole family</h1>
-  <p class="mt-2 text-stone-600">Up to 5 learners. Any adult — parent, grandparent or elder — can buy it for everyone.</p>
+<div class="mx-auto max-w-2xl text-center">
+  <h1 class="font-display text-4xl font-semibold">{% tr "Start phonics free. One plan covers the whole family." "ফনিক্স ফ্রিতে শুরু করুন। এক প্ল্যানে পুরো পরিবার।" %}</h1>
+  <p class="mt-3 text-stone-600">{% if usd %}{% tr "Any adult — a parent, grandparent or elder — pays once by card, and up to 6 people learn. Prices in US dollars." "যেকোনো বড় সদস্য একবার কার্ডে পেমেন্ট করলে ৬ জন পর্যন্ত শিখতে পারে। দাম মার্কিন ডলারে।" %}{% else %}{% tr "Any adult — a parent, grandparent or elder — pays once with bKash, Nagad or a card, and up to 6 people learn." "যেকোনো বড় সদস্য — বাবা-মা, দাদা-দাদি — একবার বিকাশ, নগদ বা কার্ডে পেমেন্ট করলে ৬ জন পর্যন্ত শিখতে পারে।" %}{% endif %}</p>
 </div>
-<div class="mt-10 grid gap-5 md:grid-cols-4">
-  <div class="card p-6">
-    <p class="font-bold">Free</p>
-    <p class="mt-2 font-display text-4xl font-bold">৳0</p>
-    <ul class="mt-4 space-y-2 text-sm text-stone-600">
-      <li>✔ Placement test for everyone</li>
-      <li>✔ 14 days of full access</li>
-      <li>✔ Then the first module of every level</li>
-    </ul>
-    <a href="{% url 'core:signup' %}" class="btn-ghost mt-6 w-full">Start free</a>
-  </div>
-  <div class="card p-6 ring-2 ring-brand-500">
-    <p class="font-bold text-brand-600">Family Monthly</p>
-    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.monthly }}<span class="text-base font-normal text-stone-500">/month</span></p>
-    <ul class="mt-4 space-y-2 text-sm text-stone-600">
-      <li>✔ All levels, plans and notes</li>
-      <li>✔ Up to 5 learner profiles</li>
-      <li>✔ Parent dashboard</li>
-    </ul>
-    <a href="{% url 'core:pay' %}?plan=monthly" class="btn-primary mt-6 w-full">Choose</a>
-  </div>
-  <div class="card p-6">
-    <p class="font-bold">Family 6 months</p>
-    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.half_year }}</p>
-    <p class="text-sm text-stone-500">≈ ৳167 a month</p>
-    <ul class="mt-4 space-y-2 text-sm text-stone-600"><li>✔ Everything in Monthly</li><li>✔ Pay once</li></ul>
-    <a href="{% url 'core:pay' %}?plan=half_year" class="btn-ghost mt-6 w-full">Choose</a>
-  </div>
-  <div class="card p-6">
-    <p class="font-bold">Family 12 months</p>
-    <p class="mt-2 font-display text-4xl font-bold">৳{{ prices.year }}</p>
-    <p class="text-sm text-stone-500">≈ ৳150 a month</p>
-    <ul class="mt-4 space-y-2 text-sm text-stone-600"><li>✔ Everything in Monthly</li><li>✔ Best value</li></ul>
-    <a href="{% url 'core:pay' %}?plan=year" class="btn-ghost mt-6 w-full">Choose</a>
-  </div>
+{% if free_here %}
+<div class="card mx-auto mt-8 max-w-2xl p-6 text-center">
+  <p class="text-4xl">🌍</p>
+  <h2 class="mt-2 font-display text-2xl font-semibold">{% tr "Free in your country for now" "আপনার দেশে এখন ফ্রি" %}</h2>
+  <p class="mt-2 text-stone-600">{% tr "Families outside Bangladesh can use every lesson, coach and short video without paying. Just create your family account." "বাংলাদেশের বাইরের পরিবার কোনো পেমেন্ট ছাড়াই সব পাঠ, কোচ ও শর্ট ভিডিও ব্যবহার করতে পারে। শুধু পরিবার অ্যাকাউন্ট খুলুন।" %}</p>
+  <a class="btn btn-primary mt-4" href="{% url 'core:signup' %}">{% tr "Start free" "ফ্রি শুরু করুন" %}</a>
 </div>
-<p class="mt-8 text-center text-sm text-stone-500">Schools and NGOs: ask about class plans. Families who cannot pay can apply for a free seat through their school or a community organisation.</p>
+{% else %}
+<div class="mt-10">{% include "core/_plans.html" %}</div>
+{% endif %}
+<section class="card mt-10 p-6">
+  <h2 class="font-display text-2xl font-semibold">{% tr "How long it takes to speak with confidence" "আত্মবিশ্বাসের সাথে বলতে কত সময় লাগে" %}</h2>
+  <div class="mt-4 grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
+    <div><span class="icon-tile is-warm">{% icon "seed" %}</span><p class="mt-2 font-bold">{% tr "Young children" "ছোট শিশু" %}</p><p class="track-years mt-1">{% tr "3 years" "৩ বছর" %}</p></div>
+    <div><span class="icon-tile is-sky">{% icon "school" %}</span><p class="mt-2 font-bold">{% tr "School students" "স্কুল শিক্ষার্থী" %}</p><p class="track-years mt-1">{% tr "2 years" "২ বছর" %}</p></div>
+    <div><span class="icon-tile is-sky">{% icon "test" %}</span><p class="mt-2 font-bold">{% tr "IELTS preparation" "IELTS প্রস্তুতি" %}</p><p class="track-years mt-1">{% tr "3–12 months" "৩–১২ মাস" %}</p><p class="text-xs text-stone-500">{% tr "by your level test" "লেভেল টেস্ট অনুযায়ী" %}</p></div>
+    <div><span class="icon-tile">{% icon "user" %}</span><p class="mt-2 font-bold">{% tr "Parents who studied" "পড়াশোনা করা অভিভাবক" %}</p><p class="track-years mt-1">{% tr "1 year" "১ বছর" %}</p></div>
+    <div><span class="icon-tile is-rose">{% icon "grandparent" %}</span><p class="mt-2 font-bold">{% tr "Grandparents, adults who studied little" "দাদা-দাদি ও কম পড়াশোনা করা বড়রা" %}</p><p class="track-years mt-1">{% tr "3 years" "৩ বছর" %}</p></div>
+  </div>
+  <p class="mt-4 text-sm text-stone-500">{% tr "20 minutes a day, 5 days a week, with a family day on Friday." "দিনে ২০ মিনিট, সপ্তাহে ৫ দিন, আর শুক্রবার পরিবারের দিন।" %}</p>
+</section>
+<p class="mt-8 text-center text-sm text-stone-500">{% tr "Schools and NGOs: ask about class plans. Families who cannot pay can apply for a free seat through their school or a community organisation." "স্কুল ও এনজিও: ক্লাস প্ল্যানের জন্য যোগাযোগ করুন। যে পরিবার পেমেন্ট করতে পারে না, তারা স্কুল বা সংগঠনের মাধ্যমে ফ্রি সিটের আবেদন করতে পারে।" %}</p>
 {% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load fe_ui static %}
+{% block title %}Talk at home{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Everyday English for the whole family" "পুরো পরিবারের দৈনন্দিন ইংরেজি" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "family" "ico" %}</span>{% tr "Talk at home" "বাসায় কথা বলি" %}</h1>
+<p class="mt-1 max-w-3xl text-stone-600">{% tr "Short talks with Sister, Brother, Mamma, Daddy, Grandma and Grandpa. Say one at the right moment every day — and English becomes part of family life." "বোন, ভাই, আম্মু, আব্বু, দাদি ও দাদার সাথে ছোট ছোট কথা। প্রতিদিন ঠিক মুহূর্তে একটা বলুন — ইংরেজি হয়ে উঠবে পরিবারের অভ্যাস।" %}</p>
+
+<nav class="mt-5 flex flex-wrap gap-2">
+  {% for key, emoji, en, bn in tabs %}<a class="chip {% if key == tab %}is-on{% endif %}" href="?tab={{ key }}">{{ emoji }} {% if lang == "bn" %}{{ bn }}{% else %}{{ en }}{% endif %}</a>{% endfor %}
+</nav>
+
+{% if tab != "person" %}
+<div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {% for t in topics %}
+  <a href="{% url 'learning:talk_topic' t.slug %}" class="card block p-5 hover:ring-2 hover:ring-brand-200">
+    <div class="flex items-start gap-3">
+      <span class="text-4xl">{{ t.emoji }}</span>
+      <div class="min-w-0 flex-1"><p class="font-display text-lg font-bold leading-tight">{{ t.title }}</p><p class="font-bn text-sm text-stone-500">{{ t.title_bn }}</p></div>
+    </div>
+    <p class="mt-2 text-2xl tracking-wide">{% for w in t.words|slice:":6" %}{{ w.emoji }}{% endfor %}</p>
+    <div class="mt-3 flex items-center gap-2 text-xs font-bold text-stone-500"><span>{{ t.words|length }} {% tr "words" "শব্দ" %} · 6 {% tr "talks" "কথোপকথন" %}</span><span class="ml-auto {% if t.done == 6 %}text-emerald-700{% endif %}">{% if t.done == 6 %}✅ {% endif %}{{ t.done }}/6</span></div>
+    <div class="band-bar mt-1"><span style="width: {% widthratio t.done 6 100 %}%; background: #10b981"></span></div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<nav class="mt-4 flex flex-wrap gap-2">
+  {% for key, name, bn, emoji in members %}<a class="chip {% if key == who %}is-on{% endif %}" href="?tab=person&who={{ key }}&level={{ level }}">{{ emoji }} {% tr "Me" "আমি" %} &amp; {{ name }}</a>{% endfor %}
+</nav>
+<nav class="mt-3 flex flex-wrap items-center gap-1 text-sm">
+  <span class="mr-1 font-bold text-stone-500">{% tr "Kids' lesson level" "শিশুদের পাঠের লেভেল" %}:</span>
+  {% for n in levels %}<a class="grid h-8 w-8 place-items-center rounded-full font-extrabold {% if n == level %}bg-brand-600 text-white{% else %}bg-white ring-1 ring-stone-200 hover:ring-brand-400{% endif %}" href="?tab=person&who={{ who }}&level={{ n }}">{{ n }}</a>{% endfor %}
+  <button type="button" class="btn-ghost ml-auto !py-1.5 text-sm" data-toggle-bn>🇧🇩 {% tr "Hide / show Bangla" "বাংলা লুকান / দেখান" %}</button>
+</nav>
+<div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  {% for r in rows %}
+  <div>
+    <a href="{% url 'learning:lesson' r.lesson.pk %}#talk" class="mb-1 block truncate text-sm font-bold text-stone-500 hover:text-brand-600">{{ forloop.counter }}. {{ r.lesson.title }}{% if not r.open %} 🔒{% endif %}</a>
+    {% if r.said %}{% with c=r.card said=r.card.key lesson_pk=r.lesson.pk next_url=request.get_full_path %}{% include "learning/_talk_card.html" %}{% endwith %}
+    {% else %}{% with c=r.card said="" lesson_pk=r.lesson.pk next_url=request.get_full_path %}{% include "learning/_talk_card.html" %}{% endwith %}{% endif %}
+  </div>
+  {% empty %}<p class="text-stone-500">{% tr "No talks at this level yet." "এই লেভেলে এখনো কিছু নেই।" %}</p>{% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/family-talk.js' %}"></script>{% endblock %}

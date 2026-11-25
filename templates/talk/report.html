@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% load fe_ui static %}
+{% block title %}Lesson report{% endblock %}{% block page_title %}{% tr "Lesson report" "পাঠের রিপোর্ট" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl grid gap-4">
+  <a href="{% url 'talk:home' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Talk" "কথা বলুন" %}</a>
+  <div><p class="s-eyebrow">{{ s.created_at|date:"d M Y" }}</p><h1 class="text-3xl font-extrabold">{{ s.title }}</h1></div>
+
+  <section class="t-stats">
+    <div class="t-stat"><b>{{ r.new_words|length }}</b><span>{% tr "new words used" "নতুন শব্দ ব্যবহার" %}</span></div>
+    <div class="t-stat"><b>{{ r.vocab_total }}</b><span>{% tr "words in your talks so far" "এ পর্যন্ত আপনার শব্দ" %}</span></div>
+    <div class="t-stat"><b>{{ r.words }}</b><span>{% tr "words spoken" "বলা শব্দ" %}</span></div>
+  </section>
+
+  {% if r.new_words %}<section class="s-card is-pad"><h2 class="s-h2">{% tr "New words you used" "যে নতুন শব্দগুলো বললেন" %}</h2>
+    <div class="flex flex-wrap gap-2 mt-3">{% for w in r.new_words %}<span class="s-pill">{{ w }}</span>{% endfor %}</div></section>{% endif %}
+
+  <section class="s-card is-pad"><h2 class="s-h2">{% tr "How you did" "কেমন করলেন" %}</h2>
+    <div class="grid gap-3 mt-3">
+      {% if r.pronunciation is not None %}<div><div class="flex justify-between"><span>👄 {% tr "Pronunciation" "উচ্চারণ" %}</span><b>{{ r.pronunciation }}%</b></div><div class="s-bar is-thin"><i style="width:{{ r.pronunciation }}%"></i></div></div>{% endif %}
+      <div><div class="flex justify-between"><span>🌊 {% tr "Fluency" "সাবলীলতা" %}</span><b>{{ r.fluency }}%</b></div><div class="s-bar is-thin"><i style="width:{{ r.fluency }}%"></i></div></div>
+      {% if r.grammar is not None %}<div><div class="flex justify-between"><span>🧩 {% tr "Grammar" "ব্যাকরণ" %}</span><b>{{ r.grammar }}%</b></div><div class="s-bar is-thin"><i style="width:{{ r.grammar }}%"></i></div></div>{% endif %}
+    </div>
+    {% if r.best %}<div class="t-best mt-4"><p class="s-eyebrow">⭐ {% tr "Your best answer" "আপনার সেরা উত্তর" %}</p><p class="text-lg">“{{ r.best }}”</p></div>{% endif %}
+  </section>
+
+  <section class="s-card is-light is-pad"><p class="s-eyebrow !text-slate-500">🔑 {% tr "Key takeaway" "মূল শিক্ষা" %}</p>
+    <p class="text-lg font-bold mt-1">{{ r.takeaway }}</p>{% if r.takeaway_bn %}<p class="font-bn mt-1">{{ r.takeaway_bn }}</p>{% endif %}</section>
+
+  {% if r.better %}<h2 class="s-h2 mt-2">{% tr "Better ways to say it" "আরও ভালোভাবে বলার উপায়" %}</h2>
+  {% for b in r.better %}
+  <section class="s-card is-pad t-better">
+    <p class="s-eyebrow">{% tr "You said" "আপনি বলেছিলেন" %}</p><p class="t-you">“{{ b.you }}”</p>
+    <p class="s-eyebrow mt-3">{% tr "Try this" "এভাবে বলুন" %}</p>
+    {% include "talk/_say.html" with text=b.better %}
+    {% if b.tip %}<p class="text-sm mt-2">💡 {{ b.tip }}</p>{% endif %}{% if b.tip_bn %}<p class="text-sm s-muted font-bn">{{ b.tip_bn }}</p>{% endif %}
+    {% if b.alts %}<p class="s-eyebrow mt-3">{% tr "Other ways to say it" "অন্যভাবে বলা যায়" %}</p>
+    {% for alt in b.alts %}{% include "talk/_say.html" with text=alt %}{% endfor %}{% endif %}
+  </section>
+  {% endfor %}
+  {% elif not r.ai %}<p class="s-muted text-sm">{% tr "When AI is on, this report also shows corrections and better ways to say your sentences." "এআই চালু থাকলে রিপোর্টে সংশোধন আর আরও ভালোভাবে বলার উপায়ও দেখাবে।" %}</p>{% endif %}
+
+  <div class="grid gap-3 sm:grid-cols-2 mt-2">
+    {% if again %}<form method="post" action="{{ again }}">{% csrf_token %}<button class="s-btn-ghost w-full">🔁 {% tr "Try it again" "আবার চেষ্টা করুন" %}</button></form>{% endif %}
+    <a class="s-btn" href="{% url 'talk:home' %}">{% tr "Continue" "চালিয়ে যান" %}</a>
+  </div>
+</div>
+{{ cfg|json_script:"t-config" }}
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/talk.js' %}"></script>{% endblock %}

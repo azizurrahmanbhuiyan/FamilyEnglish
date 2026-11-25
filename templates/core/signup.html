@@ -4,6 +4,7 @@
 <div class="mx-auto max-w-md card p-8">
   <h1 class="font-display text-3xl font-bold">Create your family account</h1>
   <p class="mt-1 text-stone-600">Any adult can open it — father, mother, grandparent or elder. You'll add the learners next.</p>
+  {% if inviter %}<p class="mt-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">Invited by {{ inviter.name }} — you get {{ extra_days }} days of the full family plan, free.</p>{% endif %}
   <form method="post" class="mt-6">
     {% include "core/_form.html" %}
     <button class="btn-primary w-full">Create account</button>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Family plan" "ফ্যামিলি প্ল্যান" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl text-center">
+  <span class="icon-tile is-warm">{% icon "lock" "ico ico-lg" %}</span>
+  <h1 class="mt-4 font-display text-3xl font-semibold">{% tr "This part is in the family plan" "এই অংশটি ফ্যামিলি প্ল্যানে আছে" %}</h1>
+  {% if feature_en %}<p class="mt-2 text-lg font-bold text-stone-700">{% tr feature_en feature_bn %}</p>{% endif %}
+  <p class="mt-2 text-stone-600">{% tr "Phonics sounds stay free for everyone. Everything else opens for the whole family from ৳299 a month." "ফনিক্স ধ্বনি সবার জন্য ফ্রি। বাকি সব কিছু পুরো পরিবারের জন্য খুলবে মাসে ৳২৯৯ থেকে।" %}</p>
+  <div class="mt-5 flex flex-wrap justify-center gap-2">
+    {% if user.is_authenticated %}<a href="{% url 'core:pay' %}?plan=year" class="btn-primary">{% tr "Get the family plan" "ফ্যামিলি প্ল্যান নিন" %}</a>
+    <a href="{% url 'learning:library' %}?skill=phonics" class="btn-ghost">{% icon "letters" "ico ico-sm" %} {% tr "Go to free phonics" "ফ্রি ফনিক্সে যান" %}</a>{% endif %}
+  </div>
+</div>
+<div class="mt-10">{% include "core/_plans.html" %}</div>
+{% endblock %}

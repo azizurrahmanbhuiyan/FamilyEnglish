@@ -1,0 +1,61 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Refer & earn{% endblock %}
+{% block content %}
+<p class="eyebrow">Refer & earn</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "gift" "ico" %}</span>Invite a family, get {{ reward_days }} days free</h1>
+<p class="mt-1 max-w-2xl text-stone-600">Share your family's code with relatives and friends. They get <strong>{{ extra_days }} days of the full family plan, free</strong>.
+  When they pay for the first time, <strong>{{ family.name }}</strong> gets <strong>{{ reward_days }} free days</strong>.</p>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
+  <section class="card p-6">
+    <p class="text-sm font-bold text-stone-500">Your family code</p>
+    <p class="mt-1 font-display text-5xl font-bold tracking-widest text-brand-600" id="code">{{ family.referral_code }}</p>
+    <p class="mt-5 text-sm font-bold text-stone-500">Your invite link</p>
+    <div class="mt-1 flex gap-2">
+      <input id="link" readonly value="{{ link }}" class="w-full rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-sm">
+      <button type="button" class="btn-ghost" onclick="navigator.clipboard && navigator.clipboard.writeText(document.getElementById('link').value); this.textContent='Copied ✓'">Copy</button>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <a class="btn-primary !py-2" target="_blank" rel="noopener" href="https://wa.me/?text={{ share_text|urlencode }}">Share on WhatsApp</a>
+      <a class="btn-ghost !py-2" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ link|urlencode }}">Share on Facebook</a>
+    </div>
+    <p class="mt-4 font-bn text-sm text-stone-500">{{ share_text }}</p>
+  </section>
+  <section class="card p-6">
+    <div class="grid grid-cols-2 gap-3">
+      <div class="stat"><p class="stat-num">{{ joined }}</p><p class="stat-label">Families joined</p></div>
+      <div class="stat"><p class="stat-num">{{ rewarded }}</p><p class="stat-label">Rewards earned</p></div>
+    </div>
+    <ul class="mt-4 divide-y divide-stone-100 text-sm">
+      {% for f in invited %}
+      <li class="flex justify-between py-2"><span>{{ f.name|truncatechars:3 }}*** family · {{ f.created_at|date:"j M" }}</span>
+        <span class="font-bold {% if f.referral_rewarded %}text-emerald-700{% else %}text-stone-400{% endif %}">{% if f.referral_rewarded %}+{{ reward_days }} days ✓{% else %}Waiting for first payment{% endif %}</span></li>
+      {% empty %}<li class="py-2 text-stone-500">No one has joined with your code yet.</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+{% if commission %}
+<div class="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr]">
+  <section class="card p-6">
+    <h2 class="font-display text-2xl font-bold">💰 {{ commission }}% commission by bKash</h2>
+    <p class="text-sm text-stone-600">Every time a family you invited pays, you earn {{ commission }}% of the payment. It can be withdrawn {{ hold_days }} days after the payment is confirmed, from ৳{{ min_payout }}.</p>
+    <div class="mt-4 grid grid-cols-3 gap-3">
+      <div class="stat"><p class="stat-num">৳{{ available }}</p><p class="stat-label">Ready to withdraw</p></div>
+      <div class="stat"><p class="stat-num">৳{{ on_hold }}</p><p class="stat-label">On hold ({{ hold_days }} days)</p></div>
+      <div class="stat"><p class="stat-num">৳{{ paid }}</p><p class="stat-label">Paid to you</p></div>
+    </div>
+    <form method="post" class="mt-4 flex flex-wrap items-end gap-2">{% csrf_token %}
+      <label class="text-sm font-bold">Your bKash number (personal)<input class="field mt-1 !py-2" name="bkash" inputmode="numeric" maxlength="14" placeholder="01XXXXXXXXX" required></label>
+      <button class="btn-primary !py-2" {% if available < min_payout %}disabled title="From ৳{{ min_payout }}"{% endif %}>Withdraw ৳{{ available }}</button>
+    </form>
+    {% if payouts %}<ul class="mt-4 divide-y divide-stone-100 text-sm">{% for p in payouts %}<li class="flex justify-between py-2"><span>{{ p.created_at|date:"j M Y" }} · ৳{{ p.amount_bdt }} → …{{ p.bkash_number|slice:"-3:" }}</span><span class="font-bold">{{ p.get_status_display }}</span></li>{% endfor %}</ul>{% endif %}
+  </section>
+  <section class="card p-6">
+    <h2 class="font-extrabold"><span class="mr-1.5 text-brand-600">{% icon "trophy" "ico" %}</span>Top inviting families</h2>
+    <ol class="mt-2 divide-y divide-stone-100 text-sm">{% for t in top %}<li class="flex justify-between py-2"><span>{{ forloop.counter }}. {{ t.name }} family{% if t.me %} (you){% endif %}</span><span class="font-bold">{{ t.n }} paying famil{{ t.n|pluralize:"y,ies" }}</span></li>{% empty %}<li class="py-2 text-stone-500">Be the first!</li>{% endfor %}</ol>
+    <p class="mt-2 text-xs text-stone-400">Names are partly hidden for privacy.</p>
+  </section>
+</div>
+{% endif %}
+<p class="mt-6 text-xs text-stone-500">Rewards are added when the new family's payment is confirmed. Only real families please — inviting yourself or fake accounts cancels rewards.</p>
+{% endblock %}

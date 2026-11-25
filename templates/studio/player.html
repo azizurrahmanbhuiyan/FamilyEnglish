@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load static fe_ui %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_class %}is-player{% endblock %}
+{% block main_class %}{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="p-wrap" id="player" data-mode="{{ mode }}">
+  <div class="p-head">
+    <a href="{{ back }}" class="p-close" aria-label="Close">{% icon "close" "ico ico-lg" %}</a>
+    <div class="min-w-0"><div class="p-title">{% tr title title_bn %}</div>{% if best is not None %}<div class="text-xs s-muted">{% tr "Best" "সেরা" %}: {{ best }}%</div>{% endif %}</div>
+    <button type="button" class="p-skip" id="p-skip" hidden>SKIP 3</button>
+  </div>
+  <div class="p-progress"><i id="p-bar"></i></div>
+  <div id="p-body" class="flex flex-1 flex-col"></div>
+  <noscript><p class="mt-6">Please turn on JavaScript to practise speaking.</p></noscript>
+</div>
+<template id="tpl-mascot">{% include "_mascot.html" with cls="doel-lg" uid="p" %}</template>
+<template id="tpl-icons">
+  <span data-i="volume">{% icon "volume" "ico" %}</span><span data-i="snail">{% icon "snail" "ico" %}</span>
+  <span data-i="bookmark">{% icon "bookmark" "ico" %}</span><span data-i="self">{% icon "listen-self" "ico" %}</span>
+  <span data-i="info">{% icon "info" "ico" %}</span><span data-i="mic">{% icon "mic" "ico" %}</span>
+  <span data-i="stop">{% icon "stop" "ico" %}</span><span data-i="kbd">{% icon "keyboard" "ico" %}</span>
+  <span data-i="retry">{% icon "retry" "ico" %}</span><span data-i="skip">{% icon "skip" "ico" %}</span>
+  <span data-i="ok">{% icon "check-circle" "ico" %}</span><span data-i="x">{% icon "close" "ico" %}</span>
+  <span data-i="arrow">{% icon "arrow" "ico" %}</span><span data-i="gem">{% icon "gem" "ico" %}</span>
+</template>
+{{ config|json_script:"p-config" }}
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/studio.js' %}"></script>{% endblock %}

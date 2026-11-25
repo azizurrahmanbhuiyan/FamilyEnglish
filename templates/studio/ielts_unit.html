@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{{ t.title }}{% endblock %}{% block page_title %}{% tr t.title t.title_bn %} · <span class="s-muted">Part {{ t.part }}</span>{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl">
+  <a href="{% url 'studio:ielts_band' band %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr info.title info.title_bn %}</a>
+  <p class="s-eyebrow mt-5">{% tr "Outcomes" "যা শিখবেন" %}</p>
+  <div class="s-card is-pad mt-3">
+    <p class="s-eyebrow">{% tr "At the end of this unit, you can:" "এই ইউনিট শেষে আপনি পারবেন:" %}</p>
+    <div class="s-outcome mt-4"><span class="ok">{% icon "check-circle" "ico ico-sm" %}</span><p class="text-lg">{% tr "Answer Part" "পার্ট" %} {{ t.part }} {% tr "questions about" "-এর প্রশ্নের উত্তর:" %} {{ t.title|lower }}</p></div>
+    <div class="s-outcome mt-3"><span class="ok">{% icon "check-circle" "ico ico-sm" %}</span><p class="text-lg">{% tr "Use collocations like" "কলোকেশন ব্যবহার:" %} {% for c in collocations|slice:":3" %}<b>{{ c }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}</p></div>
+  </div>
+  <div class="s-card is-pad mt-4"><p class="s-eyebrow">{% tr "Questions" "প্রশ্ন" %}</p>
+    <ul class="mt-2 grid gap-2">{% for q in t.questions %}<li>❓ {{ q }}</li>{% endfor %}</ul></div>
+  <div class="s-lessons mt-4">
+    {% for l in lessons %}
+    <a href="{% url 'studio:ielts_lesson' band t.slug l.n %}" class="s-lesson {% if l.next %}is-next{% endif %} {% if l.done %}is-done{% endif %}">
+      <span class="s-lesson-ico k-{{ l.icon }}">{% if l.icon == "repeat" %}{% icon "repeat" %}{% elif l.icon == "wave" %}{% icon "wave" %}{% else %}{% icon "mic" %}{% endif %}</span>
+      <span><span class="s-lesson-t"><span class="s-lesson-n">{% if l.next %}{% tr "Next up" "এরপর" %}{% else %}{% tr "Lesson" "পাঠ" %} {{ l.n }}{% endif %} -</span> {% tr l.title l.title_bn %}</span>
+        <span class="block s-diff">{{ l.difficulty }}</span></span>
+      {% if l.done %}<span class="ml-auto text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

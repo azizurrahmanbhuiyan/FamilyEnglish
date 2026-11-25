@@ -18,12 +18,12 @@
   <div>
     <p class="font-bold">
       {% if family.is_paid_active %}{{ family.get_plan_display }} · active until {{ family.paid_until|date:"j M Y" }}
-      {% elif family.has_full_access %}Free trial · full access until {{ family.trial_ends|date:"j M Y" }}
+      {% elif family.has_full_access %}Trial · full access until {{ family.trial_ends|date:"j M Y" }}
       {% else %}Free plan · the first module of every level is open{% endif %}
     </p>
     <p class="text-sm text-stone-500">One plan covers everyone. Any adult in the family can pay.</p>
   </div>
-  <a href="{% url 'core:pay' %}" class="btn-primary ml-auto">{% if family.is_paid_active %}Extend plan{% else %}Upgrade · ৳199/month{% endif %}</a>
+  <a href="{% url 'core:pay' %}" class="btn-primary ml-auto">{% if family.is_paid_active %}Extend plan{% else %}Get the family plan · from ৳299/month{% endif %}</a>
 </div>
 
 <h2 class="mt-10 font-display text-2xl font-bold">Learners</h2>
@@ -36,7 +36,8 @@
         <p class="text-xl font-bold">{{ r.learner.name }}</p>
         <p class="text-sm text-stone-500">{{ r.learner.get_role_display }}{% if r.learner.age %} · age {{ r.learner.age }}{% endif %} · limit {{ r.learner.daily_limit_minutes }} min/day</p>
       </div>
-      <a href="{% url 'core:learner_edit' r.learner.pk %}" class="ml-auto text-sm font-semibold text-stone-500 hover:text-brand-600">Edit</a>
+      <a href="{% url 'practice:tutor_history' r.learner.pk %}" class="ml-auto text-sm font-semibold text-stone-500 hover:text-brand-600" title="Read this learner's questions to the tutor">🐦 Tutor chat</a>
+      <a href="{% url 'core:learner_edit' r.learner.pk %}" class="text-sm font-semibold text-stone-500 hover:text-brand-600">Edit</a>
     </div>
 
     {% if r.placement %}

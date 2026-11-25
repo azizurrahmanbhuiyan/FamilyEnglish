@@ -1,0 +1,99 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Speaking practice{% endblock %}
+{% block content %}
+<p class="eyebrow">AI tools · speaking</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "speak" "ico" %}</span>Speaking practice</h1>
+<p class="mt-1 max-w-2xl text-stone-600">
+  {% if mode == "repeat" %}Press ▶ to hear it, then 🎤 and say it. We show which words were heard clearly.
+  {% else %}Press 🎤 and answer the question in your own words — say a reason and an example.{% endif %}</p>
+<p class="font-bn text-sm text-stone-500">মাইক্রোফোনের অনুমতি দিন। Chrome-এ সবচেয়ে ভালো কাজ করে। শিশুর পাশে বসে সাহায্য করুন।</p>
+
+<div class="mt-4 flex flex-wrap items-center gap-2 text-sm">
+  <span class="font-bold text-stone-500">Level:</span>
+  {% for l in levels %}<a href="?level={{ l }}" class="chip {% if l == level %}is-on{% endif %}">{{ l }}</a>{% endfor %}
+</div>
+
+<div id="no-mic" class="mt-4 hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+  This browser can't listen to speech. Please open FamilyEnglish in <strong>Google Chrome</strong> (Android or computer).
+  You can still press ▶ and practise saying each sentence with a parent listening.</div>
+
+<div class="mt-6 space-y-4">
+  {% for p in prompts %}
+  <div class="card p-5" data-prompt="{{ p }}" data-mode="{{ mode }}">
+    <div class="flex flex-wrap items-center gap-3">
+      <button type="button" class="speak-btn shrink-0" data-say="{{ p }}" data-rate="0.8" aria-label="Listen">▶</button>
+      <p class="flex-1 text-lg font-bold">{{ p }}</p>
+      <button type="button" class="mic btn-primary !py-2">🎤 Speak</button>
+    </div>
+    <p class="heard mt-3 hidden text-sm text-stone-600"></p>
+    <div class="result mt-2 hidden rounded-xl bg-stone-50 p-3 text-sm"></div>
+  </div>
+  {% endfor %}
+</div>
+<details class="mt-4 card p-5"><summary class="font-extrabold"><span class="mr-1.5 text-brand-600">{% icon "pen" "ico" %}</span>Practise with your own question (e.g. from school or an exam)</summary>
+  <div class="mt-3 flex gap-2"><input id="own-q" class="field" maxlength="250" placeholder="Type a question to answer out loud…"><button type="button" class="btn-primary !py-2" id="own-add">Add</button></div>
+  <p class="mt-1 text-xs text-stone-500">Your question appears as a card above. Answer it with 🎤 and get feedback.</p>
+</details>
+{% if mode == "answer" %}<p class="mt-3 text-xs text-stone-500">{% if ai_on %}AI feedback left today: {{ ai_left }}.{% else %}Tip-based feedback (the AI coach is not switched on).{% endif %}</p>{% endif %}
+
+{% if recent %}
+<section class="mt-8 card p-5">
+  <h2 class="font-extrabold">Recent tries</h2>
+  <ul class="mt-3 divide-y divide-stone-100 text-sm">
+    {% for a in recent %}<li class="flex gap-3 py-2"><span class="w-12 font-bold">{{ a.score }}%</span><span class="flex-1 truncate">{{ a.target }}</span><span class="text-stone-400">{{ a.created_at|date:"j M" }}</span></li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById("own-add").addEventListener("click", () => {
+  const q = document.getElementById("own-q").value.trim(); if (!q) return;
+  const first = document.querySelector("[data-prompt]"); const card = first.cloneNode(true);
+  card.dataset.prompt = q; card.dataset.mode = "answer";
+  card.querySelector("p.flex-1").textContent = q; card.querySelector("[data-say]").dataset.say = q;
+  card.querySelector(".heard").classList.add("hidden"); card.querySelector(".result").classList.add("hidden");
+  first.parentNode.insertBefore(card, first); location.hash = ""; card.scrollIntoView({ block: "center" });
+  window.feBindSpeaking && window.feBindSpeaking(card);
+});
+(function () {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const csrf = "{{ csrf_token }}";
+  if (!SR) { document.getElementById("no-mic").classList.remove("hidden"); document.querySelectorAll(".mic").forEach(b => b.disabled = true); return; }
+  window.feBindSpeaking = bind;
+  document.querySelectorAll("[data-prompt]").forEach(bind);
+  function bind(card) {
+    const btn = card.querySelector(".mic"), heardEl = card.querySelector(".heard"), res = card.querySelector(".result");
+    let rec = null, text = "";
+    async function check() {
+      text = text.trim(); if (!text) return;
+      heardEl.textContent = "We heard: “" + text + "”"; heardEl.classList.remove("hidden");
+      res.textContent = "Checking…"; res.classList.remove("hidden");
+      try {
+        const r = await fetch("{% url 'practice:speaking_save' %}", { method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRFToken": csrf },
+          body: JSON.stringify({ target: card.dataset.prompt, heard: text, mode: card.dataset.mode }) });
+        const d = await r.json();
+        const stars = d.score >= 85 ? "⭐⭐⭐" : d.score >= 60 ? "⭐⭐" : "⭐";
+        res.innerHTML = "";
+        const head = document.createElement("strong"); head.textContent = `${stars} ${d.score}%`; res.appendChild(head);
+        if (d.missed && d.missed.length) res.append(" · Say these words more clearly: " + d.missed.join(", "));
+        if (d.feedback) { const p = document.createElement("p"); p.className = "mt-2 whitespace-pre-line"; p.textContent = d.feedback; res.appendChild(p); }
+      } catch (err) { res.textContent = "Could not save — check your internet."; }
+    }
+    btn.onclick = () => {
+      if (rec) { rec.stop(); return; }
+      rec = new SR(); text = "";
+      rec.lang = "en-GB"; rec.interimResults = false; rec.maxAlternatives = 1;
+      rec.continuous = card.dataset.mode === "answer";
+      btn.textContent = "⏺ Listening… tap to stop";
+      rec.onresult = e => { text = ""; for (const r of e.results) text += " " + r[0].transcript; };
+      rec.onerror = e => { heardEl.textContent = "Could not hear — allow the microphone and try again (" + e.error + ")."; heardEl.classList.remove("hidden"); };
+      rec.onend = () => { rec = null; btn.textContent = "🎤 Speak again"; check(); };
+      rec.start();
+    };
+  }
+})();
+</script>
+{% endblock %}

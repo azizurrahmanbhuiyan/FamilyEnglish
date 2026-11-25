@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Talk{% endblock %}{% block page_title %}{% tr "Talk" "কথা বলুন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl grid gap-5">
+  <div class="flex items-center justify-between gap-3">
+    <div><h1 class="text-3xl font-extrabold">{% tr "Speak English every day" "প্রতিদিন ইংরেজিতে কথা বলুন" %}</h1>
+      <p class="s-sub">{% tr "Your AI tutor listens, answers and helps you sound more natural." "আপনার এআই টিউটর শোনে, উত্তর দেয় আর আরও স্বাভাবিকভাবে বলতে সাহায্য করে।" %}</p></div>
+    <a href="{% url 'talk:setup' %}" class="s-btn-ghost !px-3" title="Settings">⚙️</a>
+  </div>
+
+  <section class="s-card is-glow is-pad">
+    <div class="flex items-center justify-between"><p class="s-eyebrow">{% tr "Today's goal" "আজকের লক্ষ্য" %}</p>
+      <p class="font-bold">{{ minutes }} / {{ goal }} {% tr "min" "মিনিট" %}</p></div>
+    <div class="s-bar mt-2"><i style="width: {% widthratio minutes goal 100 %}%"></i></div>
+    <h2 class="mt-4 text-2xl font-extrabold">{{ cat.emoji }} {% tr "Daily talk" "আজকের আলাপ" %}: {% tr cat.title cat.title_bn %}</h2>
+    <p class="mt-1 text-lg">“{{ question }}”</p>
+    {% if daily_ok %}
+    <form method="post" action="{% url 'talk:go' 'daily' %}" class="mt-4">{% csrf_token %}<button class="s-btn is-block">🎙️ {% tr "Start today's talk" "আজকের আলাপ শুরু করুন" %}</button></form>
+    {% else %}
+    <a href="{% url 'core:pay' %}" class="s-btn-ghost mt-4 w-full">🔒 {% tr "You've had today's free talk. Unlock unlimited talks" "আজকের ফ্রি আলাপ শেষ। সীমাহীন আলাপ খুলুন" %}</a>
+    {% endif %}
+    {% if not ai_on %}<p class="mt-3 text-sm s-muted">{% tr "AI is off on this server, so your tutor uses prepared questions." "এই সার্ভারে এআই বন্ধ, তাই টিউটর আগে থেকে তৈরি প্রশ্ন ব্যবহার করবে।" %}</p>{% endif %}
+  </section>
+
+  <div class="grid gap-3 sm:grid-cols-3">
+    <a class="s-gcard" href="{% url 'talk:roleplays' %}"><span class="s-gicon">🎭</span><span><b class="block text-lg">{% tr "Role-play" "রোল-প্লে" %}</b><span class="s-muted text-sm">{% tr "41 real situations" "৪১টি বাস্তব পরিস্থিতি" %}</span></span></a>
+    <a class="s-gcard" href="{% url 'talk:read' %}"><span class="s-gicon">📰</span><span><b class="block text-lg">{% tr "Read and talk" "পড়ুন ও বলুন" %}</b><span class="s-muted text-sm">{% tr "Read, then discuss" "পড়ে আলোচনা করুন" %}</span></span></a>
+    <a class="s-gcard" href="{% url 'talk:roleplays' %}#custom"><span class="s-gicon">✨</span><span><b class="block text-lg">{% tr "Create your own" "নিজের পরিস্থিতি" %}</b><span class="s-muted text-sm">{% tr "Any situation you need" "যেকোনো দরকারি পরিস্থিতি" %}</span></span></a>
+  </div>
+
+  <section><div class="flex items-center justify-between"><h2 class="s-h2">{% tr "Role-plays for you" "আপনার জন্য রোল-প্লে" %}</h2><a class="font-bold text-sky-300" href="{% url 'talk:roleplays' %}">{% tr "See all" "সব দেখুন" %}</a></div>
+    <div class="mt-3 grid gap-3 sm:grid-cols-2">{% for r in for_you %}{% include "talk/_rp_card.html" %}{% endfor %}</div></section>
+
+  {% if articles %}<section><div class="flex items-center justify-between"><h2 class="s-h2">{% tr "Read and talk" "পড়ুন ও বলুন" %}</h2><a class="font-bold text-sky-300" href="{% url 'talk:read' %}">{% tr "Library" "লাইব্রেরি" %}</a></div>
+    <div class="mt-3 grid gap-3">{% for a in articles %}<a class="s-gcard" href="{% url 'talk:article' a.slug %}"><span class="s-gicon">{{ a.emoji }}</span><span class="flex-1 text-lg font-bold">{{ a.title }}</span>{% icon "chevron" %}</a>{% endfor %}</div></section>{% endif %}
+
+  {% if recent %}<section><h2 class="s-h2">{% tr "Your lesson reports" "আপনার পাঠের রিপোর্ট" %}</h2>
+    <div class="s-lessons mt-3">{% for s in recent %}<a class="s-lesson" href="{% url 'talk:report' s.pk %}"><span class="s-lesson-t">{{ s.title }}</span><span class="s-muted text-sm">{{ s.created_at|date:"d M" }} · {{ s.report.score }}%</span></a>{% endfor %}</div></section>{% endif %}
+</div>
+{% endblock %}

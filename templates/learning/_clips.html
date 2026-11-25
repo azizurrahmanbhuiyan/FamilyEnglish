@@ -1,0 +1,40 @@
+{% load fe_ui %}
+<div class="clips" data-clips>
+  {% if clips %}
+  <div class="flex flex-wrap items-center gap-2">
+    <p class="font-extrabold">🎬 {% tr "Short videos on this topic" "এই বিষয়ের ছোট ভিডিও" %}</p>
+    <span class="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-extrabold text-brand-700">{{ clips|length }} {% tr "clips" "ক্লিপ" %} · {{ clips_total }}</span>
+  </div>
+  <div class="video-frame mt-3">
+    <iframe data-clip-player src="{{ clips.0.embed_url }}" title="{{ clips.0.title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <ol class="mt-3 space-y-2">
+    {% for c in clips %}
+    <li><button type="button" class="clip-item {% if forloop.first %}is-on{% endif %}" data-clip-src="{{ c.embed_url }}" data-clip-title="{{ c.title }}">
+      <span class="clip-thumb" style="background-image: url('{{ c.thumb }}')"><span>{{ c.length_label }}</span></span>
+      <span class="min-w-0 flex-1 text-left"><span class="block truncate font-bold">{{ forloop.counter }}. {{ c.title }}</span>
+        <span class="block truncate text-xs text-stone-500">{{ c.channel }}{% if c.start or c.part %} · {% tr "part" "অংশ" %} {{ c.start_label }}–{{ c.end_label }}{% if c.part %} “{{ c.part }}”{% endif %}{% endif %}</span></span>
+    </button></li>
+    {% endfor %}
+  </ol>
+  <p class="mt-2 text-xs text-stone-500">{% tr "Each clip plays only the part about this topic and stops by itself. Nothing plays automatically." "প্রতিটি ক্লিপ শুধু এই বিষয়ের অংশটুকু চালায় এবং নিজে থেকে থেমে যায়। কিছুই নিজে থেকে শুরু হয় না।" %}</p>
+  {% endif %}
+  {% if video_links %}
+  <div class="{% if clips %}mt-5{% endif %}">
+    <p class="font-extrabold">🔗 {% tr "Video links" "ভিডিও লিংক" %}</p>
+    <p class="text-sm text-stone-500">{% tr "Each link opens several short videos (under 4 minutes) on one part of this topic. Watch together with your child." "প্রতিটি লিংকে এই বিষয়ের একটি দিক নিয়ে কয়েকটি ছোট ভিডিও (৪ মিনিটের কম) আছে। শিশুর সাথে একসাথে দেখুন।" %}</p>
+    <ol class="mt-3 grid gap-2 sm:grid-cols-2">
+      {% for l in video_links %}
+      <li><a href="{{ l.url }}" target="_blank" rel="noopener" class="video-link" data-kind="{{ l.kind }}">
+        <span class="video-link-icon">{{ l.emoji }}</span>
+        <span class="min-w-0 flex-1"><span class="block font-bold">{{ forloop.counter }}. {% tr l.en l.bn %}</span>
+          <span class="block truncate text-xs text-stone-500">{% if l.kind == "youglish" %}{% tr "Each video starts where the word is said" "যেখানে শব্দটি বলা হয় সেখান থেকে শুরু" %}{% else %}YouTube · “{{ l.query }}”{% endif %}</span></span>
+        <span class="text-stone-400">↗</span>
+      </a></li>
+      {% endfor %}
+    </ol>
+    {% if video_links|length > 5 %}<p class="mt-2 text-xs text-stone-500">{% tr "YouGlish videos are not made for children — parents, please check first." "YouGlish-এর ভিডিও শিশুদের জন্য বানানো নয় — অভিভাবক আগে দেখে নিন।" %}</p>{% endif %}
+  </div>
+  {% endif %}
+</div>

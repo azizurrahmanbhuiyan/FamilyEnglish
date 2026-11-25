@@ -1,0 +1,8 @@
+{% load fe_ui studio_ui %}{% active_tab as tab %}
+<a href="{% url 'studio:today' %}" class="fe-tab {% if tab == 'today' %}is-on{% endif %}">{% icon "sparkle" "ico" %}<span>{% tr "Today" "আজ" %}</span></a>
+<a href="{% url 'studio:learn' %}" class="fe-tab {% if tab == 'learn' %}is-on{% endif %}">{% icon "book" "ico" %}<span>{% tr "Learn" "শিখুন" %}</span></a>
+<a href="{% url 'talk:home' %}" class="fe-tab {% if tab == 'talk' %}is-on{% endif %}">{% icon "chat" "ico" %}<span>{% tr "Talk" "কথা বলুন" %}</span></a>
+<a href="{% url 'studio:coach' %}" class="fe-tab {% if tab == 'coach' %}is-on{% endif %}">{% icon "coach" "ico" %}<span>{% tr "Coach" "কোচ" %}</span></a>
+{% if not compact %}<a href="{% url 'studio:discover' %}" class="fe-tab {% if tab == 'discover' %}is-on{% endif %}">{% icon "compass" "ico" %}<span>{% tr "Discover" "খুঁজুন" %}</span></a>{% endif %}
+<a href="{% url 'studio:progress' %}" class="fe-tab {% if tab == 'progress' %}is-on{% endif %}">{% icon "progress" "ico" %}<span>{% tr "Progress" "অগ্রগতি" %}</span></a>
+{% if not compact %}<a href="{% url 'studio:more' %}" class="fe-tab {% if tab == 'more' %}is-on{% endif %}">{% icon "grid" "ico" %}<span>{% tr "More" "আরও" %}</span></a>{% endif %}

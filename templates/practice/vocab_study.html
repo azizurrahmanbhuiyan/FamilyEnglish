@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{% if deck %}{{ deck.title }}{% else %}Review{% endif %} · flashcards{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-xl">
+  <a href="{% url 'practice:vocab' %}" class="text-sm font-bold text-stone-500 hover:text-brand-600">← All decks</a>
+  <h1 class="mt-2 font-display text-3xl font-bold">{% if mode == "missed" %}🧯 Words you missed{% elif deck %}{{ deck.emoji }} {{ deck.title }}{% else %}🔁 Review due cards{% endif %}</h1>
+  {% if deck %}<a href="?view=list" class="text-sm font-bold text-brand-700">☰ List view</a>{% endif %}
+  <p class="text-sm text-stone-500">Read the meaning in English and say the word. Then turn the card. Tap বাংলা only if you need it.</p>
+
+  <div id="card" class="mt-6 card min-h-[320px] cursor-pointer select-none p-8 text-center" tabindex="0">
+    <p id="front-emoji" class="text-7xl"></p>
+    <p id="back-def" class="mt-3 text-xl text-stone-700"></p>
+    <p class="mt-3"><button type="button" class="bn-btn" id="bn-btn">বাংলা</button> <span id="front-bn" class="bn-meaning font-bn" hidden></span></p>
+    <div id="back" class="hidden">
+      <p id="back-word" class="mt-4 font-display text-5xl font-bold text-brand-700"></p>
+      <p id="back-ipa" class="word-ipa mt-1 text-lg"></p>
+      <p id="back-pos" class="mt-1 text-sm font-bold uppercase tracking-wide text-stone-400"></p>
+      <p id="back-example" class="mt-3 text-lg italic text-stone-700"></p>
+    </div>
+    <p id="hint" class="mt-6 text-sm font-bold text-stone-400">Tap to turn the card</p>
+  </div>
+  <div class="mt-4 flex items-center justify-between">
+    <button type="button" id="say" class="speak-btn" aria-label="Say the word">🔊</button>
+    <span id="count" class="text-sm font-bold text-stone-500"></span>
+  </div>
+  <div id="rate" class="mt-4 hidden grid-cols-3 gap-2">
+    <button type="button" id="again" class="btn-ghost !px-2">😕 Forgot<span class="block text-xs font-normal">tomorrow</span></button>
+    <button type="button" id="almost" class="btn-ghost !px-2">🤏 Almost<span class="block text-xs font-normal">again soon</span></button>
+    <button type="button" id="knew" class="btn-primary !px-2">✅ Knew it<span class="block text-xs font-normal">later</span></button>
+  </div>
+  <div id="finished" class="mt-6 hidden card p-6 text-center">
+    <p class="text-5xl">🎉</p><p class="mt-2 font-display text-2xl font-bold">All done for now!</p>
+    <p id="finished-text" class="text-stone-600"></p>
+    <a href="{% url 'practice:vocab' %}" class="btn-primary mt-4">Back to decks</a>
+  </div>
+</div>
+{{ cards|json_script:"cards" }}
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  const cards = JSON.parse(document.getElementById("cards").textContent);
+  const csrf = "{{ csrf_token }}";
+  const $ = id => document.getElementById(id);
+  let i = 0, flipped = false, knew = 0;
+  function render() {
+    if (i >= cards.length) {
+      $("card").classList.add("hidden"); $("rate").classList.add("hidden"); $("say").classList.add("hidden");
+      $("finished").classList.remove("hidden");
+      $("finished-text").textContent = cards.length ? `You knew ${knew} of ${cards.length}. Cards come back when they are due.` : "No cards are due. Come back tomorrow, or open a deck to learn new words.";
+      $("count").textContent = ""; return;
+    }
+    const c = cards[i]; flipped = false;
+    $("front-emoji").textContent = c.emoji || ""; $("front-bn").textContent = c.bn || "—"; $("front-bn").hidden = true;
+    $("bn-btn").classList.remove("is-on"); $("back-ipa").textContent = c.ipa || "";
+    $("back-word").textContent = c.word; $("back-example").textContent = c.example || "";
+    $("back-pos").textContent = c.pos || ""; $("back-def").textContent = c.definition || (c.bn ? "" : c.word);
+    $("back").classList.add("hidden"); $("hint").classList.remove("hidden");
+    $("rate").classList.add("hidden"); $("rate").classList.remove("grid");
+    $("count").textContent = `Card ${i + 1} of ${cards.length}`;
+  }
+  $("bn-btn").addEventListener("click", e => { e.stopPropagation(); const b = $("front-bn"); b.hidden = !b.hidden; $("bn-btn").classList.toggle("is-on", !b.hidden); });
+  function flip() {
+    if (i >= cards.length || flipped) return; flipped = true;
+    $("back").classList.remove("hidden"); $("hint").classList.add("hidden");
+    $("rate").classList.remove("hidden"); $("rate").classList.add("grid");
+    window.feSay && window.feSay(cards[i].word, 0.8);
+  }
+  async function rate(g) {
+    const c = cards[i]; if (g === 2) knew += 1;
+    i += 1; render();
+    try { await fetch("{% url 'practice:vocab_rate' %}", { method: "POST", headers: { "Content-Type": "application/json", "X-CSRFToken": csrf }, body: JSON.stringify({ word: c.id, grade: g }) }); } catch (e) {}
+  }
+  $("card").onclick = flip; $("card").onkeydown = e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); } };
+  $("say").onclick = () => i < cards.length && window.feSay && window.feSay(cards[i].word, 0.8);
+  $("again").onclick = () => rate(0); $("almost").onclick = () => rate(1); $("knew").onclick = () => rate(2);
+  render();
+})();
+</script>
+{% endblock %}

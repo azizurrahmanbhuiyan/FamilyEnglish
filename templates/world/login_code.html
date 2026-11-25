@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Sign in with a code" "কোড দিয়ে সাইন ইন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-md s-card is-pad">
+  <h1 class="text-3xl font-extrabold">{% tr "Sign in with a code" "কোড দিয়ে সাইন ইন" %}</h1>
+  <p class="mt-1 s-sub">{% tr "No password needed. Type your email or mobile number and we'll send you a 6-digit code." "পাসওয়ার্ড লাগবে না। ইমেইল বা মোবাইল নম্বর দিন, আমরা ৬ সংখ্যার কোড পাঠাব।" %}</p>
+  <form method="post" class="mt-6">{% csrf_token %}
+    {% include "world/_field.html" with f=form.who %}
+    <div id="country-row" hidden>{% include "world/_field.html" with f=form.country %}</div>
+    <button class="s-btn is-block">{% tr "Send my code" "কোড পাঠান" %}</button>
+  </form>
+  <p class="mt-4 text-center text-sm"><a class="font-bold text-sky-300" href="{% url 'core:login' %}">{% tr "Sign in with password" "পাসওয়ার্ড দিয়ে সাইন ইন" %}</a></p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var who = document.getElementById("id_who"), row = document.getElementById("country-row");
+  function show() { var v = who.value.trim(); row.hidden = !v || v.indexOf("@") >= 0 || v.charAt(0) === "+"; }
+  who.addEventListener("input", show); show();
+})();
+</script>
+{% endblock %}

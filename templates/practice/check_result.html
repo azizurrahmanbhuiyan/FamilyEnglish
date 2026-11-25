@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Level check result{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-2xl text-center">
+  <p class="pop text-6xl">🎯</p>
+  <h1 class="mt-2 font-display text-4xl font-bold">{{ name }}: Level {{ check.level }}</h1>
+  <p class="mt-1 text-stone-600">{{ check.score }} of {{ check.total }} right · {{ check.taken_at|date:"j M Y" }}</p>
+  <p class="mt-1 text-sm text-stone-500">{{ current_learner.name }}'s levels are updated. The next study plan will use them.</p>
+  {% if history|length > 1 %}
+  <div class="mt-8 card p-5 text-left">
+    <p class="font-extrabold">{{ name }} level over time</p>
+    <div class="mt-4 flex h-40 items-end gap-3">
+      {% for h in history %}
+      <div class="flex flex-1 flex-col items-center gap-1">
+        <span class="text-xs font-bold">{{ h.level }}</span>
+        <div class="w-full rounded-t-lg bg-brand-500" style="height: {% widthratio h.level 8 120 %}px; min-height: 6px"></div>
+        <span class="text-[11px] text-stone-500">{{ h.taken_at|date:"j M" }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="mt-8 flex flex-wrap justify-center gap-3">
+    <a href="{% url 'practice:skill_practice' check.skill %}" class="btn-primary">Practise {{ name }}</a>
+    <a href="{% url 'learning:plan_new' %}" class="btn-ghost">Update my plan</a>
+    <a href="{% url 'practice:checks' %}" class="btn-ghost">All checks</a>
+  </div>
+</div>
+{% endblock %}

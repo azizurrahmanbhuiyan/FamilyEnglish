@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}Suggest a feature{% endblock %}
+{% block content %}
+<h1 class="font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "bulb" "ico" %}</span>{% tr "Suggest a feature" "নতুন ফিচারের প্রস্তাব" %}</h1>
+<p class="text-stone-600">{% tr "Tell us what would help your family learn. Vote for ideas you like — we build the most wanted first." "আপনার পরিবারের শেখায় কী সাহায্য করবে জানান। পছন্দের প্রস্তাবে ভোট দিন — বেশি ভোট পাওয়াগুলো আগে তৈরি হবে।" %}</p>
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <form method="post" class="card p-5">{% csrf_token %}
+    <p class="font-extrabold">{% tr "Your idea" "আপনার প্রস্তাব" %}</p>
+    <input class="field mt-2" name="title" maxlength="120" required placeholder="{% tr 'e.g. Bedtime stories in English' 'যেমন: ইংরেজিতে ঘুমের আগের গল্প' %}">
+    <textarea class="field mt-2" name="details" rows="4" maxlength="1000" placeholder="{% tr 'Why would it help?' 'কেন কাজে লাগবে?' %}"></textarea>
+    <button class="btn-primary mt-3 w-full">{% tr "Post idea" "প্রস্তাব দিন" %}</button>
+  </form>
+  <section class="lg:col-span-2">
+    <nav class="chip-row"><a class="chip {% if not status %}is-on{% endif %}" href="?">{% tr "All" "সব" %}</a>{% for v, l in statuses %}<a class="chip {% if status == v %}is-on{% endif %}" href="?status={{ v }}">{{ l }}</a>{% endfor %}</nav>
+    <ul class="mt-3 space-y-3">
+      {% for i in ideas %}
+      <li class="card flex gap-4 p-4">
+        <form method="post" action="{% url 'growth:vote' i.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button class="grid w-14 place-items-center rounded-2xl border-2 py-1 font-extrabold {% if i.pk in mine %}border-brand-500 bg-brand-50 text-brand-700{% else %}border-stone-200{% endif %}">▲<span>{{ i.n }}</span></button></form>
+        <div class="min-w-0 flex-1"><p class="font-extrabold">{{ i.title }}</p>{% if i.details %}<p class="mt-1 text-sm text-stone-600">{{ i.details }}</p>{% endif %}<p class="mt-1 text-xs text-stone-400">{{ i.get_status_display }} · {{ i.created_at|date:"j M Y" }}</p></div>
+      </li>
+      {% empty %}<li class="card p-5 text-stone-500">{% tr "No ideas yet — be the first!" "এখনো কোনো প্রস্তাব নেই — প্রথম হোন!" %}</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

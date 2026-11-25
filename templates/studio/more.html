@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}More{% endblock %}{% block page_title %}{% tr "More" "আরও" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <div class="s-card is-pad flex items-center gap-4"><span class="fe-ava !w-14 !h-14 !text-3xl">{{ current_learner.avatar }}</span>
+    <div class="flex-1"><p class="text-xl font-extrabold">{{ current_learner.name }}</p><p class="text-sm s-muted">{{ current_family.name }}</p></div>
+    <a href="{% url 'world:language' %}" class="lang-btn" title="Language">🌐 {{ lang_native }}</a></div>
+  <p class="s-eyebrow mt-6">{% tr "Family" "পরিবার" %}</p>
+  <div class="s-lessons mt-2">
+    <a class="s-lesson" href="{% url 'core:switch' %}">{% icon "swap" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Switch learner" "শিক্ষার্থী বদলান" %}</span></a>
+    <a class="s-lesson" href="{% url 'core:family' %}">{% icon "family" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Family & learners" "পরিবার ও শিক্ষার্থী" %}</span></a>
+    <a class="s-lesson" href="{% url 'core:pay' %}">{% icon "wallet" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Subscription" "সাবস্ক্রিপশন" %}</span></a>
+    <a class="s-lesson" href="{% url 'growth:profile' %}">{% icon "user" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Profile & devices" "প্রোফাইল ও ডিভাইস" %}</span></a>
+  </div>
+  <p class="s-eyebrow mt-6">{% tr "All learning tools" "সব শেখার টুল" %}</p>
+  <div class="s-lessons mt-2">
+    <a class="s-lesson" href="{% url 'studio:discover' %}">{% icon "compass" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Discover: dictionary, shorts, my words" "খুঁজুন: অভিধান, শর্টস, আমার শব্দ" %}</span></a>
+    <a class="s-lesson" href="{% url 'learning:today' %}">{% icon "calendar" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Study plan & daily mission" "স্টাডি প্ল্যান ও আজকের মিশন" %}</span></a>
+    <a class="s-lesson" href="{% url 'course:home' %}">{% icon "compass" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Skill course (listening, speaking, reading, writing, grammar)" "দক্ষতার কোর্স" %}</span></a>
+    <a class="s-lesson" href="{% url 'course:weak_spots' %}">{% icon "target" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Weak spots" "দুর্বল দিক" %}</span></a>
+    <a class="s-lesson" href="{% url 'course:level_test' %}">{% icon "test" "ico ico-lg" %}<span class="s-lesson-t">{% tr "AI level test" "লেভেল টেস্ট" %}</span></a>
+    <a class="s-lesson" href="{% url 'learning:placement_start' %}">{% icon "seed" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Kids' placement test" "শিশুদের প্লেসমেন্ট টেস্ট" %}</span></a>
+    <a class="s-lesson" href="{% url 'learning:phonics_year' %}">{% icon "library" "ico ico-lg" %}<span class="s-lesson-t">{% tr "The Phonics Year: 36 weeks with teacher plans" "ফনিক্স বছর: শিক্ষকের পরিকল্পনাসহ ৩৬ সপ্তাহ" %}</span></a>
+    <a class="s-lesson" href="{% url 'learning:library' %}">{% icon "library" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Kids' ladder — all level lessons" "শিশুদের ধাপ — সব পাঠ" %}</span></a>
+    <a class="s-lesson" href="{% url 'practice:vocab' %}">{% icon "cards" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Vocabulary flashcards" "শব্দ ফ্ল্যাশকার্ড" %}</span></a>
+    <a class="s-lesson" href="{% url 'practice:checks' %}">{% icon "check" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Quick level checks" "দ্রুত লেভেল চেক" %}</span></a>
+  </div>
+  <p class="s-eyebrow mt-6">{% tr "Help & community" "সাহায্য ও কমিউনিটি" %}</p>
+  <div class="s-lessons mt-2">
+    <a class="s-lesson" href="{% url 'practice:tutorials' %}">{% icon "help" "ico ico-lg" %}<span class="s-lesson-t">{% tr "How to use" "কীভাবে ব্যবহার করবেন" %}</span></a>
+    <a class="s-lesson" href="{% url 'growth:whats_new' %}">{% icon "bell" "ico ico-lg" %}<span class="s-lesson-t">{% tr "What's new" "নতুন কী" %}</span></a>
+    <a class="s-lesson" href="{% url 'growth:ideas' %}">{% icon "bulb" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Suggest a feature" "ফিচার প্রস্তাব" %}</span></a>
+    <a class="s-lesson" href="{% url 'practice:refer' %}">{% icon "gift" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Refer & earn" "রেফার করে আয়" %}</span></a>
+    <a class="s-lesson" href="{% url 'practice:support' %}">{% icon "chat" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Support" "সাহায্য" %}</span></a>
+    <a class="s-lesson" href="{% url 'core:privacy' %}">{% icon "lock" "ico ico-lg" %}<span class="s-lesson-t">{% tr "Privacy & videos" "গোপনীয়তা ও ভিডিও" %}</span></a>
+  </div>
+  <form method="post" action="{% url 'core:logout' %}" class="mt-6">{% csrf_token %}<button class="s-btn-ghost w-full">{% icon "signout" %} {% tr "Sign out" "সাইন আউট" %}</button></form>
+</div>
+{% endblock %}

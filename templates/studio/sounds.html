@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Pronunciation coach{% endblock %}{% block page_title %}{% tr "Pronunciation coach" "উচ্চারণ কোচ" %}{% endblock %}
+{% block content %}
+<a href="{% url 'studio:coach' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Coach" "কোচ" %}</a>
+<p class="mt-3 max-w-2xl s-sub">{% tr "The British sounds Bangla speakers find hardest. Each drill has words and phrases; the target sound is underlined and you get a tip when it isn't clear." "বাংলাভাষীদের জন্য কঠিন ব্রিটিশ ধ্বনিগুলো। প্রতিটি ড্রিলে শব্দ ও বাক্যাংশ; লক্ষ্য ধ্বনিতে দাগ থাকে, ভুল হলে টিপস পাবেন।" %}</p>
+<a href="{% url 'studio:pronunciation' %}" class="s-card is-pad mt-4 flex items-center gap-4 max-w-2xl">
+  <span class="text-3xl">🗣️</span>
+  <span class="flex-1"><span class="block text-lg font-extrabold">{% tr "New: the full pronunciation course" "নতুন: পূর্ণ উচ্চারণ কোর্স" %}</span>
+    <span class="block text-sm s-muted">{% tr "22 lessons from the phonemic chart to linking, intonation and a modern British accent." "ধ্বনি-চার্ট থেকে জোড়া লাগানো, সুর ও আধুনিক ব্রিটিশ উচ্চারণ পর্যন্ত ২২টি পাঠ।" %}</span></span>
+  {% icon "chevron" "ico ico-lg" %}
+</a>
+<a href="{% url 'core:worksheets' %}" class="s-card is-pad mt-3 flex items-center gap-4 max-w-2xl">
+  <span class="text-3xl">🖨️</span>
+  <span class="flex-1"><span class="block text-lg font-extrabold">{% tr "Printable phonics worksheets" "প্রিন্ট করার ফনিক্স ওয়ার্কশিট" %}</span>
+    <span class="block text-sm s-muted">{% tr "Five free PDF packs: sounds, letter shapes, reading, spelling and tricky words." "পাঁচটি ফ্রি PDF: ধ্বনি, অক্ষর লেখা, পড়া, বানান ও কঠিন শব্দ।" %}</span></span>
+  {% icon "chevron" "ico ico-lg" %}
+</a>
+<p class="mt-2 text-sm s-muted">{% tr "Free: the 42 phonics sounds for children are in" "ফ্রি: শিশুদের ৪২টি ফনিক্স ধ্বনি আছে" %} <a class="font-bold text-sky-300" href="{% url 'learning:library' %}?skill=phonics">{% tr "Phonics" "ফনিক্স" %}</a>.</p>
+<div class="s-grid md-2 lg-3 mt-5">
+  {% for s in tiles %}
+  <a href="{% url 'studio:sound_drill' s.code %}" class="s-coach">
+    <span class="s-coach-ico" style="font-family: 'Charis SIL', serif; font-size: 1.6rem">/{{ s.code }}/</span>
+    <span class="min-w-0 flex-1"><span class="block text-lg font-extrabold">{{ s.example }} <span class="s-muted text-sm">· {{ s.count }} {% tr "items" "টি" %}</span></span>
+      <span class="block text-sm s-muted line-clamp-2">{% tr s.tip_en s.tip_bn %}</span></span>
+    {% if s.done %}<span class="text-emerald-300">{% icon "check-circle" %}</span>{% elif not paid %}<span class="s-muted">{% icon "lock" "ico ico-sm" %}</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

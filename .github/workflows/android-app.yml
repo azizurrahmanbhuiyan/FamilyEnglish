@@ -1,0 +1,90 @@
+# Builds the FamilyEnglish Android app on GitHub every time you push a change in mobile/.
+# The APK appears under Actions (every push) and under Releases (pushes to main) — free to download and share.
+#
+# Optional, so every new version installs over the old one: add these repository secrets
+# (Settings → Secrets and variables → Actions): ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD,
+# ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD. See mobile/LEARN.md, Lesson 2.
+name: Android app
+
+on:
+  push:
+    paths: ["mobile/**", ".github/workflows/android-app.yml"]
+  workflow_dispatch:        # also a "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write           # needed to publish the APK as a GitHub Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Make the Android project files (keeps our manifest and code)
+        run: flutter create --platforms=android --org global.familyenglish --project-name familyenglish_app .
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: App icon
+        run: dart run flutter_launcher_icons
+
+      - name: Check the code
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build the APK
+        run: flutter build apk --release --build-number=${{ github.run_number }} --build-name=0.1.${{ github.run_number }}
+
+      - name: Sign with your own key (if the secrets are set)
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          APK=build/app/outputs/flutter-apk/app-release.apk
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > /tmp/upload.jks
+            BT=$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)
+            "$ANDROID_HOME/build-tools/$BT/apksigner" sign --ks /tmp/upload.jks --ks-pass env:KS_PASS \
+              --ks-key-alias "$KEY_ALIAS" --key-pass env:KEY_PASS --out FamilyEnglish.apk "$APK"
+            rm /tmp/upload.jks
+            echo "Signed with your FamilyEnglish key."
+          else
+            cp "$APK" FamilyEnglish.apk
+            echo "::warning::No signing key set — this test build must be uninstalled before installing the next one."
+          fi
+
+      - name: Keep the APK (Actions → this run → Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: FamilyEnglish-apk
+          path: mobile/FamilyEnglish.apk
+
+      - name: Publish a free download (Releases)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: app-v0.1.${{ github.run_number }}
+          name: FamilyEnglish app 0.1.${{ github.run_number }}
+          make_latest: true
+          files: mobile/FamilyEnglish.apk
+          body: |
+            FamilyEnglish for Android — free. Download **FamilyEnglish.apk** below and open it on your phone
+            (allow "Install unknown apps" for your browser the first time). Sign in with your familyenglish.global account.

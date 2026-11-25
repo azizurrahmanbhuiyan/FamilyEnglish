@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load fe_ui %}
+{% block title %}AI level test{% endblock %}
+{% block content %}
+<p class="eyebrow"><span class="mr-1.5 text-brand-600">{% icon "test" "ico" %}</span>{% tr "AI level test" "AI লেভেল টেস্ট" %}</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl">{% tr "Find your level in every skill" "প্রতিটি দক্ষতায় আপনার লেভেল জানুন" %}</h1>
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <section class="card p-6 lg:col-span-2">
+    <ol class="space-y-3">
+      <li class="flex gap-3"><span class="text-2xl">👂</span><div><p class="font-extrabold">{% tr "Listening" "শোনা" %}</p><p class="text-sm text-stone-600">{% tr "Press play, then choose the answer." "প্লে চাপুন, তারপর উত্তর বেছে নিন।" %}</p></div></li>
+      <li class="flex gap-3"><span class="text-2xl">📖</span><div><p class="font-extrabold">{% tr "Reading" "পড়া" %}</p><p class="text-sm text-stone-600">{% tr "Short texts with questions." "ছোট লেখা ও প্রশ্ন।" %}</p></div></li>
+      <li class="flex gap-3"><span class="text-2xl">🧩</span><div><p class="font-extrabold">{% tr "Grammar" "ব্যাকরণ" %}</p><p class="text-sm text-stone-600">{% tr "Choose the right word." "সঠিক শব্দ বেছে নিন।" %}</p></div></li>
+      <li class="flex gap-3"><span class="text-2xl">✍️</span><div><p class="font-extrabold">{% tr "Writing" "লেখা" %}</p><p class="text-sm text-stone-600">{% tr "Write a short answer. The AI examiner marks it." "ছোট উত্তর লিখুন। AI পরীক্ষক নম্বর দেবে।" %}</p></div></li>
+      <li class="flex gap-3"><span class="text-2xl">🗣️</span><div><p class="font-extrabold">{% tr "Speaking" "বলা" %}</p><p class="text-sm text-stone-600">{% tr "Repeat two sentences and answer one question with the microphone." "মাইক্রোফোনে দুটি বাক্য বলুন ও একটি প্রশ্নের উত্তর দিন।" %}</p></div></li>
+    </ol>
+    <div class="mt-5 rounded-2xl bg-violet-50 p-4 text-sm">
+      <p class="font-extrabold text-violet-800">{% tr "How it adapts" "কীভাবে মানিয়ে নেয়" %}</p>
+      <p class="prose-bn mt-1">{% tr "Each section starts with Easy and Medium questions. If you do well, you get extra Advanced questions. Then the AI coach writes your report and orders your lessons: your weakest skill first." "প্রতিটি অংশ সহজ ও মাঝারি প্রশ্ন দিয়ে শুরু। ভালো করলে অতিরিক্ত উচ্চতর প্রশ্ন আসবে। শেষে AI কোচ রিপোর্ট লিখে পাঠগুলো সাজাবে — সবচেয়ে দুর্বল দক্ষতা আগে।" %}</p>
+      {% if not ai_on %}<p class="mt-2 text-xs text-stone-500">{% tr "AI marking is off on this site, so the built-in examiner marks writing and speaking." "এই সাইটে AI চালু নেই, তাই লেখা ও বলা বিল্ট-ইন পরীক্ষক নম্বর দেবে।" %}</p>{% endif %}
+    </div>
+    {% if young %}
+    <p class="mt-4 rounded-2xl bg-amber-50 p-4 text-sm"><strong>{% tr "For children under 7" "৭ বছরের কম শিশুদের জন্য" %}:</strong> {% tr "the picture-and-sound test fits better." "ছবি ও ধ্বনির টেস্টটি বেশি উপযোগী।" %} <a class="font-bold text-brand-700 underline" href="{% url 'learning:placement_young' %}">{% tr "Open it" "খুলুন" %}</a></p>
+    {% endif %}
+    <form method="post" action="{% url 'course:level_start' %}" class="mt-5">{% csrf_token %}
+      <button class="btn-primary">{% if unfinished %}{% tr "Start again" "আবার শুরু" %}{% else %}{% tr "Start the test" "টেস্ট শুরু করুন" %}{% endif %} →</button>
+      {% if unfinished %}<a class="btn-ghost ml-2" href="{% url 'course:level_step' unfinished.pk %}">{% tr "Continue where I stopped" "যেখানে থেমেছিলাম" %}</a>{% endif %}
+    </form>
+    <p class="mt-3 text-xs text-stone-500">⏱ 15–25 min · 🎧 {% tr "Use headphones if you can. The microphone works best in Chrome." "সম্ভব হলে হেডফোন ব্যবহার করুন। মাইক্রোফোন Chrome-এ সবচেয়ে ভালো কাজ করে।" %}</p>
+  </section>
+  <aside class="card p-5">
+    <p class="font-extrabold">{% tr "Earlier results" "আগের ফলাফল" %}</p>
+    <ul class="mt-2 space-y-2 text-sm">
+      {% for t in tests %}<li><a class="block rounded-xl bg-stone-50 px-3 py-2 hover:bg-brand-50" href="{% url 'course:level_result' t.pk %}"><strong>{{ t.finished_at|date:"j M Y" }}</strong><br><span class="text-stone-500">L {{ t.levels.listening }} · S {{ t.levels.speaking }} · R {{ t.levels.reading }} · W {{ t.levels.writing }} · G {{ t.levels.grammar }}</span></a></li>{% empty %}<li class="text-stone-500">{% tr "No tests yet." "এখনো কোনো টেস্ট নেই।" %}</li>{% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load fe_ui %}
+<article class="talk-card" data-talk data-who="{{ c.key }}">
+  <header class="flex items-center gap-2">
+    <span class="text-2xl">🧒</span><span class="font-display text-lg font-bold">{% tr "Me" "আমি" %} &amp; {{ c.name }}</span><span class="text-2xl">{{ c.emoji }}</span>
+    <span class="font-bn text-xs text-stone-500">({{ c.bn }})</span>
+    {% if c.key in said %}<span class="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-extrabold text-emerald-700">✅ {% tr "Said" "বলা হয়েছে" %}</span>{% endif %}
+  </header>
+  <div class="mt-3 space-y-2">
+    <div class="talk-line talk-me">
+      <button type="button" class="talk-play" data-line="{{ c.me }}" data-voice="child" aria-label="Play">▶</button>
+      <div class="min-w-0 flex-1"><p class="text-xs font-extrabold uppercase tracking-wide text-violet-600">{% tr "Me" "আমি" %}</p><p class="talk-en" data-me>{{ c.me }}</p>{% if c.me_bn %}<p class="talk-bn font-bn">{{ c.me_bn }}</p>{% endif %}</div>
+    </div>
+    <div class="talk-line talk-them">
+      <button type="button" class="talk-play" data-line="{{ c.them }}" data-voice="{{ c.key }}" aria-label="Play">▶</button>
+      <div class="min-w-0 flex-1"><p class="text-xs font-extrabold uppercase tracking-wide text-amber-700">{{ c.name }}</p><p class="talk-en">{{ c.them }}</p>{% if c.them_bn %}<p class="talk-bn font-bn">{{ c.them_bn }}</p>{% endif %}</div>
+    </div>
+  </div>
+  <div class="mt-3 flex flex-wrap items-center gap-2">
+    <button type="button" class="btn-ghost !px-3 !py-1.5 text-sm" data-play-both>🔊 {% tr "Play the talk" "কথোপকথন শুনুন" %}</button>
+    <button type="button" class="btn-ghost !px-3 !py-1.5 text-sm" data-say-mine>🎤 {% tr "Say my line" "আমার লাইন বলি" %}</button>
+    {% if c.key not in said and topic_slug %}
+    <form method="post" action="{% url 'learning:topic_said' topic_slug c.key %}" class="ml-auto">{% csrf_token %}
+      <button class="btn-primary !px-3 !py-1.5 text-sm">✅ {% tr "We said it together" "আমরা একসাথে বলেছি" %} · +{{ talk_xp }} XP</button>
+    </form>
+    {% elif c.key not in said and lesson_pk %}
+    <form method="post" action="{% url 'learning:talk_said' lesson_pk c.key %}" class="ml-auto">{% csrf_token %}
+      {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
+      <button class="btn-primary !px-3 !py-1.5 text-sm">✅ {% tr "We said it together" "আমরা একসাথে বলেছি" %} · +{{ talk_xp }} XP</button>
+    </form>
+    {% endif %}
+  </div>
+  <p class="mt-2 hidden rounded-xl bg-stone-50 p-2 text-sm" data-result></p>
+</article>

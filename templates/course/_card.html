@@ -1,0 +1,51 @@
+{% load fe_ui %}
+<article class="qcard" data-card data-slug="{{ c.slug }}" data-i="{{ c.i }}" data-t="{{ c.t }}" data-mode="{{ c.mode }}">
+  <div class="flex items-center gap-2">
+    <span class="qnum">{{ c.n }}</span>
+    <span class="qtag">{{ c.qt_label }}</span>
+    <span class="ml-auto text-xs font-bold text-stone-400" data-state></span>
+  </div>
+  {% if c.passage %}
+  <details class="mt-2 rounded-xl bg-amber-50 p-3 text-sm"><summary class="font-bold text-amber-800">📄 {{ c.passage.title }} — {% tr "tap to read" "পড়তে চাপুন" %}</summary>
+    <p class="mt-2 whitespace-pre-line text-stone-700">{{ c.passage.text }}</p></details>
+  {% endif %}
+  <p class="mt-2 text-lg font-bold text-stone-900">{{ c.q }}</p>
+  {% if c.say %}
+    <button type="button" class="btn-ghost mt-2 !py-1.5 text-sm" data-say="{{ c.say }}">▶ {% tr "Play" "শুনুন" %}</button>
+    <button type="button" class="btn-ghost mt-2 !py-1.5 text-sm" data-say="{{ c.say }}" data-rate="0.6">🐢 {% tr "Slow" "ধীরে" %}</button>
+  {% endif %}
+
+  {% if c.t == "choose" %}
+    <div class="mt-3 grid gap-2 sm:grid-cols-2">
+      {% for o in c.opts %}<button type="button" class="opt" data-opt="{{ o }}">{{ o }}</button>{% endfor %}
+    </div>
+  {% elif c.t == "type" %}
+    <form class="mt-3 flex gap-2" data-form>
+      <input class="field" data-answer autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="{% tr 'Type your answer' 'উত্তর লিখুন' %}">
+      <button class="btn-primary !px-4 !py-2">{% tr "Check" "যাচাই" %}</button>
+    </form>
+  {% elif c.t == "say" %}
+    <div class="mt-3 rounded-xl bg-brand-50 p-3">
+      <p class="font-display text-2xl font-bold text-brand-800">“{{ c.a }}”</p>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        <button type="button" class="btn-ghost !py-1.5 text-sm" data-say="{{ c.a }}">🔊 {% tr "Hear it" "শুনুন" %}</button>
+        <button type="button" class="speak-btn" data-mic title="{% tr 'Press and speak' 'চাপুন, তারপর বলুন' %}">🎤</button>
+        <span class="text-sm text-stone-500" data-heard></span>
+      </div>
+    </div>
+    <form class="mt-2 flex gap-2" data-form>
+      <input class="field !text-base" data-answer autocomplete="off" placeholder="{% tr 'No microphone? Type what you said' 'মাইক নেই? যা বললেন লিখুন' %}">
+      <button class="btn-primary !px-4 !py-2">{% tr "Check" "যাচাই" %}</button>
+    </form>
+  {% elif c.t == "open" %}
+    <form class="mt-3" data-form>
+      <textarea class="field" rows="4" data-answer placeholder="{% if c.mode == 'speak' %}{% tr 'Press 🎤 and speak, or type here…' '🎤 চেপে বলুন, অথবা এখানে লিখুন…' %}{% else %}{% tr 'Write here…' 'এখানে লিখুন…' %}{% endif %}"></textarea>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        {% if c.mode == "speak" %}<button type="button" class="speak-btn !h-11 !w-11 !text-lg" data-mic data-append>🎤</button>{% endif %}
+        <span class="text-xs text-stone-500">{% tr "At least" "অন্তত" %} {{ c.min }} {% tr "words" "শব্দ" %} · <span data-count>0</span></span>
+        <button class="btn-primary ml-auto !px-4 !py-2">{% tr "Check my answer" "উত্তর যাচাই" %}</button>
+      </div>
+    </form>
+  {% endif %}
+  <div data-fb></div>
+</article>

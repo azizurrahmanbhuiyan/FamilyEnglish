@@ -128,6 +128,7 @@ class PaymentForm(StyledMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["method"].choices = [(PaymentRequest.Method.BKASH, "bKash"), (PaymentRequest.Method.NAGAD, "Nagad")]
         self._style()
 
 

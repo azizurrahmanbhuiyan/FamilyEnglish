@@ -1,0 +1,114 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Today{% endblock %}{% block page_title %}{% tr "Today" "আজ" %}{% endblock %}
+{% block content %}
+<div class="s-grid lg-2-1">
+  <div class="s-grid">
+    {# hello + journey #}
+    <section class="s-card is-glow is-pad">
+      <div class="flex items-center gap-4">
+        {% include "_mascot.html" with cls="doel-sm !w-16 !h-16" uid="h" %}
+        <div>
+          <p class="s-muted text-sm">{% tr "Hello" "হ্যালো" %}, {{ current_learner.name }} {{ current_learner.avatar }}</p>
+          <p class="s-h2">{% tr "Your journey" "আপনার যাত্রা" %} · {{ journey.current }} → {{ journey.next }}</p>
+        </div>
+        <p class="ml-auto text-2xl font-extrabold">{{ journey.percent }}%</p>
+      </div>
+      <div class="s-bar mt-4"><i style="width: {{ journey.percent }}%"></i></div>
+      <p class="mt-2 text-sm s-muted">
+        {% if journey.measured %}{% tr "Measured from your speaking, grammar, listening and words." "আপনার বলা, ব্যাকরণ, শোনা ও শব্দ থেকে মাপা।" %}
+        {% if scores.ielts %} · IELTS ≈ <b class="text-white">{{ scores.ielts }}</b>{% endif %}
+        {% else %}{% tr "Do your first tasks and we will measure your level." "প্রথম কাজগুলো করুন, আমরা আপনার লেভেল মাপব।" %}{% endif %}
+      </p>
+    </section>
+
+    {# today's three tasks #}
+    <section>
+      <div class="flex items-baseline justify-between"><h2 class="s-h2">{% tr "Today's tasks" "আজকের কাজ" %}</h2>
+        <span class="s-muted text-sm">{% for t in tasks %}{% if t.done %}●{% else %}○{% endif %}{% endfor %}</span></div>
+      <div class="mt-3 s-grid">
+        {% for t in tasks %}
+        <a href="{% url 'studio:unit_lesson' t.unit.slug t.n %}" class="s-task {% if t.done %}is-done{% endif %}">
+          <span class="s-ring">{% if t.done %}{% icon "check-circle" "ico ico-lg" %}{% else %}{% icon t.icon "ico ico-lg" %}{% endif %}</span>
+          <span class="min-w-0"><span class="block font-extrabold">{% tr t.label t.label_bn %}</span>
+            <span class="block truncate text-sm s-muted">{{ t.unit.emoji }} {% tr t.unit.title t.unit.title_bn %}</span></span>
+          <span class="s-count">{% if t.done %}1/1{% else %}0/1{% endif %}{% if not paid and t.unit.slug not in free_units %} {% icon "lock" "ico ico-sm" %}{% endif %}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# continue learning #}
+    <section class="s-card is-pad">
+      <p class="s-eyebrow">{% tr "Continue learning" "শেখা চালিয়ে যান" %}</p>
+      <div class="mt-2 flex items-center gap-4">
+        <span class="text-4xl">{{ unit.emoji }}</span>
+        <div class="min-w-0 flex-1">
+          <p class="s-h2">{% tr unit.title unit.title_bn %}</p>
+          <p class="text-sm s-muted">{{ unit.level }} · {{ unit_progress.done }}/{{ unit_progress.total }} {% tr "lessons" "পাঠ" %}</p>
+          <div class="s-bar is-thin mt-2"><i style="width: {{ unit_progress.percent }}%"></i></div>
+        </div>
+      </div>
+      <a href="{% url 'studio:unit' unit.slug %}" class="s-btn is-block mt-4">{% if next_lesson %}{% tr "Start lessons" "পাঠ শুরু করুন" %}{% else %}{% tr "Review unit" "ইউনিট আবার দেখুন" %}{% endif %}</a>
+    </section>
+
+    {% if mission %}
+    <a href="{% url 'learning:today' %}" class="s-task">
+      <span class="s-ring">{% icon "calendar" "ico ico-lg" %}</span>
+      <span class="min-w-0"><span class="block font-extrabold">{% tr "Your study plan" "আপনার স্টাডি প্ল্যান" %}</span>
+        <span class="block truncate text-sm s-muted">{{ mission.title }}</span></span>
+      <span class="s-count">{% icon "chevron" %}</span>
+    </a>
+    {% else %}
+    <a href="{% url 'learning:plan_new' %}" class="s-task">
+      <span class="s-ring">{% icon "calendar" "ico ico-lg" %}</span>
+      <span><span class="block font-extrabold">{% tr "Make a full-course plan" "পুরো কোর্সের প্ল্যান করুন" %}</span>
+        <span class="block text-sm s-muted">{% tr "Kids 3 years · school 2 years · parents 1 year · IELTS 3–12 months" "শিশু ৩ বছর · স্কুল ২ বছর · অভিভাবক ১ বছর · IELTS ৩–১২ মাস" %}</span></span>
+      <span class="s-count">{% icon "chevron" %}</span>
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="s-grid content-start">
+    <section class="s-card is-pad">
+      <div class="flex items-center justify-between"><h2 class="s-h2">{% tr "This week" "এই সপ্তাহ" %}</h2>
+        <a href="{% url 'growth:streaks' %}" class="text-sm font-bold text-sky-300">{% icon "flame" "ico ico-sm" %} {{ bar.streak }} {% tr "day" "দিন" %}{% if lang != "bn" %}{{ bar.streak|pluralize }}{% endif %}</a></div>
+      <div class="s-week mt-4">
+        {% for d in streak_week %}<div class="s-day {% if d.on %}is-on{% endif %} {% if d.today %}is-today{% endif %}"><i>{% icon "flame" "ico" %}</i>{{ d.label }}</div>{% endfor %}
+      </div>
+    </section>
+
+    {% if word_of_day %}
+    <section class="s-card is-pad">
+      <p class="s-eyebrow">{% tr "Word of the day" "আজকের শব্দ" %}</p>
+      <div class="mt-2 flex items-center gap-3">
+        <p class="text-3xl font-extrabold">{{ word_of_day.word }}</p>
+        <button type="button" class="text-sky-300" data-say="{{ word_of_day.word }}" aria-label="Listen">{% icon "volume" "ico ico-lg" %}</button>
+      </div>
+      <p class="s-muted" style="font-family: 'Charis SIL', serif">{{ word_of_day.ipa }}</p>
+      <p class="mt-2">{{ word_of_day.definition }}</p>
+      {% if word_of_day.meaning_bn %}<p class="mt-1 font-bn s-sub">{{ word_of_day.meaning_bn }}</p>{% endif %}
+      <a href="{% url 'studio:dictionary' %}?q={{ word_of_day.word|urlencode }}" class="mt-3 inline-block text-sm font-bold text-sky-300">{% tr "Open in dictionary" "অভিধানে খুলুন" %} →</a>
+    </section>
+    {% endif %}
+
+    <a href="{% url 'studio:coach_detail' coach_pick.slug %}" class="s-coach">
+      <span class="s-coach-ico">{{ coach_pick.icon }}</span>
+      <span><span class="s-eyebrow">{% tr "Coach of the day" "আজকের কোচ" %}</span>
+        <span class="block font-extrabold text-lg">{% tr coach_pick.title coach_pick.title_bn %}</span>
+        <span class="block text-sm s-muted">{% tr coach_pick.desc coach_pick.desc_bn %}</span></span>
+    </a>
+
+    <a href="{% url 'studio:shorts' %}" class="s-coach">
+      <span class="s-coach-ico">🎬</span>
+      <span><span class="block font-extrabold text-lg">{% tr "Short videos" "ছোট ভিডিও" %} <span class="s-pill is-new">New</span></span>
+        <span class="block text-sm s-muted">{% tr "Watch a line, say it back, swipe for more." "লাইন দেখুন, বলুন, আরও দেখতে সোয়াইপ করুন।" %}</span></span>
+    </a>
+
+    <a href="{% url 'studio:analyzer' %}" class="s-coach">
+      <span class="s-coach-ico">🎙️</span>
+      <span><span class="block font-extrabold text-lg">{% tr "Speech analyzer" "স্পিচ অ্যানালাইজার" %} <span class="s-pill is-new">New</span></span>
+        <span class="block text-sm s-muted">{% tr "Record yourself and find out how you sound." "নিজের কথা রেকর্ড করে দেখুন কেমন শোনায়।" %}</span></span>
+    </a>
+  </div>
+</div>
+{% endblock %}

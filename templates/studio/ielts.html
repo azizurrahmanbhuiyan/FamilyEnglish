@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}IELTS speaking{% endblock %}{% block page_title %}IELTS{% endblock %}
+{% block content %}
+<a href="{% url 'studio:learn' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Learn" "শিখুন" %}</a>
+<div class="s-card is-glow is-pad mt-4 flex flex-wrap items-center gap-4">
+  <div class="flex-1"><p class="s-eyebrow">{% tr "Your speaking estimate" "আপনার স্পিকিং অনুমান" %}</p>
+    <p class="mt-1 text-3xl font-extrabold">{% if scores.ielts %}Band ≈ {{ scores.ielts }}{% else %}{% tr "Not measured yet" "এখনো মাপা হয়নি" %}{% endif %}</p>
+    <p class="text-sm s-sub">{% tr "From your speaking practice. Not an official IELTS score." "আপনার অনুশীলন থেকে। এটি অফিসিয়াল IELTS স্কোর নয়।" %}</p></div>
+  <a href="{% url 'learning:plan_new' %}" class="s-btn-ghost">{% tr "IELTS study plan (3–12 months)" "IELTS স্টাডি প্ল্যান (৩–১২ মাস)" %}</a>
+</div>
+<div class="s-grid md-3 mt-6">
+  {% for b in bands %}
+  <a href="{% url 'studio:ielts_band' b.band %}" class="s-card overflow-hidden">
+    <div class="grid h-32 place-items-center text-6xl font-extrabold" style="background: linear-gradient(135deg, {% cycle '#1d8fff, #2fe0b5' '#8b6bff, #1d8fff' '#ff6fa8, #8b6bff' %})">{{ b.band }}{% if b.band == 8 %}+{% endif %}</div>
+    <div class="p-5"><p class="text-xl font-extrabold">{% tr b.title b.title_bn %}</p><p class="mt-1 text-sm s-sub">{% tr b.desc b.desc_bn %}</p>
+      <p class="mt-3 text-sm s-muted">{{ b.done }}/{{ b.total }} {% tr "lessons completed" "পাঠ শেষ" %}</p><div class="s-bar is-thin mt-2"><i style="width: {{ b.percent }}%"></i></div></div>
+  </a>
+  {% endfor %}
+</div>
+<p class="mt-6 text-sm s-muted">{% tr "Practice questions are written by FamilyEnglish in the style of the test — not real exam questions." "অনুশীলনের প্রশ্নগুলো FamilyEnglish-এর লেখা, পরীক্ষার ধাঁচে — আসল পরীক্ষার প্রশ্ন নয়।" %}</p>
+{% endblock %}

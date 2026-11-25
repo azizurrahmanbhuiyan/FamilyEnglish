@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load fe fe_ui %}
+{% block title %}Writing helper{% endblock %}
+{% block content %}
+<p class="eyebrow">AI tools · writing</p>
+<h1 class="mt-1 font-display text-3xl font-bold sm:text-4xl"><span class="mr-1.5 text-brand-600">{% icon "pen" "ico" %}</span>Writing helper</h1>
+<p class="mt-1 max-w-2xl text-stone-600">Write a few sentences. You'll get them back corrected, with a short Bangla note for each fix.</p>
+<p class="font-bn text-sm text-stone-500">লিখুন — সংশোধন আর বাংলায় কারণ দেখুন, তারপর নিজে আবার লিখুন।</p>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <form method="post" class="card p-5">{% csrf_token %}
+    <p class="font-extrabold">Pick a topic (or write anything)</p>
+    <div class="mt-2 flex flex-wrap gap-2">
+      {% for p in prompts %}<button type="button" class="chip" onclick="document.getElementById('prompt').value=this.textContent;document.getElementById('text').focus()">{{ p }}</button>{% endfor %}
+    </div>
+    <input id="prompt" name="prompt" class="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" placeholder="Topic (optional)">
+    <textarea id="text" name="text" rows="8" maxlength="2000" class="mt-3 w-full rounded-xl border border-stone-300 px-3 py-2 text-lg" placeholder="Write here…" required></textarea>
+    <div class="mt-3 grid gap-2 sm:grid-cols-2">
+      <button class="btn-primary w-full">Check my writing</button>
+      <button class="btn-ghost w-full" name="action" value="model" formnovalidate>💡 Show me a model answer</button>
+    </div>
+    <p class="mt-2 text-xs text-stone-500">Model answer: type or pick a topic first. You can also paste your own exam task as the topic to have your answer marked for it.</p>
+    <p class="mt-2 text-xs text-stone-500">{% if ai_on %}AI checks left today: {{ ai_left }}. After that, the built-in checker is used.{% else %}Built-in checker: capital letters, full stops, a/an, he/she + verb-s and common mistakes Bangla speakers make.{% endif %}</p>
+  </form>
+
+  <section class="card p-5">
+    {% if model %}
+      <p class="font-extrabold">💡 Model answer</p>
+      <p class="text-sm text-stone-500">Topic: {{ model.prompt }}</p>
+      <p class="mt-2 whitespace-pre-line rounded-xl bg-violet-50 p-3 text-lg">{{ model.text }}</p>
+      <p class="mt-2 text-sm text-stone-600">Read it aloud, close it, then write your own answer in your words.</p>
+    {% elif result %}
+      {% if estimate %}<p class="mb-3 rounded-xl bg-amber-50 p-3 text-sm font-bold text-amber-800">📏 Estimated writing level: {{ estimate.level }}/8 · {{ estimate.band }}{% if estimate.ai %} (AI){% endif %}</p>{% endif %}
+      <p class="font-extrabold">Your writing</p>
+      <p class="mt-1 whitespace-pre-line rounded-xl bg-stone-50 p-3 text-stone-700">{{ result.text }}</p>
+      <p class="mt-4 font-extrabold text-emerald-700">Corrected</p>
+      <p class="mt-1 whitespace-pre-line rounded-xl bg-emerald-50 p-3 text-lg">{{ result.corrected }}</p>
+      {% with notes=result.feedback.splitlines %}
+      {% if notes %}
+      <p class="mt-4 font-extrabold">Why</p>
+      <ul class="prose-bn mt-1 list-disc space-y-1 pl-5">{% for n in notes %}<li>{{ n }}</li>{% endfor %}</ul>
+      {% else %}<p class="mt-4 font-bold text-emerald-700">🎉 No mistakes found. Well done!</p>{% endif %}
+      {% endwith %}
+      <p class="mt-3 text-xs text-stone-400">{% if result.ai_used %}Checked by the AI coach{% else %}Checked by the built-in checker{% endif %}</p>
+    {% else %}
+      <p class="text-5xl">📝</p>
+      <p class="mt-2 font-extrabold">How it helps</p>
+      <ul class="mt-2 space-y-1 text-sm text-stone-600">
+        <li>✔ Fixes capital letters, full stops and spacing</li>
+        <li>✔ he / she / it + verb-s (She <strong>goes</strong>)</li>
+        <li>✔ a / an (an apple)</li>
+        <li>✔ Common mistakes: “cousin brother”, “discuss about”, “I am agree”</li>
+      </ul>
+    {% endif %}
+  </section>
+</div>
+
+{% if history %}
+<section class="mt-6 card p-5">
+  <h2 class="font-extrabold">Earlier writing</h2>
+  <ul class="mt-2 divide-y divide-stone-100 text-sm">
+    {% for h in history %}<li class="py-2"><span class="text-stone-400">{{ h.created_at|date:"j M" }}</span> · {{ h.corrected|truncatechars:110 }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "Word weeks" "সাপ্তাহিক শব্দ" %}{% endblock %}
+{% block content %}
+<p class="eyebrow">{% tr "Vocabulary" "শব্দভান্ডার" %}</p>
+<h1 class="mt-1 font-display text-3xl font-semibold">{% tr series_info|get_item:series|get_item:"en" series_info|get_item:series|get_item:"bn" %}</h1>
+<p class="mt-1 max-w-2xl text-stone-600">{% if series == "kids3000" %}{% tr "The 3000 English words used most often, about 19 a week for 3 years (children and grandparents) or 58 a week for 1 year (parents). Hear each word in a British voice, say it, spell it and use it." "সবচেয়ে বেশি ব্যবহৃত ৩০০০ শব্দ — ৩ বছরে সপ্তাহে প্রায় ১৯টি (শিশু ও দাদা-দাদি) বা ১ বছরে সপ্তাহে ৫৮টি (অভিভাবক)। প্রতিটি শব্দ ব্রিটিশ উচ্চারণে শুনুন, বলুন, বানান করুন, বাক্যে লিখুন।" %}{% else %}{% tr "The 7000 English words used most often — about 67 a week over 2 years for school students. IELTS learners take the part their level needs in 3 to 12 months. This is the range for IELTS band 6.5–7." "সবচেয়ে বেশি ব্যবহৃত ৭০০০ শব্দ — স্কুল শিক্ষার্থীরা ২ বছরে সপ্তাহে প্রায় ৬৭টি শেখে। IELTS শিক্ষার্থীরা লেভেল অনুযায়ী দরকারি অংশ ৩ থেকে ১২ মাসে শেখে। IELTS ৬.৫–৭ ব্যান্ডের জন্য এটুকু দরকার।" %}{% endif %}</p>
+
+<div class="mt-4 flex flex-wrap items-center gap-2">
+  {% for key, info in series_info.items %}<a href="?list={{ key }}" class="chip {% if key == series %}is-on{% endif %}">{% tr info.en info.bn %}{% if key == mine %} · {% tr "your list" "আপনার তালিকা" %}{% endif %}</a>{% endfor %}
+</div>
+
+<div class="mt-5 grid gap-4 sm:grid-cols-3">
+  <div class="stat"><span class="icon-tile">{% icon "cards" %}</span><p class="stat-num mt-2">{{ known }}</p><p class="stat-label">{% tr "words learned" "শেখা শব্দ" %} · {{ percent }}%</p></div>
+  <div class="stat"><span class="icon-tile is-warm">{% icon "calendar" %}</span><p class="stat-num mt-2">{{ rows|length }}</p><p class="stat-label">{% tr "weeks" "সপ্তাহ" %} · {{ total }} {% tr "words" "শব্দ" %}</p></div>
+  {% if next %}<a href="{% url 'practice:word_week' next.deck.slug %}" class="stat flex items-center gap-3 hover:border-brand-500"><span class="icon-tile is-sky">{% icon "play" %}</span><span><span class="block font-extrabold">{% tr "Continue" "চালিয়ে যান" %}: {% tr "week" "সপ্তাহ" %} {{ next.deck.week }}</span><span class="text-xs text-stone-500">{{ next.deck.title }}</span></span></a>{% endif %}
+</div>
+
+<div class="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+  {% for r in rows %}
+  <a href="{% url 'practice:word_week' r.deck.slug %}" class="card flex items-center gap-3 p-3 hover:border-brand-500 {% if not r.open %}locked-row{% endif %}">
+    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl {% if r.done %}bg-brand-600 text-white{% else %}bg-stone-100 text-stone-600{% endif %} text-sm font-extrabold">{{ r.deck.week }}</span>
+    <span class="min-w-0 flex-1"><span class="block truncate text-sm font-bold">{{ r.deck.title }}</span>
+      <span class="text-xs text-stone-500">{{ r.learned }}/{{ r.deck.n }} {% tr "learned" "শেখা" %}</span></span>
+    {% if not r.open %}<span class="text-stone-400">{% icon "lock" "ico ico-sm" %}</span>{% elif r.deck.slug == "kids3000-w001" and not current_family.has_full_access %}<span class="free-pill">{% tr "free" "ফ্রি" %}</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+<p class="mt-6 text-xs text-stone-500">{% tr "Word lists made by FamilyEnglish from open word-frequency data (wordfreq) with British pronunciations (Britfone). They cover the same everyday words as well-known learner lists." "শব্দতালিকা FamilyEnglish তৈরি করেছে উন্মুক্ত শব্দ-ব্যবহার তথ্য (wordfreq) ও ব্রিটিশ উচ্চারণ (Britfone) থেকে।" %}</p>
+{% endblock %}

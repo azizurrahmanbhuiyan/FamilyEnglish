@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{{ a.title }}{% endblock %}{% block page_title %}{% tr "Read and talk" "পড়ুন ও বলুন" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <a href="{% url 'talk:read' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Library" "লাইব্রেরি" %}</a>
+  <p class="s-eyebrow mt-4">{{ cat.emoji }} {{ cat.title }}</p>
+  <h1 class="text-3xl font-extrabold">{{ a.title }}</h1>
+  <article class="s-card is-pad mt-4 t-article">
+    <button type="button" class="s-chip-audio" id="t-listen">🔈 {% tr "Listen" "শুনুন" %}</button>
+    {% for p in paras %}<p class="t-para" data-say="{{ p }}">{{ p }}</p>{% endfor %}
+  </article>
+  {% if a.words %}<section class="s-card is-pad mt-4"><h2 class="s-h2">{% tr "Useful words" "দরকারি শব্দ" %}</h2>
+    <ul class="mt-2 grid gap-1">{% for w in a.words %}<li data-say="{{ w.0 }}" class="t-word"><b>{{ w.0 }}</b> <span class="s-muted">— {{ w.1 }}</span></li>{% endfor %}</ul></section>{% endif %}
+  <section class="s-card is-pad mt-4"><h2 class="s-h2">{% tr "We'll talk about" "যা নিয়ে কথা হবে" %}</h2>
+    <ol class="mt-2 list-decimal pl-6 grid gap-1">{% for q in a.questions %}<li>{{ q }}</li>{% endfor %}</ol></section>
+  <form method="post" action="{% url 'talk:go_ref' 'article' a.slug %}" class="mt-5">{% csrf_token %}<button class="s-btn is-block">🎙️ {% tr "Talk about it" "এটা নিয়ে কথা বলুন" %}</button></form>
+</div>
+{% endblock %}
+{% block scripts %}<script>
+(function () {
+  var rate = {{ tts.rate }}, pitch = {{ tts.pitch }};
+  function say(t) { var u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate * 0.95; u.pitch = pitch; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+  document.querySelectorAll('[data-say]').forEach(function (el) { el.addEventListener('click', function () { say(el.dataset.say); }); });
+  document.getElementById('t-listen').addEventListener('click', function () {
+    speechSynthesis.cancel();
+    document.querySelectorAll('.t-para').forEach(function (p) { var u = new SpeechSynthesisUtterance(p.dataset.say); u.lang = 'en-GB'; u.rate = rate * 0.95; u.pitch = pitch; speechSynthesis.speak(u); });
+  });
+})();
+</script>{% endblock %}

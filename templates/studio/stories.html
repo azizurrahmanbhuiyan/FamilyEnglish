@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}Stories{% endblock %}{% block page_title %}{% tr "Stories" "গল্প" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-3xl">
+  <a href="{% url 'studio:pronunciation' %}" class="inline-flex items-center gap-2 s-muted font-bold">{% icon "back" %} {% tr "Pronunciation course" "উচ্চারণ কোর্স" %}</a>
+  <h1 class="mt-4 text-3xl font-extrabold">{% tr "Stories for shadowing" "শ্যাডোয়িংয়ের গল্প" %}</h1>
+  <p class="mt-1 s-sub">{% tr "Listen to each line, then say it straight after — copy the links, the weak words and the tune. New to shadowing?" "প্রতিটি লাইন শুনে সাথে সাথে বলুন — জোড়া, দুর্বল শব্দ আর সুর নকল করুন। শ্যাডোয়িং নতুন?" %}
+    <a class="font-bold text-sky-300" href="{% url 'studio:pron_lesson' shadowing.slug %}">{% tr "Learn how" "কীভাবে করবেন দেখুন" %}</a></p>
+  <div class="mt-5 grid gap-3">
+    {% for st in stories %}
+    <a href="{% url 'studio:story' st.slug %}" class="s-gcard">
+      <span class="s-gicon">{{ st.emoji }}</span>
+      <span class="min-w-0 flex-1"><span class="block text-xl font-extrabold">{% tr st.title st.title_bn %}</span>
+        <span class="block s-muted">{{ st.level }} · {{ st.lines|length }} {% tr "lines" "লাইন" %} · {% tr st.focus st.focus %}</span></span>
+      {% if st.done and st.quiz_done %}<span class="text-emerald-300">{% icon "check-circle" "ico ico-lg" %}</span>
+      {% elif not paid and st.slug not in free %}<span class="s-muted">{% icon "lock" %}</span>
+      {% elif not paid %}<span class="s-pill is-free">Free</span>{% else %}<span class="s-muted">{% icon "chevron" %}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

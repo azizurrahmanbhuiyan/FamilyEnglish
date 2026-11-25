@@ -1,3 +1,6 @@
+import datetime as _dt
+
+PAID_UNTIL = _dt.date.today() + _dt.timedelta(days=60)  # tests use a paying family unless they say otherwise
 from datetime import date
 
 from django.contrib.auth import get_user_model
@@ -8,7 +11,7 @@ from django.urls import reverse
 from core.models import Family, Learner, PaymentRequest, Plan
 
 from . import planner
-from .models import Lesson, PlacementQuestion, PlanDay, Progress
+from .models import Lesson, Module, PlacementQuestion, PlanDay, Progress
 from .placement import score_ladder, score_reader, score_young_child
 
 
@@ -19,18 +22,22 @@ class SeededTestCase(TestCase):
         User = get_user_model()
         cls.user = User.objects.create_user("abba@example.com", "abba@example.com", "safe-pass-123",
                                             first_name="Aziz")
-        cls.family = Family.objects.create(name="Bhuiyan family", owner=cls.user)
+        cls.family = Family.objects.create(name="Bhuiyan family", owner=cls.user, paid_until=PAID_UNTIL)
         cls.child = Learner.objects.create(family=cls.family, name="Rafi", birth_year=2021)
 
 
 class SeedTests(SeededTestCase):
-    def test_level0_has_42_sounds_in_7_groups(self):
-        lessons = Lesson.objects.filter(module__level__number=0)
-        self.assertEqual(lessons.count(), 42)
-        self.assertEqual(lessons.values("module").distinct().count(), 7)
-        first = lessons.first()
+    def test_phonics_year_is_36_weeks_of_5_days(self):
+        for n in (0, 1, 2):
+            lessons = Lesson.objects.filter(module__level__number=n)
+            self.assertEqual(lessons.count(), 60)
+            self.assertEqual(lessons.values("module").distinct().count(), 12)
+        first = Lesson.objects.filter(module__level__number=0).first()
         self.assertEqual(first.focus, "/s/")
         self.assertEqual(first.items.count(), 3)
+        self.assertEqual(first.module.plan["week"], 1)
+        weeks = sorted(m.plan["week"] for m in Module.objects.filter(level__number__lte=2))
+        self.assertEqual(weeks, list(range(1, 37)))
 
     def test_every_lesson_has_video_note_and_task(self):
         for lesson in Lesson.objects.all():
@@ -69,8 +76,8 @@ class PlannerTests(SeededTestCase):
     def test_build_plan_places_every_lesson_once(self):
         plan = planner.build_plan(self.child, 0, 0, 3, 5, start=date(2026, 11, 15))
         lesson_days = plan.days.filter(kind="lesson")
-        self.assertEqual(lesson_days.count(), 42)
-        self.assertEqual(plan.days.filter(kind="review").count(), 42 // planner.REVIEW_EVERY)
+        self.assertEqual(lesson_days.count(), 60)
+        self.assertEqual(plan.days.filter(kind="review").count(), 60 // planner.REVIEW_EVERY)
         self.assertTrue(plan.days.filter(kind="family").exists())
         for d in plan.days.exclude(kind="family"):
             self.assertIn(d.date.weekday(), planner.WEEKDAY_SETS[5])
@@ -132,8 +139,15 @@ class FlowTests(SeededTestCase):
     def test_signup_creates_family(self):
         self.client.logout()
         r = self.client.post(reverse("core:signup"), {
+            "language": "en", "country": "BD", "phone": "01712-345678",
             "first_name": "Nani", "email": "Nani@Example.com", "family_name": "Nani's family",
             "relation": "Grandmother", "password1": "very-safe-pass-9", "password2": "very-safe-pass-9"})
+        self.assertRedirects(r, reverse("world:verify"))
+        import re
+
+        from django.core import mail
+        code = re.search(r"\b(\d{6})\b", mail.outbox[-1].subject).group(1)
+        r = self.client.post(reverse("world:verify"), {"code": code})
         self.assertRedirects(r, reverse("core:learner_add"))
         self.assertTrue(Family.objects.filter(owner__username="nani@example.com").exists())
 
@@ -155,7 +169,10 @@ class FlowTests(SeededTestCase):
         lesson = Lesson.objects.filter(module__level__number=0).first()
         r = self.client.get(reverse("learning:lesson", args=[lesson.pk]))
         self.assertContains(r, "The sound /s/")
-        self.assertContains(r, "youtube-nocookie.com/embed/wpoHQN2X8mM")
+        # Long videos and compilations are never embedded; until short clips are found, a link to
+        # YouTube videos under 4 minutes is shown instead.
+        self.assertNotContains(r, "youtube-nocookie.com/embed/wpoHQN2X8mM")
+        self.assertContains(r, "under 4 minutes")
         r = self.client.post(reverse("learning:lesson_complete", args=[lesson.pk]), {"score": "100"})
         self.assertRedirects(r, reverse("learning:today"))
         self.assertEqual(Progress.objects.get(learner=self.child, lesson=lesson).stars, 3)
@@ -186,7 +203,7 @@ class FlowTests(SeededTestCase):
                                                    "transaction_id": "TRX123"})
         self.assertRedirects(r, reverse("core:family"))
         pay = PaymentRequest.objects.get(transaction_id="TRX123")
-        self.assertEqual(pay.amount_bdt, 1799)
+        self.assertEqual(pay.amount_bdt, 2500)
         pay.confirm()
         self.family.refresh_from_db()
         self.assertTrue(self.family.is_paid_active)
@@ -224,11 +241,12 @@ class DashboardTests(SeededTestCase):
         for name in ["learning:today", "learning:videos", "learning:progress", "learning:library"]:
             r = self.client.get(reverse(name))
             self.assertEqual(r.status_code, 200, name)
-            self.assertContains(r, "dash-sidebar")
+            self.assertContains(r, "fe-side")
+            self.assertContains(r, "fe-tabbar")
 
     def test_video_filters(self):
         r = self.client.get(reverse("learning:videos"), {"level": "0"})
-        self.assertEqual(r.context["count"], 42)
+        self.assertEqual(r.context["count"], 60)
         r = self.client.get(reverse("learning:videos"), {"skill": "speaking"})
         self.assertTrue(all(c["lesson"].skill == "speaking" for g in r.context["groups"] for c in g["cards"]))
         r = self.client.get(reverse("learning:library"), {"activity": "dictation"})

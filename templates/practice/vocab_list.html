@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ deck.title }} · word list{% endblock %}
+{% block content %}
+<a href="{% url 'practice:vocab_deck' deck.slug %}" class="text-sm font-bold text-stone-500 hover:text-brand-600">← Flashcards</a>
+<h1 class="mt-2 font-display text-3xl font-bold">{{ deck.emoji }} {{ deck.title }} <span class="font-bn text-xl text-stone-500">{{ deck.title_bn }}</span></h1>
+<div class="mt-5 card overflow-x-auto p-2">
+  <table class="w-full text-left text-sm">
+    <thead class="text-xs uppercase text-stone-400"><tr><th class="p-2"></th><th class="p-2">Word</th><th class="p-2">Type</th><th class="p-2">Meaning</th><th class="p-2">Definition &amp; example</th><th class="p-2">My status</th></tr></thead>
+    <tbody class="divide-y divide-stone-100">
+    {% for row in rows %}<tr>
+      <td class="p-2"><button type="button" class="speak-btn !h-8 !w-8 !text-sm" data-say="{{ row.w.word }}">▶</button></td>
+      <td class="p-2 text-lg font-extrabold">{{ row.w.emoji }} {{ row.w.word }}</td>
+      <td class="p-2 text-stone-500">{{ row.w.pos }}</td>
+      <td class="p-2 font-bn">{{ row.w.meaning_bn }}</td>
+      <td class="p-2"><span class="text-stone-600">{{ row.w.definition }}</span><br><em class="text-stone-500">{{ row.w.example }}</em></td>
+      <td class="p-2 font-bold">{% if not row.r %}<span class="text-stone-400">New</span>{% elif row.r.box >= learned_box %}<span class="text-emerald-700">Learned</span>{% elif row.r.last_grade == 0 %}<span class="text-rose-600">Missed</span>{% else %}<span class="text-amber-600">Learning</span>{% endif %}</td>
+    </tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

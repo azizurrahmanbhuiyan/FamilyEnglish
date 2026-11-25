@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load fe_ui static %}
+{% block title %}{{ topic.title }}{% endblock %}
+{% block content %}
+<a href="{% url 'learning:talk_hub' %}?tab={{ topic.group }}" class="text-sm font-bold text-stone-400 hover:text-brand-600">← {% tr "Talk at home" "বাসায় কথা বলি" %} · {{ topic.get_group_display }}</a>
+<div class="mt-2 flex flex-wrap items-center gap-3">
+  <span class="text-5xl">{{ topic.emoji }}</span>
+  <div><h1 class="font-display text-3xl font-bold sm:text-4xl">{{ topic.title }}</h1><p class="font-bn text-lg text-stone-500">{{ topic.title_bn }}</p></div>
+</div>
+{% if topic.intro_bn %}<p class="prose-bn mt-2 max-w-3xl">{{ topic.intro_bn }}</p>{% endif %}
+
+<section class="mt-6 card p-5">
+  <div class="flex items-center gap-2"><h2 class="font-display text-2xl font-bold">🖼️ {% tr "Words" "শব্দ" %}</h2><span class="text-sm text-stone-500">{% tr "Tap a card to hear it" "শুনতে কার্ডে চাপুন" %}</span></div>
+  <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    {% for w in topic.words %}
+    <button type="button" class="rounded-2xl border-2 border-stone-100 bg-white p-3 text-center hover:border-brand-300" data-say="{{ w.word }}">
+      <span class="block text-4xl">{{ w.emoji }}</span><span class="mt-1 block font-extrabold">{{ w.word }}</span><span class="block font-bn text-sm text-stone-500">{{ w.bn }}</span>
+    </button>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mt-6 card p-5">{% include "learning/_clips.html" %}</section>
+
+{% if topic.rhyme %}
+<section class="mt-6 card bg-amber-50 p-5">
+  <div class="flex items-center gap-2"><h2 class="font-display text-2xl font-bold">🎵 {% tr "Say the rhyme together" "একসাথে ছড়া বলি" %}</h2>
+    <button type="button" class="btn-ghost ml-auto !py-1.5 text-sm" data-say="{{ topic.rhyme }}" data-rate="0.75">▶ {% tr "Listen" "শুনুন" %}</button></div>
+  <p class="mt-2 whitespace-pre-line font-display text-2xl leading-relaxed">{{ topic.rhyme }}</p>
+  {% if topic.rhyme_note %}<p class="mt-1 text-xs text-stone-500">{{ topic.rhyme_note }}</p>{% endif %}
+</section>
+{% endif %}
+
+<section id="talk" class="mt-6 card scroll-mt-24 p-5">
+  <div class="flex flex-wrap items-end gap-3">
+    <div>
+      <h2 class="font-display text-2xl font-bold"><span class="mr-1.5 text-brand-600">{% icon "family" "ico" %}</span>{% tr "Talk at home" "বাসায় কথা বলি" %}</h2>
+      <p class="text-sm text-stone-600">{% tr "The child says the first line, the family member answers. Then swap!" "শিশু প্রথম লাইন বলবে, পরিবারের সদস্য উত্তর দেবেন। তারপর ভূমিকা বদলান!" %}</p>
+      {% if talk_custom %}<p class="mt-1 text-xs font-bold text-violet-700">✨ {% tr "Your family's AI sentences" "আপনার পরিবারের AI বাক্য" %} · <a class="underline" href="?talk=original#talk">{% tr "show the original ones" "মূল বাক্যগুলো দেখুন" %}</a></p>
+      {% elif talk_has_custom %}<p class="mt-1 text-xs font-bold text-violet-700"><a class="underline" href="?#talk">✨ {% tr "Show our AI sentences" "আমাদের AI বাক্য দেখুন" %}</a></p>{% endif %}
+    </div>
+    <div class="ml-auto flex flex-wrap gap-2">
+      <button type="button" class="btn-ghost !py-2 text-sm" data-toggle-bn>🇧🇩 {% tr "Hide / show Bangla" "বাংলা লুকান / দেখান" %}</button>
+      {% if ai_on %}<form method="post" action="{% url 'learning:topic_ai' topic.slug %}">{% csrf_token %}<button class="btn-ghost !py-2 text-sm" onclick="this.disabled=true;this.form.submit();this.textContent='✨ …'">✨ {% tr "Make new sentences with AI" "AI দিয়ে নতুন বাক্য" %}</button></form>{% endif %}
+    </div>
+  </div>
+  <div class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    {% with said=talk_said topic_slug=topic.slug %}{% for c in talk %}{% include "learning/_talk_card.html" %}{% endfor %}{% endwith %}
+  </div>
+</section>
+
+<div class="mt-6 flex justify-between text-sm font-bold">
+  {% if prev %}<a class="hover:text-brand-600" href="{% url 'learning:talk_topic' prev.slug %}">← {{ prev.emoji }} {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a class="hover:text-brand-600" href="{% url 'learning:talk_topic' next.slug %}">{{ next.emoji }} {{ next.title }} →</a>{% endif %}
+</div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/family-talk.js' %}"></script>{% endblock %}
