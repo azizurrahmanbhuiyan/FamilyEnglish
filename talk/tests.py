@@ -17,8 +17,8 @@ from .models import Article, TalkSession
 
 class ContentTests(TestCase):
     def test_counts_and_unique_slugs(self):
-        self.assertEqual(len(RP.ROLEPLAYS), 41)
-        self.assertEqual(len(RP.BY_SLUG), 41)
+        self.assertEqual(len(RP.ROLEPLAYS), 57)
+        self.assertEqual(len(RP.BY_SLUG), 57)
         self.assertTrue(set(RP.POPULAR) <= set(RP.BY_SLUG) and RP.FREE <= set(RP.BY_SLUG))
         for r in RP.ROLEPLAYS:
             self.assertEqual(len(r["lines"]), 4, r["slug"])
@@ -206,7 +206,7 @@ class TalkApiTests(TestCase):
         self.assertIn(home["daily"]["category"], ["pets", "food", "music"])
         self.assertEqual(home["for_you"][0]["category"], "travel")
         rp = self.c.get("/api/v1/talk/roleplays/").json()
-        self.assertEqual(sum(len(c["items"]) for c in rp["categories"]), 41)
+        self.assertEqual(sum(len(c["items"]) for c in rp["categories"]), 57)
         self.assertEqual(self.c.post("/api/v1/talk/start/", {"kind": "roleplay", "ref": "doctor"}, format="json").status_code, 402)
         s = self.c.post("/api/v1/talk/start/", {"kind": "roleplay", "ref": "directions"}, format="json").json()
         self.assertEqual(len(s["messages"]), 1)

@@ -122,3 +122,15 @@ def guess(request):
     if iso not in phonenumbers.SUPPORTED_REGIONS:
         iso = "BD"
     return iso, lang or "en"
+
+
+# The "What is your native language?" cards shown at sign-up to people outside Bangladesh: (language, flag country).
+PICKER = [("bn", "BD"), ("hi", "IN"), ("ur", "PK"), ("ar", "SA"), ("es", "ES"), ("pt", "BR"), ("fr", "FR"), ("zh-Hans", "CN"),
+          ("ru", "RU"), ("tr", "TR"), ("id", "ID"), ("vi", "VN"), ("ne", "NP"), ("de", "DE"), ("it", "IT"), ("ko", "KR"),
+          ("ja", "JP"), ("pl", "PL"), ("uk", "UA"), ("th", "TH"), ("he", "IL"), ("en", "GB")]
+
+
+def picker(ui="en"):
+    """[{code, flag, name (in the page language), native}] for the native-language cards."""
+    names = {c: (n, u) for c, n, u in languages(ui)}
+    return [{"code": c, "flag": flag(iso), "native": names[c][0], "name": names[c][1]} for c, iso in PICKER if c in names]

@@ -47,7 +47,7 @@ class TodayScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(value: (journey['percent'] as num) / 100, minHeight: 10, color: FE.mint, backgroundColor: Colors.white12),
+                    child: LinearProgressIndicator(value: (journey['percent'] as num) / 100, minHeight: 10, color: FE.mint, backgroundColor: FE.line),
                   ),
                   if (d['ielts'] != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text('IELTS ≈ ${d['ielts']}', style: const TextStyle(color: FE.soft))),
                 ]),
@@ -79,8 +79,8 @@ class TodayScreen extends StatelessWidget {
                     Column(children: [
                       CircleAvatar(
                         radius: 18,
-                        backgroundColor: day['on'] == true ? FE.coral : Colors.white10,
-                        child: Icon(Icons.local_fire_department, size: 18, color: day['on'] == true ? Colors.white : Colors.white30),
+                        backgroundColor: day['on'] == true ? FE.coral : FE.line,
+                        child: Icon(Icons.local_fire_department, size: 18, color: day['on'] == true ? Colors.white : FE.soft),
                       ),
                       const SizedBox(height: 4),
                       Text('${day['label']}'.substring(0, 2), style: TextStyle(fontSize: 12, fontWeight: day['today'] == true ? FontWeight.w800 : FontWeight.w400)),

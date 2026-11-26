@@ -68,7 +68,7 @@ class TalkScreen extends StatelessWidget {
                     Text('$minutes / $goal min', style: const TextStyle(fontWeight: FontWeight.w700)),
                   ]),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: goal == 0 ? 0.0 : (minutes / goal).clamp(0, 1).toDouble(), color: FE.mint, backgroundColor: Colors.white12),
+                  LinearProgressIndicator(value: goal == 0 ? 0.0 : (minutes / goal).clamp(0, 1).toDouble(), color: FE.mint, backgroundColor: FE.line),
                   const SizedBox(height: 16),
                   Text('${daily['emoji']} Daily talk: ${daily['title']}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
                   const SizedBox(height: 6),

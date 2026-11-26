@@ -143,7 +143,44 @@ def unit_detail(request, slug):
         data["phrases"] = [{"text": t, "sound": s, "bn": bn, "tip_en": S.tip(s)[0], "tip_bn": S.tip(s)[1]} for t, s, bn in u["phrases"]]
         data["conversation"] = [{"coach": b, "reply": r, "hint": h} for b, r, h in u["convo"]]
         data["speak_prompt"] = u["speak"]
+        data["speak_seconds"], data["speak_min_words"] = 60, 45
+        data["grammar_lesson"] = _grammar_json(G.BY_SLUG[u["grammar"]])
     return Response(data)
+
+
+def _grammar_json(g):
+    """A grammar lesson for the app: rule, examples and practice (fill / fix / say / make)."""
+    practice = []
+    for p in g["practice"]:
+        if p[0] in ("fill", "fix"):
+            practice.append({"type": p[0], "prompt": p[1], "accepted": list(p[2])})
+        elif p[0] == "say":
+            practice.append({"type": "say", "prompt": p[1]})
+        else:
+            practice.append({"type": "make", "prompt": p[1], "pattern": p[2]})
+    return {"slug": g["slug"], "key": E.grammar_key(g["slug"]), "title": g["title"], "title_bn": g["title_bn"],
+            "hello": g["hello"], "formula": [t for t, _ in g["formula"]], "rule": g["rule"],
+            "examples": [{"en": en, "bn": bn} for en, bn in g["examples"]], "practice": practice}
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def analyse(request):
+    """POST {key, prompt, transcript, seconds} -> speaking feedback (words, wpm, overall, tips). Used by 'Speak freely'."""
+    learner = learner_of(request)
+    d = request.data
+    key = str(d.get("key", ""))[:80]
+    if key.startswith("unit:") and not (request.family.has_full_access or key.split(":")[1] in U.FREE):
+        return _locked()
+    try:
+        seconds = max(1, int(float(d.get("seconds") or 0)))
+    except (TypeError, ValueError):
+        seconds = 1
+    transcript = str(d.get("transcript", ""))[:3000]
+    res = E.analyse_speech(transcript, seconds, int(d.get("targetWpm") or 110), int(d.get("minWords") or 45))
+    res["tips"] = [{"en": en, "bn": bn} for en, bn in res["tips"]]
+    E.record(learner, "speech", key or "speech", str(d.get("prompt", ""))[:200], transcript, res["overall"], res["seconds"], res["wpm"])
+    return Response(res)
 
 
 @api_view(["GET"])

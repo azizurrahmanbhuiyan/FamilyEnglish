@@ -1,12 +1,13 @@
 // One unit: what you will be able to do, and its 5 lessons.
-// Lessons 1 (key words) and 2 (sound practice) work in the app now; the others open on the website
-// until you build them in the next lessons of your Flutter course.
+// All five lessons work in the app: key words, sound practice, grammar, a scripted conversation
+// and speaking freely.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../theme.dart';
 import '../widgets/loader.dart';
+import 'lesson_screens.dart';
 import 'repeat_screen.dart';
 
 class UnitScreen extends StatelessWidget {
@@ -30,7 +31,7 @@ class UnitScreen extends StatelessWidget {
               child: ListTile(
                 leading: const CircleAvatar(backgroundColor: FE.ok, child: Icon(Icons.check, color: Colors.white)),
                 title: const Text('At the end of this unit, you can:', style: TextStyle(color: FE.soft, fontSize: 13)),
-                subtitle: Text('${u['outcome']}', style: const TextStyle(fontSize: 17, color: Colors.white)),
+                subtitle: Text('${u['outcome']}', style: const TextStyle(fontSize: 17, color: FE.ink)),
               ),
             ),
             const SizedBox(height: 12),
@@ -66,20 +67,29 @@ class UnitScreen extends StatelessWidget {
 
   void _open(BuildContext context, Map<String, dynamic> u, Map<String, dynamic> l, Future<void> Function() reload) {
     final kind = l['kind'];
-    List<Map<String, dynamic>> items;
+    final key = 'unit:${u['slug']}:${l['n']}';
+    final title = '${u['title']} · ${l['title']}';
+    Widget screen;
     if (kind == 'words') {
-      items = List<Map<String, dynamic>>.from(u['words'] as List);
+      screen = RepeatScreen(lessonKey: key, title: title, items: List<Map<String, dynamic>>.from(u['words'] as List));
     } else if (kind == 'sounds') {
-      items = List<Map<String, dynamic>>.from(u['phrases'] as List);
+      screen = RepeatScreen(lessonKey: key, title: title, items: List<Map<String, dynamic>>.from(u['phrases'] as List));
+    } else if (kind == 'convo') {
+      final lines = [
+        for (final c in u['conversation'] as List) {'prompt': c['coach'], 'text': c['reply'], 'bn': c['hint']}
+      ];
+      screen = RepeatScreen(lessonKey: key, title: title, items: lines);
+    } else if (kind == 'grammar' && u['grammar_lesson'] != null) {
+      screen = GrammarScreen(lesson: Map<String, dynamic>.from(u['grammar_lesson'] as Map), unitKey: key, title: title);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Coming in the next lesson of your Flutter course! Use the website for this one for now.'),
-      ));
-      return;
+      screen = SpeakScreen(
+        lessonKey: key,
+        title: title,
+        prompt: '${u['speak_prompt']}',
+        seconds: (u['speak_seconds'] as num?)?.toInt() ?? 60,
+        minWords: (u['speak_min_words'] as num?)?.toInt() ?? 45,
+      );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => RepeatScreen(lessonKey: 'unit:${u['slug']}:${l['n']}', title: '${u['title']} · ${l['title']}', items: items)),
-    ).then((_) => reload());
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen)).then((_) => reload());
   }
 }

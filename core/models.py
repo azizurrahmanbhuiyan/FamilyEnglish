@@ -92,8 +92,16 @@ class Family(models.Model):
 
     @property
     def trial_ends(self):
+        """The free days (60 by default), counted from sign-up (or from FREE_TRIAL_FROM if that is set)."""
+        from datetime import date
         days = settings.FREE_TRIAL_DAYS + (settings.REFERRAL_EXTRA_TRIAL_DAYS if self.referred_by_id else 0)
-        return (self.created_at + timedelta(days=days)).date()
+        start = self.created_at.date()
+        try:
+            if settings.FREE_TRIAL_DAYS and settings.FREE_TRIAL_FROM:
+                start = max(start, date.fromisoformat(settings.FREE_TRIAL_FROM))
+        except (TypeError, ValueError):
+            pass
+        return start + timedelta(days=days)
 
     @property
     def is_paid_active(self):

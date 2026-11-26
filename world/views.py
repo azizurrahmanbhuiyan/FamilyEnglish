@@ -10,7 +10,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from core.models import Family
 
 from . import otp
-from .data import RTL, countries, guess, languages
+from .data import RTL, countries, guess, languages, picker
 from .forms import CodeForm, CodeLoginForm, GlobalSignupForm
 from .middleware import current_lang
 from .models import OneTimeCode, Profile
@@ -33,6 +33,12 @@ def signup(request):
         request.session["ref_code"] = ref
     inviter = Family.objects.filter(referral_code=request.session.get("ref_code") or "").first()
     iso, guessed_lang = guess(request)
+    if request.GET.get("picked") == "1":
+        request.session["lang_picked"] = True
+    if (request.method == "GET" and iso != "BD" and not request.session.get("lang_picked")) or request.GET.get("pick") == "1":
+        # Outside Bangladesh: first ask "What is your native language?", like a friendly app does.
+        back = f"{reverse('core:signup')}?picked=1&country={iso}"
+        return render(request, "world/native_language.html", {"cards": picker(lang), "back": back, "current": lang})
     form = GlobalSignupForm(request.POST or None, lang=lang, initial={"country": iso, "language": lang or guessed_lang})
     if request.method == "POST" and form.is_valid():
         user = form.save(commit=False)
@@ -108,6 +114,9 @@ def _finish(request, user, purpose, lang):
             request.session.pop("ref_code", None)
         messages.success(request, text("Welcome! Now add the people who will learn — children, parents or grandparents.", p.language))
         return redirect("core:learner_add")
+    if request.session.pop("otp_next", "") == "password":
+        request.session["may_set_password"] = True  # proved by the emailed code, so no old password needed
+        return redirect("core:password")
     return redirect("core:profiles")
 
 
@@ -117,10 +126,13 @@ def login_code(request):
         return redirect("core:profiles")
     lang = current_lang(request)
     iso, _ = guess(request)
+    reset = request.GET.get("reset") == "1" or request.POST.get("reset") == "1"
     form = CodeLoginForm(request.POST or None, lang=lang, initial={"country": iso})
     if request.method == "POST" and form.is_valid():
         user = form.user()
         request.session["otp_purpose"] = "login"
+        if reset:
+            request.session["otp_next"] = "password"
         request.session["otp_user"] = user.pk if user else None
         if user:
             ok, wait = otp.can_send(user)
@@ -130,7 +142,7 @@ def login_code(request):
                 messages.warning(request, text("Please wait before asking for another code. Seconds:", lang) + f" {wait}")
         messages.success(request, text("If an account exists, we sent a 6-digit code to its email.", lang))
         return redirect("world:verify")
-    return render(request, "world/login_code.html", {"form": form, "country_data": _country_data(lang)})
+    return render(request, "world/login_code.html", {"form": form, "country_data": _country_data(lang), "reset": reset})
 
 
 def language(request):

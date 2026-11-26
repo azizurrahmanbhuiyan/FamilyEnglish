@@ -84,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (!mounted) return;
     setState(() => _listening = false);
     if (heard == null || heard.text.isEmpty) {
-      setState(() => _status = "I didn't hear you. Tap the mic and speak clearly.");
+      setState(() => _status = Speech.lastProblem ?? "I didn't hear you. Tap the mic and speak clearly.");
       return;
     }
     await _send(heard.text, confidence: heard.confidence, seconds: DateTime.now().difference(start).inSeconds);
@@ -135,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            decoration: const BoxDecoration(color: Color(0xFF17143F), borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+            decoration: const BoxDecoration(color: FE.panel, borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Text(_status, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w700)),
               const SizedBox(height: 8),
@@ -190,11 +190,11 @@ class _ChatScreenState extends State<ChatScreen> {
         decoration: BoxDecoration(
           color: me ? FE.sky : FE.card,
           borderRadius: BorderRadius.circular(20),
-          border: me ? null : Border.all(color: Colors.white12),
+          border: me ? null : Border.all(color: FE.line),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('${m['content']}', style: const TextStyle(fontSize: 17, height: 1.4)),
-          if (tip.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: Text('💡 $tip', style: const TextStyle(color: FE.gold))),
+          Text('${m['content']}', style: TextStyle(fontSize: 17, height: 1.4, color: me ? Colors.white : FE.ink)),
+          if (tip.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: Text('💡 $tip', style: TextStyle(color: me ? Colors.white : FE.gold))),
           if (!me)
             Row(mainAxisSize: MainAxisSize.min, children: [
               IconButton(visualDensity: VisualDensity.compact, onPressed: () => TalkVoice.say('${m['content']}'), icon: const Icon(Icons.volume_up, size: 20)),
@@ -254,13 +254,13 @@ class ReportScreen extends StatelessWidget {
               ),
             ),
             Card(
-              color: const Color(0xFFEEF1FF),
+              color: FE.panel,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('🔑 KEY TAKEAWAY', style: TextStyle(color: Color(0xFF5A5E8E), fontWeight: FontWeight.w800, fontSize: 12)),
-                  Text('${r['takeaway']}', style: const TextStyle(color: Color(0xFF1C1D40), fontSize: 17, fontWeight: FontWeight.w700)),
-                  if ('${r['takeaway_bn']}'.isNotEmpty) Text('${r['takeaway_bn']}', style: const TextStyle(color: Color(0xFF1C1D40))),
+                  const Text('🔑 KEY TAKEAWAY', style: TextStyle(color: FE.soft, fontWeight: FontWeight.w800, fontSize: 12)),
+                  Text('${r['takeaway']}', style: const TextStyle(color: FE.ink, fontSize: 17, fontWeight: FontWeight.w700)),
+                  if ('${r['takeaway_bn']}'.isNotEmpty) Text('${r['takeaway_bn']}', style: const TextStyle(color: FE.ink)),
                 ]),
               ),
             ),
@@ -308,7 +308,7 @@ class ReportScreen extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [Text(label), const Spacer(), Text('$v%', style: const TextStyle(fontWeight: FontWeight.w800))]),
           const SizedBox(height: 4),
-          LinearProgressIndicator(value: v / 100, color: FE.mint, backgroundColor: Colors.white12),
+          LinearProgressIndicator(value: v / 100, color: FE.mint, backgroundColor: FE.line),
         ]),
       );
 }
@@ -342,7 +342,7 @@ class _SayCardState extends State<SayCard> {
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.only(top: 6),
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(color: FE.line, borderRadius: BorderRadius.circular(14)),
         child: Row(children: [
           Expanded(child: Text(widget.text, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
           IconButton(onPressed: () => TalkVoice.say(widget.text), icon: const Icon(Icons.volume_up, color: FE.sky)),

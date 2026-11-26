@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../theme.dart';
+import 'password_screen.dart';
 
 class LearnersScreen extends StatelessWidget {
   const LearnersScreen({super.key});
@@ -15,6 +16,7 @@ class LearnersScreen extends StatelessWidget {
     final state = context.watch<AppState>();
     return Scaffold(
       appBar: AppBar(title: const Text("Who's learning?"), actions: [
+        IconButton(onPressed: () => showChangePassword(context), icon: const Icon(Icons.key), tooltip: 'Change password'),
         IconButton(onPressed: state.logout, icon: const Icon(Icons.logout), tooltip: 'Sign out'),
       ]),
       body: state.learners.isEmpty

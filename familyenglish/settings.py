@@ -7,6 +7,7 @@ prefix so variables from other projects on the same machine are never picked up.
 """
 
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,7 +162,12 @@ LOGOUT_REDIRECT_URL = "core:home"
 
 # FamilyEnglish product settings
 FAMILY_MAX_LEARNERS = 6
-FREE_TRIAL_DAYS = int(os.environ.get("FE_FREE_TRIAL_DAYS", "0"))  # phonics is free forever; 0 = no trial of paid parts
+FREE_TRIAL_DAYS = int(os.environ.get("FE_FREE_TRIAL_DAYS", "60"))  # every family gets everything free for 60 days from sign-up
+# Optional: give families who joined earlier their free days from this date (YYYY-MM-DD). Empty = from sign-up only.
+FREE_TRIAL_FROM = os.environ.get("FE_FREE_TRIAL_FROM", "")
+if len(sys.argv) > 1 and sys.argv[1] == "test":
+    FREE_TRIAL_DAYS = 0  # the tests check the free/paid lock rules; the free month has its own test
+
 # Lesson days follow the Bangladesh school week (Sun-Thu). Python weekday(): Mon=0 ... Sun=6
 DEFAULT_STUDY_WEEKDAYS = [6, 0, 1, 2, 3]
 

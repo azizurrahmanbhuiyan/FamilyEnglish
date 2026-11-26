@@ -3,6 +3,27 @@
 from datetime import date
 
 CHANGES = [
+    {"date": date(2026, 11, 26), "tag": "Plans", "title": "The first 60 days are free for every family",
+     "title_bn": "প্রতিটি পরিবারের প্রথম ৬০ দিন ফ্রি",
+     "items": [
+         "Every family gets everything free for 60 days from sign-up: all levels, the course, Talk and the handbook.",
+     ]},
+    {"date": date(2026, 11, 25), "tag": "Talk", "title": "16 new role-plays and a fresh green app",
+     "title_bn": "১৬টি নতুন রোল-প্লে ও সবুজ অ্যাপ",
+     "items": [
+         "New role-plays: buying clothes, asking for a better price, an online order, the book fair, a canteen break, exam preparation, a group project, an online class, a study tour, sports day, how you're learning English, hobbies, a first day in a new class, future dreams, childhood memories and your weekend. 57 in all.",
+         "The app now hears short answers, uses the English voice your phone has, and tells you why if it can't listen.",
+         "The phone app has a light green look.",
+         "Signing up from outside Bangladesh? You first pick your native language from flag cards, and we explain things in it.",
+         "In the app, every unit lesson now works: grammar practice, the scripted conversation and speaking freely with feedback.",
+     ]},
+    {"date": date(2026, 11, 25), "tag": "Account", "title": "Forgot password and change password",
+     "title_bn": "পাসওয়ার্ড ভুলে গেলে ও পাসওয়ার্ড বদলানো",
+     "items": [
+         "Forgot your password? Tap 'Forgot password?' on the sign-in page or in the app: we email a 6-digit code, then you choose a new password.",
+         "Change your password any time from the parent dashboard or the key button in the app.",
+         "This also unlocks an account whose sign-up code was never confirmed.",
+     ]},
     {"date": date(2026, 11, 25), "tag": "Pronunciation", "title": "The FamilyEnglish pronunciation handbook: 23 PDF lessons",
      "title_bn": "FamilyEnglish উচ্চারণ হ্যান্ডবুক: ২৩টি PDF পাঠ",
      "items": [

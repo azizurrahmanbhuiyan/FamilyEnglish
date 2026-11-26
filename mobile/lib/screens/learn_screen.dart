@@ -46,7 +46,7 @@ class LearnScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text('${u['emoji']}  ${u['title']}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                       const SizedBox(height: 10),
-                      LinearProgressIndicator(value: (u['percent'] as num) / 100, color: FE.mint, backgroundColor: Colors.white12),
+                      LinearProgressIndicator(value: (u['percent'] as num) / 100, color: FE.mint, backgroundColor: FE.line),
                     ]),
                   ),
                 ),

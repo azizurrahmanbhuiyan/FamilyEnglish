@@ -53,6 +53,25 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Forgot password: the emailed code + a new password signs you in.
+  Future<void> resetPassword(String email, String code, String password) async {
+    final data = await api.passwordReset(email, code, password);
+    api.token = data['token'] as String;
+    _setFamily(data);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', api.token!);
+    if (learners.length == 1) chooseLearner(learners.first);
+    notifyListeners();
+  }
+
+  /// Change password while signed in. The server gives this phone a new token.
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    final data = await api.passwordChange(oldPassword, newPassword);
+    api.token = data['token'] as String;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', api.token!);
+  }
+
   void chooseLearner(Map<String, dynamic> l, {bool save = true}) {
     learner = l;
     api.learnerId = l['id'] as int;

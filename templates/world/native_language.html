@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load fe_ui %}
+{% block title %}{% tr "What is your native language?" "আপনার মাতৃভাষা কী?" %}{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-md">
+  <div class="flex items-start gap-3">
+    <span class="text-5xl">🐦</span>
+    <div class="s-card is-pad flex-1"><h1 class="text-2xl font-extrabold">{% tr "What is your native language?" "আপনার মাতৃভাষা কী?" %}</h1>
+      <p class="mt-1 text-sm s-muted">{% tr "You'll learn English. We'll explain things in your language." "আপনি ইংরেজি শিখবেন। আমরা আপনার ভাষায় বুঝিয়ে দেব।" %}</p></div>
+  </div>
+  <div class="mt-5 grid gap-3">
+    {% for c in cards %}
+    <a href="{% url 'growth:lang' c.code %}?next={{ back|urlencode }}" class="native-card {% if c.code == current %}is-on{% endif %}">
+      <span class="text-4xl leading-none">{{ c.flag }}</span>
+      <span class="text-lg"><b>{{ c.name }}</b>{% if c.native != c.name %} <span class="s-muted">|</span> <span dir="auto">{{ c.native }}</span>{% endif %}</span>
+    </a>
+    {% endfor %}
+    <a href="{% url 'world:language' %}?next={{ back|urlencode }}" class="native-card is-other">
+      <span class="text-4xl leading-none">🌍</span><span class="text-lg"><b>{% tr "Other" "অন্যান্য" %}</b> <span class="s-muted">· {% tr "100+ languages" "১০০+ ভাষা" %}</span></span>
+    </a>
+  </div>
+</div>
+{% endblock %}

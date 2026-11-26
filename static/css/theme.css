@@ -541,3 +541,9 @@ body.is-shorts .fe-main { padding-bottom: 0; }
 .t-say-tools { display: flex; align-items: center; gap: .4rem; margin-top: .4rem; }
 .t-say-score { margin-left: auto; font-weight: 800; }
 .t-typed.hidden { display: none; }
+
+/* sign-up: "What is your native language?" cards */
+.native-card{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border-radius:999px;background:#fff;color:#15301f;border:1.5px solid #dbe7f7;box-shadow:0 2px 6px rgba(20,48,31,.05);text-decoration:none;transition:transform .1s,border-color .1s}
+.native-card:hover{border-color:#2e9d57;transform:translateY(-1px)}
+.native-card.is-on,.native-card.is-other{border-color:#2e9d57;background:#eef8f0}
+.native-card .s-muted{color:#5b7363}

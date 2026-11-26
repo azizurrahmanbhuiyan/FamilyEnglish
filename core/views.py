@@ -353,3 +353,28 @@ def worksheets(request):
 def privacy(request):
     return render(request, "core/privacy.html")
 
+
+
+def password(request):
+    """Change the password (old one needed), or set a new one after a 'Forgot password?' code."""
+    from django.contrib.auth import update_session_auth_hash
+    from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
+
+    from .forms import INPUT
+
+    if not request.user.is_authenticated:
+        return redirect("core:login")
+    user = request.user
+    reset = bool(request.session.get("may_set_password")) or not user.has_usable_password()
+    Form = SetPasswordForm if reset else PasswordChangeForm
+    form = Form(user, request.POST or None)
+    for f in form.fields.values():
+        f.widget.attrs.setdefault("class", INPUT)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        update_session_auth_hash(request, user)
+        request.session.pop("may_set_password", None)
+        messages.success(request, "Your new password is saved. Use it on the website and in the app. / "
+                                  "নতুন পাসওয়ার্ড সেভ হয়েছে। ওয়েবসাইট ও অ্যাপে এটি ব্যবহার করুন।")
+        return redirect("core:profiles")
+    return render(request, "core/password.html", {"form": form, "reset": reset})

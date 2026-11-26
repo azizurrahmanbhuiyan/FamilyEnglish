@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../theme.dart';
+import 'password_screen.dart';
 import '../widgets/loader.dart';
 
 class ProgressScreen extends StatelessWidget {
@@ -16,6 +17,7 @@ class ProgressScreen extends StatelessWidget {
     final state = context.read<AppState>();
     return Scaffold(
       appBar: AppBar(title: const Text('Progress', style: TextStyle(fontWeight: FontWeight.w800)), actions: [
+        IconButton(onPressed: () => showChangePassword(context), icon: const Icon(Icons.key), tooltip: 'Change password'),
         IconButton(onPressed: state.logout, icon: const Icon(Icons.logout), tooltip: 'Sign out'),
       ]),
       body: Loader<Map<String, dynamic>>(
@@ -44,7 +46,7 @@ class ProgressScreen extends StatelessWidget {
                       Text(part['score'] == null ? '–' : '${part['score']}', style: const TextStyle(fontWeight: FontWeight.w800)),
                     ]),
                     const SizedBox(height: 4),
-                    LinearProgressIndicator(value: ((part['score'] ?? 0) as num) / 100, color: FE.sky, backgroundColor: Colors.white12, minHeight: 8),
+                    LinearProgressIndicator(value: ((part['score'] ?? 0) as num) / 100, color: FE.sky, backgroundColor: FE.line, minHeight: 8),
                   ],
                 ]),
               ),

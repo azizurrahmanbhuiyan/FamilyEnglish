@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../theme.dart';
+import 'password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -54,7 +55,12 @@ class _LoginScreenState extends State<LoginScreen> {
             if (_error != null) Padding(padding: const EdgeInsets.only(top: 12), child: Text(_error!, style: const TextStyle(color: FE.coral))),
             const SizedBox(height: 24),
             FilledButton(onPressed: _busy ? null : _submit, child: Text(_busy ? 'Signing in…' : 'Sign in')),
-            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => ForgotPasswordScreen(email: _email.text.trim()))),
+              child: const Text('Forgot password? / পাসওয়ার্ড ভুলে গেছেন?'),
+            ),
+            const SizedBox(height: 8),
             const Text('No account? Sign up free on familyenglish.global', textAlign: TextAlign.center, style: TextStyle(color: FE.soft)),
           ],
         ),

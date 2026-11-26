@@ -34,31 +34,83 @@ class Speech {
     await _tts.speak(text);
   }
 
+  /// Why the last listen gave nothing (shown to the learner), or null.
+  static String? lastProblem;
+  static String? _locale;
+  static void Function(String status)? _onStatus;
+  static void Function(String error)? _onError;
+
   /// Can this phone listen? (asks for microphone permission the first time)
   static Future<bool> canListen() async {
-    _sttReady ??= await _stt.initialize(onError: (_) {}, onStatus: (_) {});
-    return _sttReady!;
+    if (_sttReady != true) {
+      _sttReady = await _stt.initialize(
+        onError: (e) => _onError?.call(e.errorMsg),
+        onStatus: (s) => _onStatus?.call(s),
+      );
+    }
+    if (_sttReady == true && _locale == null) {
+      // Use a British voice if the phone has one, otherwise any English, otherwise the phone's own.
+      final ids = (await _stt.locales()).map((l) => l.localeId).toList();
+      String? pick(bool Function(String) ok) => ids.where(ok).cast<String?>().firstWhere((_) => true, orElse: () => null);
+      _locale = pick((id) => id.replaceAll('-', '_').toLowerCase() == 'en_gb') ??
+          pick((id) => id.toLowerCase().startsWith('en')) ??
+          '';
+    }
+    return _sttReady == true;
   }
 
-  /// Listen once (up to 8 seconds) and return what was heard, or null.
+  /// Listen once and return what was heard, or null (then [lastProblem] says why).
+  ///
+  /// 📘 LEARN: we keep the words as they arrive (partial results). When the phone says it has
+  /// stopped — the learner paused, tapped stop, or time ran out — we use the last words we got,
+  /// so a short answer like "sure" is never lost.
   static Future<Heard?> listen({int seconds = 8}) async {
-    if (!await canListen()) return null;
+    lastProblem = null;
+    if (!await canListen()) {
+      lastProblem = 'The microphone is not allowed. Allow it in Settings → Apps → FamilyEnglish → Permissions.';
+      return null;
+    }
+    await _tts.stop(); // the tutor's voice must not talk over the learner
     final done = Completer<Heard?>();
+    String words = '';
+    double? confidence;
+    void finish() {
+      if (done.isCompleted) return;
+      if (words.trim().isEmpty) {
+        lastProblem ??= "I didn't hear you. Tap the mic, wait for the beep, then speak.";
+        done.complete(null);
+      } else {
+        done.complete(Heard(words.trim(), confidence));
+      }
+    }
+
+    _onStatus = (s) {
+      if (s == 'done' || s == 'notListening') Future.delayed(const Duration(milliseconds: 800), finish);
+    };
+    _onError = (e) {
+      if (e.contains('network')) {
+        lastProblem = 'Listening needs the internet on this phone. Check your connection.';
+      } else if (e.contains('permission')) {
+        lastProblem = 'The microphone is not allowed. Allow it in Settings → Apps → FamilyEnglish → Permissions.';
+      }
+      finish();
+    };
     await _stt.listen(
-      localeId: 'en_GB',
+      localeId: (_locale == null || _locale!.isEmpty) ? null : _locale,
       listenFor: Duration(seconds: seconds),
-      pauseFor: const Duration(seconds: 2),
-      listenOptions: SpeechListenOptions(partialResults: false, cancelOnError: true),
+      pauseFor: const Duration(seconds: 4),
+      listenOptions: SpeechListenOptions(partialResults: true, cancelOnError: false),
       onResult: (SpeechRecognitionResult r) {
-        if (r.finalResult && !done.isCompleted) {
-          done.complete(Heard(r.recognizedWords, r.hasConfidenceRating ? r.confidence : null));
-        }
+        words = r.recognizedWords;
+        if (r.hasConfidenceRating && r.confidence > 0) confidence = r.confidence;
+        if (r.finalResult) finish();
       },
     );
-    // If nothing final arrives, give up after 10 seconds.
-    return done.future.timeout(Duration(seconds: seconds + 2), onTimeout: () async {
+    // Safety net: never wait forever.
+    return done.future.timeout(Duration(seconds: seconds + 4), onTimeout: () async {
       await _stt.stop();
-      return null;
+      finish();
+      return done.future;
     });
   }
 

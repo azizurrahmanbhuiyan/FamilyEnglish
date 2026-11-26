@@ -17,6 +17,7 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("family/new/", views.family_create, name="family_create"),
     path("family/", views.family, name="family"),
+    path("family/password/", views.password, name="password"),
     path("family/pay/", views.pay, name="pay"),
     path("family/pay/online/", views.pay_online, name="pay_online"),
     path("family/pay/result/", views.pay_result, name="pay_result"),

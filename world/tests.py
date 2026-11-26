@@ -162,8 +162,23 @@ class LanguageTests(TestCase):
         self.assertContains(r, "العربية")
         self.assertContains(r, "Kiswahili")
 
-    def test_signup_page_has_dial_codes(self):
+    def test_outside_bangladesh_first_asks_native_language(self):
         r = self.client.get(reverse("core:signup"), HTTP_ACCEPT_LANGUAGE="en-GB")
+        self.assertContains(r, "What is your native language?")
+        self.assertContains(r, "Español")
+        self.assertContains(r, "🇧🇩")
+        self.assertContains(r, "picked%3D1")
+        r = self.client.get(reverse("core:signup") + "?picked=1&country=GB", HTTP_ACCEPT_LANGUAGE="en-GB")
+        self.assertNotContains(r, "What is your native language?")
+        self.assertContains(r, 'id="signup-form"')
+        # in Bangladesh the form shows straight away
+        self.client.session.flush()
+        from django.test import Client
+        r = Client().get(reverse("core:signup"), HTTP_ACCEPT_LANGUAGE="bn-BD")
+        self.assertContains(r, 'id="signup-form"')
+
+    def test_signup_page_has_dial_codes(self):
+        r = self.client.get(reverse("core:signup") + "?picked=1", HTTP_ACCEPT_LANGUAGE="en-GB")
         self.assertRegex(r.content.decode(), r'"dial": "?44"?')
         self.assertContains(r, "(+880)")
 
@@ -195,3 +210,66 @@ class PaidEverywhereTests(TestCase):
     def test_bd_family_still_pays(self):
         fam = Family(name="x", country="BD")
         self.assertFalse(fam.is_free_country)
+
+
+class PasswordTests(TestCase):
+    """Forgot password (emailed code) and change password, on the website and in the app API."""
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()  # sign-in attempts are rate-limited; start each test fresh
+        self.user = User.objects.create_user("rina@example.com", "rina@example.com", "old-pass-word-1")
+        self.family = Family.objects.create(name="Rina family", owner=self.user)
+
+    def test_forgot_password_on_the_website(self):
+        self.assertContains(self.client.get(reverse("core:login")), "Forgot password?")
+        page = self.client.get(reverse("world:login_code") + "?reset=1")
+        self.assertContains(page, "Forgot your password?")
+        r = self.client.post(reverse("world:login_code"), {"who": "rina@example.com", "country": "BD", "reset": "1"})
+        self.assertRedirects(r, reverse("world:verify"))
+        r = self.client.post(reverse("world:verify"), {"code": code_from_mail()})
+        self.assertRedirects(r, reverse("core:password"))
+        page = self.client.get(reverse("core:password"))
+        self.assertNotContains(page, "old_password")  # the code proved who it is
+        r = self.client.post(reverse("core:password"), {"new_password1": "brand-new-pass-7", "new_password2": "brand-new-pass-7"})
+        self.assertRedirects(r, reverse("core:profiles"), fetch_redirect_response=False)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("brand-new-pass-7"))
+
+    def test_change_password_needs_the_old_one(self):
+        self.client.force_login(self.user)
+        self.assertContains(self.client.get(reverse("core:password")), "old_password")
+        r = self.client.post(reverse("core:password"), {"old_password": "wrong", "new_password1": "brand-new-pass-7",
+                                                        "new_password2": "brand-new-pass-7"})
+        self.assertEqual(r.status_code, 200)
+        r = self.client.post(reverse("core:password"), {"old_password": "old-pass-word-1", "new_password1": "brand-new-pass-7",
+                                                        "new_password2": "brand-new-pass-7"})
+        self.assertEqual(r.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("brand-new-pass-7"))
+
+    def test_app_forgot_and_change_password(self):
+        from rest_framework.test import APIClient
+        c = APIClient()
+        r = c.post("/api/v1/auth/password/code/", {"email": "nobody@example.com"}, format="json")
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)  # same answer, no email
+        r = c.post("/api/v1/auth/password/code/", {"email": "Rina@example.com"}, format="json")
+        self.assertEqual(r.status_code, 200)
+        code = code_from_mail()
+        r = c.post("/api/v1/auth/password/reset/", {"email": "rina@example.com", "code": "000000", "password": "brand-new-pass-7"}, format="json")
+        self.assertEqual(r.status_code, 400)
+        r = c.post("/api/v1/auth/password/reset/", {"email": "rina@example.com", "code": code, "password": "123"}, format="json")
+        self.assertEqual(r.status_code, 400)  # too short, and the code still works afterwards
+        r = c.post("/api/v1/auth/password/reset/", {"email": "rina@example.com", "code": code, "password": "brand-new-pass-7"}, format="json")
+        self.assertEqual(r.status_code, 200)
+        token = r.json()["token"]
+        login = c.post("/api/v1/auth/login/", {"email": "rina@example.com", "password": "brand-new-pass-7"}, format="json")
+        self.assertEqual(login.status_code, 200)
+        c.credentials(HTTP_AUTHORIZATION="Token " + token)
+        r = c.post("/api/v1/auth/password/change/", {"old": "nope", "new": "another-pass-88"}, format="json")
+        self.assertEqual(r.status_code, 400)
+        r = c.post("/api/v1/auth/password/change/", {"old": "brand-new-pass-7", "new": "another-pass-88"}, format="json")
+        self.assertEqual(r.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("another-pass-88"))

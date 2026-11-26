@@ -1,16 +1,20 @@
 from django.urls import path
 
-from . import talk, views
+from . import password, talk, views
 
 app_name = "api"
 
 urlpatterns = [
     path("auth/login/", views.login, name="login"),
     path("auth/logout/", views.logout, name="logout"),
+    path("auth/password/code/", password.send_code, name="password_code"),
+    path("auth/password/reset/", password.reset, name="password_reset"),
+    path("auth/password/change/", password.change, name="password_change"),
     path("me/", views.me, name="me"),
     path("today/", views.today, name="today"),
     path("units/", views.units, name="units"),
     path("units/<slug:slug>/", views.unit_detail, name="unit"),
+    path("analyse/", views.analyse, name="analyse"),
     path("grammar/", views.grammar_list, name="grammar"),
     path("attempt/", views.attempt, name="attempt"),
     path("finish/", views.finish, name="finish"),

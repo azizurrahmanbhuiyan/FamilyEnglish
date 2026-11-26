@@ -4,6 +4,7 @@
 <div class="mx-auto max-w-md s-card is-pad">
   <h1 class="text-3xl font-extrabold">{% tr "Create your family account" "পারিবারিক অ্যাকাউন্ট খুলুন" %}</h1>
   <p class="mt-1 s-sub">{% tr "Any adult can open it — father, mother, grandparent or elder. You'll add the learners next." "যেকোনো প্রাপ্তবয়স্ক খুলতে পারেন — বাবা, মা, দাদা-দাদি। এরপর শিক্ষার্থী যোগ করবেন।" %}</p>
+  {% if free_days %}<p class="mt-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">🎁 {% tr "Your first 60 days are free: every level, course and lesson for the whole family." "প্রথম ৬০ দিন ফ্রি: পুরো পরিবারের জন্য সব লেভেল, কোর্স ও পাঠ।" %}</p>{% endif %}
   {% if inviter %}<p class="mt-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">{% tr "Invited by" "আমন্ত্রণ করেছেন" %} {{ inviter.name }} — +{{ extra_days }} {% tr "days of the full family plan, free" "দিন পুরো ফ্যামিলি প্ল্যান, ফ্রি" %}.</p>{% endif %}
   <form method="post" class="mt-6" id="signup-form">{% csrf_token %}
     {% if form.non_field_errors %}<div class="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">{{ form.non_field_errors }}</div>{% endif %}

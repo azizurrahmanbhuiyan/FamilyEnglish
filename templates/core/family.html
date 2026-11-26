@@ -9,6 +9,7 @@
   </div>
   <div class="ml-auto flex flex-wrap gap-2">
     {% if can_add %}<a href="{% url 'core:learner_add' %}" class="btn-ghost">+ Add learner</a>{% endif %}
+    <a href="{% url 'core:password' %}" class="btn-ghost">🔑 Change password</a>
     <a href="{% url 'core:profiles' %}" class="btn-primary">Start learning</a>
   </div>
 </div>

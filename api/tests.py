@@ -54,6 +54,19 @@ class ApiTests(TestCase):
         hello = self.c.get("/api/v1/units/hello/").json()
         self.assertTrue(hello["words"][0]["target"])
         self.assertNotIn("words", self.c.get("/api/v1/units/family/").json())
+        # all five lessons can run in the app: grammar data, conversation lines and free speaking
+        g = hello["grammar_lesson"]
+        self.assertEqual(g["key"], "grammar:a1-be")
+        self.assertTrue(g["rule"] and g["examples"] and g["practice"])
+        self.assertTrue(hello["conversation"][0]["coach"] and hello["speak_prompt"])
+        r = self.c.post("/api/v1/analyse/", {"key": "unit:hello:5", "prompt": hello["speak_prompt"], "seconds": 30,
+                                             "transcript": "Hello, my name is Rina and I live in Dhaka with my family. I like reading "
+                                                           "books because they are fun, and I also enjoy cooking with my mother."},
+                        format="json").json()
+        self.assertGreater(r["words"], 20)
+        self.assertTrue(0 <= r["overall"] <= 100 and r["tips"][0]["en"])
+        self.assertEqual(self.c.post("/api/v1/analyse/", {"key": "unit:family:5", "transcript": "hi", "seconds": 3},
+                                     format="json").status_code, 402)
         self.assertEqual(self.c.post("/api/v1/finish/", {"key": "unit:family:1", "score": 90}, format="json").status_code, 402)
 
     def test_attempt_finish_progress(self):

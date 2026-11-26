@@ -36,7 +36,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => Speech.say('${_item['text']}'));
+    WidgetsBinding.instance.addPostFrameCallback((_) => Speech.say('${_item['prompt'] ?? _item['text']}'));
   }
 
   Future<void> _speak() async {
@@ -45,7 +45,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
     if (!mounted) return;
     setState(() => _listening = false);
     if (heard == null || heard.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("I didn't hear you. Tap the mic and speak clearly.")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Speech.lastProblem ?? "I didn't hear you. Tap the mic and speak clearly.")));
       return;
     }
     final api = context.read<AppState>().api;
@@ -69,7 +69,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
       _best = 0;
       _result = null;
     });
-    Speech.say('${_item['text']}');
+    Speech.say('${_item['prompt'] ?? _item['text']}');
   }
 
   @override
@@ -82,7 +82,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
       appBar: AppBar(title: Text(widget.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800))),
       body: SafeArea(
         child: Column(children: [
-          LinearProgressIndicator(value: _i / widget.items.length, color: FE.sky, backgroundColor: Colors.white10),
+          LinearProgressIndicator(value: _i / widget.items.length, color: FE.sky, backgroundColor: FE.line),
           const SizedBox(height: 16),
           const Text('🐦', style: TextStyle(fontSize: 80)),
           SegmentedButton<bool>(
@@ -96,12 +96,23 @@ class _RepeatScreenState extends State<RepeatScreen> {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: const Color(0xFFEEF1FF), borderRadius: BorderRadius.circular(26)),
+                decoration: BoxDecoration(color: FE.panel, borderRadius: BorderRadius.circular(26)),
                 child: DefaultTextStyle(
-                  style: const TextStyle(color: Color(0xFF1C1D40)),
+                  style: const TextStyle(color: FE.ink),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    if (r == null)
-                      const Text('Speak and get feedback on the underlined sound.', style: TextStyle(color: Color(0xFF5A5E8E)))
+                    if (it['prompt'] != null) ...[
+                      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        const Text('🐦 ', style: TextStyle(fontSize: 22)),
+                        Expanded(child: Text('${it['prompt']}', style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700))),
+                        IconButton(onPressed: () => Speech.say('${it['prompt']}'), icon: const Icon(Icons.volume_up, color: FE.sky)),
+                      ]),
+                      const Text('Your answer — say this:', style: TextStyle(color: FE.soft)),
+                      const SizedBox(height: 8),
+                    ],
+                    if (r == null && it['prompt'] == null)
+                      const Text('Speak and get feedback on the underlined sound.', style: TextStyle(color: FE.soft))
+                    else if (r == null)
+                      const SizedBox.shrink()
                     else ...[
                       Row(children: [
                         Icon(ok ? Icons.check_circle : Icons.cancel, color: ok ? FE.ok : FE.bad),
@@ -111,12 +122,12 @@ class _RepeatScreenState extends State<RepeatScreen> {
                         Text('${r['score']}%', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: ok ? FE.ok : FE.bad)),
                       ]),
                       if (!ok && (it['tip_en'] ?? '') != '') Padding(padding: const EdgeInsets.only(top: 6), child: Text('${it['tip_en']}')),
-                      Padding(padding: const EdgeInsets.only(top: 6), child: Text('I heard: “${r['heard']}”', style: const TextStyle(color: Color(0xFF5A5E8E)))),
+                      Padding(padding: const EdgeInsets.only(top: 6), child: Text('I heard: “${r['heard']}”', style: const TextStyle(color: FE.soft))),
                     ],
                     const Divider(height: 28),
                     _wordView(it, r),
-                    if ((it['ipa'] ?? '') != '') Text('${it['ipa']}', style: const TextStyle(fontSize: 18, color: Color(0xFF5A5E8E))),
-                    if ((it['bn'] ?? '') != '') Text('${it['bn']}', style: const TextStyle(color: Color(0xFF5A5E8E))),
+                    if ((it['ipa'] ?? '') != '') Text('${it['ipa']}', style: const TextStyle(fontSize: 18, color: FE.soft)),
+                    if ((it['bn'] ?? '') != '') Text('${it['bn']}', style: const TextStyle(color: FE.soft)),
                     const SizedBox(height: 12),
                     Row(children: [
                       IconButton(onPressed: () => Speech.say('${it['text']}'), icon: const Icon(Icons.volume_up, color: FE.sky, size: 32)),
@@ -158,7 +169,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
 
   /// The word with its target sound underlined, or coloured green/red after a try.
   Widget _wordView(Map<String, dynamic> it, Map<String, dynamic>? r) {
-    const big = TextStyle(fontSize: 34, fontWeight: FontWeight.w700, color: Color(0xFF1C1D40));
+    const big = TextStyle(fontSize: 34, fontWeight: FontWeight.w700, color: FE.ink);
     final marks = (r?['marks'] as List?) ?? [];
     if (marks.isNotEmpty) {
       return RichText(

@@ -2,9 +2,14 @@
 {% block title %}{% tr "Sign in with a code" "কোড দিয়ে সাইন ইন" %}{% endblock %}
 {% block content %}
 <div class="mx-auto max-w-md s-card is-pad">
+  {% if reset %}
+  <h1 class="text-3xl font-extrabold">{% tr "Forgot your password?" "পাসওয়ার্ড ভুলে গেছেন?" %}</h1>
+  <p class="mt-1 s-sub">{% tr "Type your email or mobile number. We'll send a 6-digit code, then you can choose a new password." "ইমেইল বা মোবাইল নম্বর দিন। আমরা ৬ সংখ্যার কোড পাঠাব, তারপর নতুন পাসওয়ার্ড দিতে পারবেন।" %}</p>
+  {% else %}
   <h1 class="text-3xl font-extrabold">{% tr "Sign in with a code" "কোড দিয়ে সাইন ইন" %}</h1>
   <p class="mt-1 s-sub">{% tr "No password needed. Type your email or mobile number and we'll send you a 6-digit code." "পাসওয়ার্ড লাগবে না। ইমেইল বা মোবাইল নম্বর দিন, আমরা ৬ সংখ্যার কোড পাঠাব।" %}</p>
-  <form method="post" class="mt-6">{% csrf_token %}
+  {% endif %}
+  <form method="post" class="mt-6">{% csrf_token %}{% if reset %}<input type="hidden" name="reset" value="1">{% endif %}
     {% include "world/_field.html" with f=form.who %}
     <div id="country-row" hidden>{% include "world/_field.html" with f=form.country %}</div>
     <button class="s-btn is-block">{% tr "Send my code" "কোড পাঠান" %}</button>

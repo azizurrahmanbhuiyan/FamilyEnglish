@@ -55,6 +55,11 @@ class Api {
   // ---- the endpoints the app uses ----------------------------------------------------------
   Future<Map<String, dynamic>> login(String email, String password) async =>
       Map<String, dynamic>.from(await post('/auth/login/', {'email': email, 'password': password}));
+  Future<void> passwordCode(String email) async => await post('/auth/password/code/', {'email': email});
+  Future<Map<String, dynamic>> passwordReset(String email, String code, String password) async =>
+      Map<String, dynamic>.from(await post('/auth/password/reset/', {'email': email, 'code': code, 'password': password}));
+  Future<Map<String, dynamic>> passwordChange(String oldPassword, String newPassword) async =>
+      Map<String, dynamic>.from(await post('/auth/password/change/', {'old': oldPassword, 'new': newPassword}));
   Future<Map<String, dynamic>> today() async => Map<String, dynamic>.from(await get('/today/'));
   Future<List<dynamic>> units() async => List<dynamic>.from(await get('/units/'));
   Future<Map<String, dynamic>> unit(String slug) async => Map<String, dynamic>.from(await get('/units/$slug/'));
@@ -63,6 +68,8 @@ class Api {
   Future<Map<String, dynamic>> attempt({required String key, required String target, required String said, double? confidence}) async =>
       Map<String, dynamic>.from(await post('/attempt/', {'key': key, 'target': target, 'said': said, 'confidence': confidence, 'seconds': 5}));
 
+  Future<Map<String, dynamic>> analyse({required String key, required String prompt, required String transcript, required int seconds}) async =>
+      Map<String, dynamic>.from(await post('/analyse/', {'key': key, 'prompt': prompt, 'transcript': transcript, 'seconds': seconds}));
   Future<Map<String, dynamic>> finish({required String key, required String title, required int score}) async =>
       Map<String, dynamic>.from(await post('/finish/', {'key': key, 'title': title, 'score': score}));
 }
